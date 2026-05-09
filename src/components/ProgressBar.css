@@ -1,0 +1,41 @@
+.kg-progress {
+  width: 100%;
+}
+
+.kg-progress__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.kg-progress__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #708090;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kg-progress__count {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1A2B3C;
+}
+
+.kg-progress__track {
+  width: 100%;
+  height: 6px;
+  background: rgba(26, 43, 60, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.kg-progress__bar {
+  height: 100%;
+  background: linear-gradient(90deg, #20B2AA 0%, #FF8C00 100%);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}

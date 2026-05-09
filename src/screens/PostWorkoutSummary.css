@@ -1,0 +1,238 @@
+.summary {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #F8F9FA 0%, #FFFFFF 100%);
+}
+
+.summary__content {
+  flex: 1;
+  padding: 40px 24px 24px;
+  text-align: center;
+  overflow-y: auto;
+}
+
+.summary__badge {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #20B2AA 0%, #1A9A90 100%);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 8px 30px rgba(32, 178, 170, 0.3);
+}
+
+.summary__badge svg {
+  color: #FFFFFF;
+}
+
+.summary__title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: #1A2B3C;
+  margin: 0 0 6px 0;
+}
+
+.summary__subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #708090;
+  margin: 0;
+}
+
+.summary__divider {
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #20B2AA 0%, #FF8C00 100%);
+  border-radius: 2px;
+  margin: 24px auto;
+}
+
+.summary__score-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.summary__score-circle {
+  width: 110px;
+  height: 110px;
+  border: 4px solid;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+}
+
+.summary__score-value {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  color: #1A2B3C;
+  line-height: 1;
+}
+
+.summary__score-max {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #708090;
+}
+
+.summary__score-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.summary__stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 28px;
+}
+
+.summary__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.summary__stat-value {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #1A2B3C;
+}
+
+.summary__stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #708090;
+}
+
+.summary__highlights {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: left;
+  box-shadow: 0 4px 16px rgba(26, 43, 60, 0.06);
+}
+
+.summary__highlights-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1A2B3C;
+  margin: 0 0 14px 0;
+}
+
+.summary__highlights-title svg {
+  color: #20B2AA;
+}
+
+.summary__highlights-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.summary__highlights-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #1A2B3C;
+}
+
+.summary__highlights-list li::before {
+  content: '✓';
+  width: 20px;
+  height: 20px;
+  background: rgba(32, 178, 170, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #20B2AA;
+  flex-shrink: 0;
+}
+
+.summary__progression {
+  background: rgba(26, 43, 60, 0.03);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.summary__progression-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.summary__progression-header span {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #708090;
+}
+
+.summary__progression-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #1A2B3C;
+  margin: 0 0 12px 0;
+}
+
+.summary__progression-text strong {
+  color: #20B2AA;
+}
+
+.summary__progression-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(26, 43, 60, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.summary__progression-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #20B2AA 0%, #FF8C00 100%);
+  border-radius: 4px;
+}
+
+.summary__category {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: #1A2B3C;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+.summary__footer {
+  padding: 20px 24px;
+  background: #FFFFFF;
+}

@@ -1,0 +1,117 @@
+.assessment-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #F8F9FA;
+}
+
+.assessment-screen__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: #FFFFFF;
+  border-bottom: 1px solid rgba(26, 43, 60, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.assessment-screen__back {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(26, 43, 60, 0.05);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #1A2B3C;
+  transition: all 0.2s ease;
+}
+
+.assessment-screen__back:hover {
+  background: rgba(26, 43, 60, 0.1);
+}
+
+.assessment-screen__content {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.assessment-screen__footer {
+  padding: 20px 24px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  background: #FFFFFF;
+  border-top: 1px solid rgba(26, 43, 60, 0.08);
+}
+
+/* Assessment sections within questions */
+.assessment-section {
+  margin-bottom: 20px;
+}
+
+.assessment-section:last-child {
+  margin-bottom: 0;
+}
+
+.assessment-section__title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1A2B3C;
+  margin: 0 0 10px 0;
+}
+
+.assessment-section__desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #708090;
+  margin: 0 0 12px 0;
+}
+
+/* Slider for Active History */
+.slider-container {
+  padding: 10px 0;
+}
+
+.slider-track {
+  position: relative;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.slider-dot {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: 2px solid rgba(26, 43, 60, 0.15);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #708090;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.slider-dot:hover {
+  border-color: #20B2AA;
+  transform: scale(1.1);
+}
+
+.slider-dot.active {
+  background: linear-gradient(135deg, #20B2AA 0%, #20B2AA 100%);
+  border-color: #20B2AA;
+  color: #FFFFFF;
+  box-shadow: 0 4px 15px rgba(32, 178, 170, 0.3);
+  transform: scale(1.15);
+}
