@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.kineticguard.app',
-  appName: 'KineticGuard',
+  appId: 'com.fitguard.app',
+  appName: 'FitGuard',
   webDir: 'dist',
   server: {
     androidScheme: 'https',

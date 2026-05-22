@@ -1,40 +1,100 @@
-.option-btn {
+.kg-option {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 12px;
-  width: 100%;
   padding: 16px 20px;
-  background: #FFFFFF;
-  border: 2px solid rgba(26, 43, 60, 0.1);
-  border-radius: 14px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition);
   text-align: left;
-}
-
-.option-btn:hover:not(:disabled) {
-  border-color: #20B2AA;
-  background: rgba(32, 178, 170, 0.05);
-}
-
-.option-btn--selected {
-  border-color: #20B2AA;
-  background: rgba(32, 178, 170, 0.1);
-  box-shadow: 0 2px 10px rgba(32, 178, 170, 0.15);
-}
-
-.option-btn__icon {
-  font-size: 20px;
-}
-
-.option-btn__label {
-  font-family: 'Inter', sans-serif;
+  font-family: inherit;
+  color: var(--text-secondary);
   font-size: 15px;
   font-weight: 500;
-  color: #1A2B3C;
+  position: relative;
+  overflow: hidden;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.option-btn:disabled {
+[dir="rtl"] .kg-option {
+  text-align: right;
+}
+
+.kg-option::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--orange-dim) 0%, var(--purple-dim) 100%);
+  opacity: 0;
+  transition: opacity var(--transition);
+  border-radius: inherit;
+}
+
+.kg-option:hover:not(:disabled) {
+  border-color: rgba(255, 107, 0, 0.25);
+  color: var(--text-primary);
+  background: var(--surface-elevated);
+}
+
+.kg-option:hover:not(:disabled)::before {
   opacity: 0.5;
+}
+
+.kg-option--selected {
+  border-color: var(--orange);
+  color: var(--text-primary);
+  background: var(--surface-elevated);
+  box-shadow: 0 0 0 1px var(--orange), 0 4px 20px rgba(255, 107, 0, 0.15);
+}
+
+.kg-option--selected::before {
+  opacity: 1;
+}
+
+.kg-option__icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.kg-option__label {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  line-height: 1.4;
+}
+
+.kg-option__check {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.kg-option__circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: block;
+  transition: border-color var(--transition);
+}
+
+.kg-option:hover:not(:disabled) .kg-option__circle {
+  border-color: rgba(255, 107, 0, 0.4);
+}
+
+.kg-option:disabled {
+  opacity: 0.4;
   cursor: not-allowed;
 }

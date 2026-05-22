@@ -1,0 +1,182 @@
+export const translations = {
+  en: {
+    app: { name: 'FitGuard', tagline: 'Train Smart. Stay Safe.', fitnessProtects: 'Protect Your Performance.' },
+    start: {
+      title: 'FitGuard',
+      tagline: 'Train Smart. Stay Safe.',
+      description: "Before you begin your fitness journey, we conduct a comprehensive Safety Audit to understand your body's foundation and design a program that protects you while building strength.",
+      features: ['Physical Foundation Assessment', 'Injury Risk Identification', 'Personalized Tier Assignment'],
+      cta: 'Begin Safety Audit',
+      time: 'Takes approximately 3 minutes',
+      footer: 'Protect Your Performance.',
+      continueAudit: 'Continue Your Program',
+      restartAudit: 'Retake Assessment'
+    },
+    assessment: {
+      progress: 'SAFETY AUDIT PROGRESS',
+      of: 'of',
+      next: 'Next',
+      back: 'Back',
+      complete: 'Complete Assessment',
+      questions: {
+        activeHistory: { title: 'Active History', subtitle: 'How consistent have you been with physical activity over the last 12 months?' },
+        injuryInventory: { title: 'Injury Inventory', subtitle: 'Do you have any current joint pain or prior surgeries?' },
+        structuralMobility: { title: 'Structural Mobility', subtitle: 'How is your current flexibility and posture?' },
+        dailyLoad: { title: 'Daily Load', subtitle: 'How physically demanding is your typical day?' },
+        primaryDriver: { title: 'Primary Driver', subtitle: 'What is your main fitness goal?' },
+        timeCommitment: { title: 'Time Commitment', subtitle: 'How many 30-minute workout windows do you have per week?' }
+      },
+      scale: { gettingStarted: 'Getting Started', buildingMomentum: 'Building Momentum', wellEstablished: 'Well Established' },
+      injury: { jointPain: 'Current joint pain', priorSurgery: 'Prior surgeries', noneApply: 'None apply' },
+      mobility: { canTouchToes: 'Can touch toes', canFullSquat: 'Can perform full squat', hasPostureIssues: 'Noticeable posture issues' },
+      dailyLoads: { sedentary: 'Sedentary (desk/minimal movement)', moderate: 'Moderate (some walking/standing)', demanding: 'Demanding (physical job/active lifestyle)' },
+      goals: { strength: 'Build Strength', weightLoss: 'Weight Management', endurance: 'Improve Endurance', flexibility: 'Flexibility & Mobility', general: 'General Fitness' },
+      timeOptions: { '2': '2 sessions/week', '3': '3 sessions/week', '4': '4 sessions/week', '5+': '5+ sessions/week' }
+    },
+    results: {
+      yourTier: 'YOUR SAFETY TIER',
+      riskProfile: 'RISK PROFILE',
+      recommendations: 'RECOMMENDATIONS',
+      safetyScore: 'Safety Score',
+      startProgram: 'Start My Program',
+      retakeAssessment: 'Retake Assessment',
+      flags: { joint_pain: 'Joint Pain Detected', prior_surgery: 'Prior Surgery History', limited_mobility: 'Limited Mobility', posture_issues: 'Posture Issues', sedentary_lifestyle: 'Sedentary Background' },
+      noFlags: 'No major risk flags identified'
+    },
+    readiness: {
+      title: 'Daily Readiness Check',
+      subtitle: 'How is your body feeling today?',
+      sleep: 'Sleep Quality', stress: 'Stress Level', soreness: 'Muscle Soreness',
+      low: 'Low', high: 'High', poor: 'Poor', excellent: 'Excellent', none: 'None', severe: 'Severe',
+      proceed: 'Proceed to Workout',
+      readinessScore: 'Readiness Score'
+    },
+    dashboard: { title: 'Workout Dashboard', todayWorkout: "Today's Workout", readiness: 'Readiness', exercises: 'exercises', start: 'Start', viewAll: 'View All' },
+    exercise: { sets: 'Sets', reps: 'Reps', rest: 'Rest', formCheck: 'AI Form Check', complete: 'Mark Complete', back: 'Back' },
+    formCheck: { title: 'AI Form Check', analyzing: 'Analyzing your form...', good: 'Good form!', improve: 'Areas to improve', startCamera: 'Start Camera', stopCamera: 'Stop Camera', permissionDenied: 'Camera permission denied' },
+    summary: { title: 'Workout Complete!', safetyScore: 'Safety Score', exercises: 'Exercises', sets: 'Total Sets', nextWorkout: 'Next Workout', done: 'Done' },
+    auth: {
+      subtitleSignIn: 'Welcome back. Train smart, stay safe.',
+      subtitleSignUp: 'Create your account to get started.',
+      tabSignIn: 'Sign In',
+      tabSignUp: 'Sign Up',
+      labelName: 'Full Name',
+      labelEmail: 'Email',
+      labelPassword: 'Password',
+      placeholderName: 'Your name',
+      placeholderEmail: 'you@example.com',
+      placeholderPassword: '6+ characters',
+      passwordHint: 'Minimum 6 characters',
+      btnSignIn: 'Sign In',
+      btnSignUp: 'Create Account',
+      orContinueWith: 'or continue with',
+      appleSignIn: 'Continue with Apple',
+      terms: 'By continuing, you agree to our Terms of Service and Privacy Policy.',
+      errorRequired: 'Email and password are required.',
+      errorPassShort: 'Password must be at least 6 characters.',
+      errorNameRequired: 'Please enter your name.',
+      errorInvalidCreds: 'Incorrect email or password.',
+      errorEmailNotConfirmed: 'Please confirm your email first.',
+      errorAlreadyRegistered: 'This email is already registered. Try signing in.',
+      errorRateLimit: 'Too many attempts. Please wait a moment.',
+      errorGeneric: 'Something went wrong. Please try again.',
+    },
+    language: { toggle: 'عربي', current: 'English' },
+    tiers: {
+      novice: { name: 'Novice', description: 'Building your foundation safely' },
+      intermediate: { name: 'Intermediate', description: 'Progressing with smart training' },
+      advanced: { name: 'Advanced', description: 'Peak performance training' }
+    }
+  },
+  ar: {
+    app: { name: 'FitGuard', tagline: 'تدرب بذكاء. ابقَ محمياً.', fitnessProtects: 'احمِ أداءك.' },
+    start: {
+      title: 'FitGuard',
+      tagline: 'تدرب بذكاء. ابقَ محمياً.',
+      description: 'قبل أن تبدأ رحلتك الرياضية، نجري تدقيقاً شاملاً للسلامة لفهم أساسيات جسمك وتصميم برنامج يحميك أثناء بناء القوة.',
+      features: ['تقييم الأساس الجسدي', 'تحديد مخاطر الإصابة', 'تصنيف شخصي مخصص'],
+      cta: 'ابدأ تدقيق السلامة',
+      time: 'يستغرق حوالي 3 دقائق',
+      footer: 'احمِ أداءك.',
+      continueAudit: 'متابعة البرنامج',
+      restartAudit: 'إعادة التقييم'
+    },
+    assessment: {
+      progress: 'تقدم تدقيق السلامة',
+      of: 'من',
+      next: 'التالي',
+      back: 'رجوع',
+      complete: 'إكمال التقييم',
+      questions: {
+        activeHistory: { title: 'السجل النشاطي', subtitle: 'ما مدى انتظامك في النشاط البدني خلال الـ 12 شهراً الماضية؟' },
+        injuryInventory: { title: 'سجل الإصابات', subtitle: 'هل تعاني من آلام مفصلية أو خضعت لعمليات جراحية سابقة؟' },
+        structuralMobility: { title: 'المرونة الهيكلية', subtitle: 'كيف هو مستوى مرونتك ووضعيتك الحالية؟' },
+        dailyLoad: { title: 'الحمل اليومي', subtitle: 'ما مدى الجهد الجسدي في يومك المعتاد؟' },
+        primaryDriver: { title: 'الهدف الرئيسي', subtitle: 'ما هو هدفك الرئيسي في اللياقة البدنية؟' },
+        timeCommitment: { title: 'الالتزام الزمني', subtitle: 'كم جلسة تمرين مدة 30 دقيقة تستطيع تخصيصها أسبوعياً؟' }
+      },
+      scale: { gettingStarted: 'بدء المسيرة', buildingMomentum: 'بناء الزخم', wellEstablished: 'مستوى متقدم' },
+      injury: { jointPain: 'ألم مفصلي حالي', priorSurgery: 'عمليات جراحية سابقة', noneApply: 'لا شيء من هذا' },
+      mobility: { canTouchToes: 'أستطيع لمس أصابع قدمي', canFullSquat: 'أستطيع القرفصاء الكاملة', hasPostureIssues: 'مشاكل واضحة في الوضعية' },
+      dailyLoads: { sedentary: 'خامل (مكتبي / حركة قليلة)', moderate: 'معتدل (مشي / وقوف)', demanding: 'مجهد (عمل بدني / نشاط عالٍ)' },
+      goals: { strength: 'بناء القوة', weightLoss: 'إدارة الوزن', endurance: 'تحسين التحمل', flexibility: 'المرونة والحركة', general: 'لياقة عامة' },
+      timeOptions: { '2': 'جلستان/أسبوع', '3': '3 جلسات/أسبوع', '4': '4 جلسات/أسبوع', '5+': '5+ جلسات/أسبوع' }
+    },
+    results: {
+      yourTier: 'مستواك في السلامة',
+      riskProfile: 'ملف المخاطر',
+      recommendations: 'التوصيات',
+      safetyScore: 'نقاط السلامة',
+      startProgram: 'ابدأ برنامجي',
+      retakeAssessment: 'إعادة التقييم',
+      flags: { joint_pain: 'ألم مفصلي مكتشف', prior_surgery: 'تاريخ عمليات جراحية', limited_mobility: 'محدودية الحركة', posture_issues: 'مشاكل الوضعية', sedentary_lifestyle: 'خلفية خاملة' },
+      noFlags: 'لا توجد مخاطر رئيسية'
+    },
+    readiness: {
+      title: 'فحص الجاهزية اليومية',
+      subtitle: 'كيف تشعر جسمك اليوم؟',
+      sleep: 'جودة النوم', stress: 'مستوى التوتر', soreness: 'ألم العضلات',
+      low: 'منخفض', high: 'عالٍ', poor: 'سيئة', excellent: 'ممتازة', none: 'لا يوجد', severe: 'شديد',
+      proceed: 'انتقل إلى التمرين',
+      readinessScore: 'نقاط الجاهزية'
+    },
+    dashboard: { title: 'لوحة التمارين', todayWorkout: 'تمرين اليوم', readiness: 'الجاهزية', exercises: 'تمارين', start: 'ابدأ', viewAll: 'عرض الكل' },
+    exercise: { sets: 'مجموعات', reps: 'تكرارات', rest: 'راحة', formCheck: 'فحص الأداء بالذكاء الاصطناعي', complete: 'إتمام', back: 'رجوع' },
+    formCheck: { title: 'فحص الأداء بالذكاء الاصطناعي', analyzing: 'جاري تحليل أدائك...', good: 'أداء ممتاز!', improve: 'نقاط التحسين', startCamera: 'تشغيل الكاميرا', stopCamera: 'إيقاف الكاميرا', permissionDenied: 'تم رفض إذن الكاميرا' },
+    summary: { title: 'اكتمل التمرين!', safetyScore: 'نقاط السلامة', exercises: 'التمارين', sets: 'إجمالي المجموعات', nextWorkout: 'التمرين القادم', done: 'تم' },
+    auth: {
+      subtitleSignIn: 'أهلاً بعودتك. تدرب بذكاء، ابقَ محمياً.',
+      subtitleSignUp: 'أنشئ حسابك للبدء.',
+      tabSignIn: 'تسجيل الدخول',
+      tabSignUp: 'إنشاء حساب',
+      labelName: 'الاسم الكامل',
+      labelEmail: 'البريد الإلكتروني',
+      labelPassword: 'كلمة المرور',
+      placeholderName: 'اسمك',
+      placeholderEmail: 'example@email.com',
+      placeholderPassword: '6 أحرف على الأقل',
+      passwordHint: 'الحد الأدنى 6 أحرف',
+      btnSignIn: 'دخول',
+      btnSignUp: 'إنشاء الحساب',
+      orContinueWith: 'أو تابع بـ',
+      appleSignIn: 'الدخول عبر Apple',
+      terms: 'بالمتابعة، توافق على شروط الخدمة وسياسة الخصوصية.',
+      errorRequired: 'البريد الإلكتروني وكلمة المرور مطلوبان.',
+      errorPassShort: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل.',
+      errorNameRequired: 'الرجاء إدخال اسمك.',
+      errorInvalidCreds: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
+      errorEmailNotConfirmed: 'الرجاء تأكيد بريدك الإلكتروني أولاً.',
+      errorAlreadyRegistered: 'هذا البريد مسجل مسبقاً. حاول تسجيل الدخول.',
+      errorRateLimit: 'محاولات كثيرة. الرجاء الانتظار لحظة.',
+      errorGeneric: 'حدث خطأ. الرجاء المحاولة مجدداً.',
+    },
+    language: { toggle: 'English', current: 'عربي' },
+    tiers: {
+      novice: { name: 'مبتدئ', description: 'بناء أساسك بأمان' },
+      intermediate: { name: 'متوسط', description: 'التقدم بتدريب ذكي' },
+      advanced: { name: 'متقدم', description: 'تدريب الأداء الأمثل' }
+    }
+  }
+};
+
+export default translations;

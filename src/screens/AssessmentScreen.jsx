@@ -1,293 +1,233 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, AlertTriangle } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
+import LanguageToggle from '../components/LanguageToggle';
 import Button from '../components/Button';
-import ProgressBar from '../components/ProgressBar';
-import QuestionCard from '../components/QuestionCard';
 import OptionButton from '../components/OptionButton';
 import './AssessmentScreen.css';
 
-const TOTAL_QUESTIONS = 6;
+const STEPS = ['activeHistory', 'injuryInventory', 'structuralMobility', 'dailyLoad', 'primaryDriver', 'timeCommitment'];
+
+/* ── Big tappable number cards ── */
+const ScaleInput = ({ value, onChange, labels }) => {
+  const steps = [1, 2, 3, 4, 5];
+  const getLabel = v => {
+    if (!v) return '';
+    if (v <= 2) return labels[0];
+    if (v === 3) return labels[1];
+    return labels[2];
+  };
+  return (
+    <div className="scale-input">
+      <div className="scale-cards">
+        {steps.map(s => (
+          <button
+            key={s}
+            type="button"
+            className={`scale-card ${value === s ? 'scale-card--active' : ''}`}
+            onClick={() => onChange(s)}
+          >
+            <span className="scale-card__num">{s}</span>
+          </button>
+        ))}
+      </div>
+      <div className="scale-legend">
+        <span>{labels[0]}</span>
+        <span>{labels[2]}</span>
+      </div>
+      {value && (
+        <div className="scale-selected-label">
+          <span className="scale-selected-label__dot" />
+          <span>{getLabel(value)}</span>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const AssessmentScreen = ({ onComplete, onBack }) => {
-  const [currentStep, setCurrentStep] = useState(0);
-  
-  const [responses, setResponses] = useState({
+  const { t, isRTL } = useLanguage();
+  const [step, setStep] = useState(0);
+  const [animating, setAnimating] = useState(false);
+
+  const [answers, setAnswers] = useState({
     activeHistory: null,
-    injuryInventory: {
-      hasJointPain: false,
-      hasPriorSurgery: false,
-      jointsAffected: []
-    },
-    structuralMobility: {
-      canTouchToes: true,
-      canFullSquat: true,
-      hasPostureIssues: false
-    },
+    injuryFlags: [],
+    mobilityFlags: [],
     dailyLoad: null,
     primaryDriver: null,
-    timeCommitment: null
+    timeCommitment: null,
   });
 
-  const updateResponse = (section, data) => {
-    setResponses(prev => ({
-      ...prev,
-      [section]: data
-    }));
+  const currentStepKey = STEPS[step];
+  const isLastStep = step === STEPS.length - 1;
+
+  const goNext = () => {
+    if (animating) return;
+    if (isLastStep) { onComplete(answers); return; }
+    setAnimating(true);
+    setTimeout(() => { setStep(s => s + 1); setAnimating(false); }, 200);
+  };
+
+  const goBack = () => {
+    if (animating) return;
+    if (step === 0) { onBack(); return; }
+    setAnimating(true);
+    setTimeout(() => { setStep(s => s - 1); setAnimating(false); }, 200);
   };
 
   const canProceed = () => {
-    switch (currentStep) {
-      case 0: return responses.activeHistory !== null;
-      case 1: return true; // Injury is optional (doesn't block)
-      case 2: return true; // Mobility is optional (doesn't block)
-      case 3: return responses.dailyLoad !== null;
-      case 4: return responses.primaryDriver !== null;
-      case 5: return responses.timeCommitment !== null;
-      default: return false;
+    switch (currentStepKey) {
+      case 'activeHistory': return answers.activeHistory !== null;
+      case 'dailyLoad': return answers.dailyLoad !== null;
+      case 'primaryDriver': return answers.primaryDriver !== null;
+      case 'timeCommitment': return answers.timeCommitment !== null;
+      default: return true;
     }
   };
 
-  const handleNext = () => {
-    if (currentStep < TOTAL_QUESTIONS - 1) {
-      setCurrentStep(prev => prev + 1);
-    } else {
-      onComplete(responses);
-    }
+  const toggleFlag = (field, value) => {
+    setAnswers(a => {
+      const arr = [...(a[field] || [])];
+      if (value === 'noneApply') return { ...a, [field]: arr.includes('noneApply') ? [] : ['noneApply'] };
+      const withoutNone = arr.filter(x => x !== 'noneApply');
+      const idx = withoutNone.indexOf(value);
+      if (idx > -1) return { ...a, [field]: withoutNone.filter(x => x !== value) };
+      return { ...a, [field]: [...withoutNone, value] };
+    });
   };
 
-  const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
-    } else {
-      onBack();
-    }
-  };
+  const q = t.assessment.questions;
 
   const renderStep = () => {
-    switch (currentStep) {
-      case 0:
+    switch (currentStepKey) {
+      case 'activeHistory':
         return (
-          <QuestionCard 
-            title="Active History" 
-            subtitle="How consistent have you been with physical activity over the last 12 months?"
-          >
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-              <OptionButton
-                key={num}
-                selected={responses.activeHistory === num}
-                onClick={() => updateResponse('activeHistory', num)}
-                icon={num <= 3 ? '🔰' : num <= 6 ? '⚡' : '🏆'}
-              >
-                {num}/10 — {num <= 3 ? 'Getting Started' : num <= 6 ? 'Building Momentum' : 'Well Established'}
-              </OptionButton>
+          <ScaleInput
+            value={answers.activeHistory}
+            onChange={v => setAnswers(a => ({ ...a, activeHistory: v }))}
+            labels={[t.assessment.scale.gettingStarted, t.assessment.scale.buildingMomentum, t.assessment.scale.wellEstablished]}
+          />
+        );
+
+      case 'injuryInventory':
+        return (
+          <div className="options-stack">
+            <OptionButton label={t.assessment.injury.jointPain} icon="🦵"
+              selected={answers.injuryFlags.includes('jointPain')}
+              onClick={() => toggleFlag('injuryFlags', 'jointPain')} />
+            <OptionButton label={t.assessment.injury.priorSurgery} icon="🏥"
+              selected={answers.injuryFlags.includes('priorSurgery')}
+              onClick={() => toggleFlag('injuryFlags', 'priorSurgery')} />
+            <OptionButton label={t.assessment.injury.noneApply} icon="✅"
+              selected={answers.injuryFlags.includes('noneApply')}
+              onClick={() => toggleFlag('injuryFlags', 'noneApply')} />
+          </div>
+        );
+
+      case 'structuralMobility':
+        return (
+          <div className="options-stack">
+            <OptionButton label={t.assessment.mobility.canTouchToes} icon="🤸"
+              selected={answers.mobilityFlags.includes('canTouchToes')}
+              onClick={() => toggleFlag('mobilityFlags', 'canTouchToes')} />
+            <OptionButton label={t.assessment.mobility.canFullSquat} icon="🏋️"
+              selected={answers.mobilityFlags.includes('canFullSquat')}
+              onClick={() => toggleFlag('mobilityFlags', 'canFullSquat')} />
+            <OptionButton label={t.assessment.mobility.hasPostureIssues} icon="🪑"
+              selected={answers.mobilityFlags.includes('hasPostureIssues')}
+              onClick={() => toggleFlag('mobilityFlags', 'hasPostureIssues')} />
+          </div>
+        );
+
+      case 'dailyLoad':
+        return (
+          <div className="options-stack">
+            {Object.entries(t.assessment.dailyLoads).map(([key, label]) => (
+              <OptionButton key={key} label={label}
+                icon={key === 'sedentary' ? '🖥️' : key === 'moderate' ? '🚶' : '⚡'}
+                selected={answers.dailyLoad === key}
+                onClick={() => setAnswers(a => ({ ...a, dailyLoad: key }))} />
             ))}
-          </QuestionCard>
+          </div>
         );
 
-      case 1:
+      case 'primaryDriver':
         return (
-          <QuestionCard 
-            title="Injury Inventory" 
-            subtitle="Do you have any joint pain or past surgeries we should work around?"
-            warning="This information helps us design exercises that protect your joints and prior injuries."
-          >
-            <div className="assessment-section">
-              <h4 className="assessment-section__title">Joint Pain</h4>
-              <OptionButton
-                selected={responses.injuryInventory.hasJointPain === true}
-                onClick={() => updateResponse('injuryInventory', { ...responses.injuryInventory, hasJointPain: true })}
-                icon="⚠️"
-              >
-                Yes, I have joint pain
-              </OptionButton>
-              <OptionButton
-                selected={responses.injuryInventory.hasJointPain === false}
-                onClick={() => updateResponse('injuryInventory', { ...responses.injuryInventory, hasJointPain: false })}
-                icon="✓"
-              >
-                No joint pain
-              </OptionButton>
-            </div>
-
-            <div className="assessment-section">
-              <h4 className="assessment-section__title">Prior Surgeries</h4>
-              <OptionButton
-                selected={responses.injuryInventory.hasPriorSurgery === true}
-                onClick={() => updateResponse('injuryInventory', { ...responses.injuryInventory, hasPriorSurgery: true })}
-                icon="🏥"
-              >
-                Yes, I have had surgeries
-              </OptionButton>
-              <OptionButton
-                selected={responses.injuryInventory.hasPriorSurgery === false}
-                onClick={() => updateResponse('injuryInventory', { ...responses.injuryInventory, hasPriorSurgery: false })}
-                icon="✓"
-              >
-                No prior surgeries
-              </OptionButton>
-            </div>
-          </QuestionCard>
-        );
-
-      case 2:
-        return (
-          <QuestionCard 
-            title="Structural Mobility" 
-            subtitle="Can you perform these basic movements without difficulty?"
-          >
-            <div className="assessment-section">
-              <h4 className="assessment-section__title">Toe Touch Test</h4>
-              <p className="assessment-section__desc">Can you comfortably touch your toes?</p>
-              <OptionButton
-                selected={responses.structuralMobility.canTouchToes === true}
-                onClick={() => updateResponse('structuralMobility', { ...responses.structuralMobility, canTouchToes: true })}
-                icon="✓"
-              >
-                Yes, I can touch my toes
-              </OptionButton>
-              <OptionButton
-                selected={responses.structuralMobility.canTouchToes === false}
-                onClick={() => updateResponse('structuralMobility', { ...responses.structuralMobility, canTouchToes: false })}
-                icon="✗"
-              >
-                No, I cannot touch my toes
-              </OptionButton>
-            </div>
-
-            <div className="assessment-section">
-              <h4 className="assessment-section__title">Bodyweight Squat</h4>
-              <p className="assessment-section__desc">Can you perform a full bodyweight squat without your heels lifting?</p>
-              <OptionButton
-                selected={responses.structuralMobility.canFullSquat === true}
-                onClick={() => updateResponse('structuralMobility', { ...responses.structuralMobility, canFullSquat: true })}
-                icon="✓"
-              >
-                Yes, I can squat properly
-              </OptionButton>
-              <OptionButton
-                selected={responses.structuralMobility.canFullSquat === false}
-                onClick={() => updateResponse('structuralMobility', { ...responses.structuralMobility, canFullSquat: false })}
-                icon="✗"
-              >
-                No, I have difficulty squatting
-              </OptionButton>
-            </div>
-          </QuestionCard>
-        );
-
-      case 3:
-        return (
-          <QuestionCard 
-            title="Daily Load" 
-            subtitle="Is your daily life primarily sedentary or physically demanding?"
-          >
-            <OptionButton
-              selected={responses.dailyLoad === 'sedentary'}
-              onClick={() => updateResponse('dailyLoad', 'sedentary')}
-              icon="🪑"
-            >
-              Sedentary — Mostly sitting (desk-based work)
-            </OptionButton>
-            <OptionButton
-              selected={responses.dailyLoad === 'moderate'}
-              onClick={() => updateResponse('dailyLoad', 'moderate')}
-              icon="🏃"
-            >
-              Moderate — Mix of sitting and moving
-            </OptionButton>
-            <OptionButton
-              selected={responses.dailyLoad === 'demanding'}
-              onClick={() => updateResponse('dailyLoad', 'demanding')}
-              icon="💪"
-            >
-              Physically Demanding — On my feet all day
-            </OptionButton>
-          </QuestionCard>
-        );
-
-      case 4:
-        return (
-          <QuestionCard 
-            title="Primary Goal" 
-            subtitle="What is your primary fitness goal?"
-          >
-            <OptionButton
-              selected={responses.primaryDriver === 'bone_density'}
-              onClick={() => updateResponse('primaryDriver', 'bone_density')}
-              icon="🦴"
-            >
-              Bone Density — Build stronger bones
-            </OptionButton>
-            <OptionButton
-              selected={responses.primaryDriver === 'muscle_hypertrophy'}
-              onClick={() => updateResponse('primaryDriver', 'muscle_hypertrophy')}
-              icon="💪"
-            >
-              Muscle Hypertrophy — Build muscle mass
-            </OptionButton>
-            <OptionButton
-              selected={responses.primaryDriver === 'cardiovascular'}
-              onClick={() => updateResponse('primaryDriver', 'cardiovascular')}
-              icon="❤️"
-            >
-              Cardiovascular Health — Improve heart health
-            </OptionButton>
-            <OptionButton
-              selected={responses.primaryDriver === 'flexibility'}
-              onClick={() => updateResponse('primaryDriver', 'flexibility')}
-              icon="🧘"
-            >
-              Flexibility — Improve mobility and range
-            </OptionButton>
-          </QuestionCard>
-        );
-
-      case 5:
-        return (
-          <QuestionCard 
-            title="Time Commitment" 
-            subtitle="How many 30-minute sessions can you realistically dedicate per week?"
-          >
-            {[1, 2, 3, 4, 5, 6].map(num => (
-              <OptionButton
-                key={num}
-                selected={responses.timeCommitment === num}
-                onClick={() => updateResponse('timeCommitment', num)}
-                icon={num >= 4 ? '🔥' : '⏱️'}
-              >
-                {num} {num === 1 ? 'session' : 'sessions'} per week ({num * 30} minutes)
-              </OptionButton>
+          <div className="options-stack">
+            {Object.entries(t.assessment.goals).map(([key, label]) => (
+              <OptionButton key={key} label={label}
+                icon={key === 'strength' ? '💪' : key === 'weightLoss' ? '⚖️' : key === 'endurance' ? '🏃' : key === 'flexibility' ? '🧘' : '🎯'}
+                selected={answers.primaryDriver === key}
+                onClick={() => setAnswers(a => ({ ...a, primaryDriver: key }))} />
             ))}
-          </QuestionCard>
+          </div>
         );
 
-      default:
-        return null;
+      case 'timeCommitment':
+        return (
+          <div className="time-grid">
+            {Object.entries(t.assessment.timeOptions).map(([key, label]) => (
+              <button key={key} type="button"
+                className={`time-option ${answers.timeCommitment === key ? 'time-option--selected' : ''}`}
+                onClick={() => setAnswers(a => ({ ...a, timeCommitment: key }))}>
+                <span className="time-option__value">{key}</span>
+                <span className="time-option__label">{isRTL ? label : (label.split('/')[1] || label)}</span>
+              </button>
+            ))}
+          </div>
+        );
+
+      default: return null;
     }
   };
 
+  const progress = ((step + 1) / STEPS.length) * 100;
+
   return (
-    <div className="assessment-screen">
-      <div className="assessment-screen__header">
-        <button className="assessment-screen__back" onClick={handleBack}>
-          <ChevronLeft size={24} />
+    <div className="assessment-screen screen">
+      <div className="lang-toggle-fixed"><LanguageToggle /></div>
+
+      {/* Top progress bar */}
+      <div className="assessment-topbar">
+        <button type="button" className="assessment-back-btn" onClick={goBack}>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M12 15l-5-5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </button>
-        <ProgressBar current={currentStep + 1} total={TOTAL_QUESTIONS} />
+        <div className="assessment-progress-wrap">
+          <div className="assessment-progress-label">
+            <span>{t.assessment.progress}</span>
+            <span>{step + 1} {t.assessment.of} {STEPS.length}</span>
+          </div>
+          <div className="assessment-progress-bar">
+            <div className="assessment-progress-fill" style={{ width: `${progress}%` }} />
+          </div>
+        </div>
       </div>
 
-      <div className="assessment-screen__content">
-        {renderStep()}
+      {/* Question card */}
+      <div className={`assessment-body ${animating ? 'assessment-body--animating' : ''}`}>
+        <div className="assessment-card animate-scale-in">
+          <div className="assessment-step-tag">
+            <span className="assessment-step-tag__num">{String(step + 1).padStart(2, '0')}</span>
+            <span className="assessment-step-tag__label">{q[currentStepKey].title}</span>
+          </div>
+          <h2 className="assessment-question-title">{q[currentStepKey].title}</h2>
+          <p className="assessment-question-subtitle">{q[currentStepKey].subtitle}</p>
+          <div className="assessment-step-content">
+            {renderStep()}
+          </div>
+        </div>
       </div>
 
-      <div className="assessment-screen__footer">
-        <Button 
-          onClick={handleNext} 
-          disabled={!canProceed()}
-          icon={currentStep === TOTAL_QUESTIONS - 1 ? null : ChevronRight}
-          size="large"
-          fullWidth
-        >
-          {currentStep === TOTAL_QUESTIONS - 1 ? 'Complete Assessment' : 'Continue'}
+      {/* Navigation */}
+      <div className="assessment-nav">
+        <Button variant="ghost" size="md" onClick={goBack}>
+          {t.assessment.back}
+        </Button>
+        <Button variant="primary" size="md" disabled={!canProceed()} onClick={goNext}
+          className="assessment-nav__next">
+          {isLastStep ? t.assessment.complete : t.assessment.next}
         </Button>
       </div>
     </div>

@@ -1,32 +1,40 @@
 import React from 'react';
-import { COLORS } from '../constants/brand';
 import './Button.css';
 
-const Button = ({ 
-  children, 
-  onClick, 
-  variant = 'primary', 
-  disabled = false, 
-  size = 'medium',
-  icon: Icon,
-  fullWidth = false
+const Button = ({
+  children,
+  variant = 'primary',
+  size = 'md',
+  fullWidth = false,
+  disabled = false,
+  loading = false,
+  onClick,
+  className = '',
+  icon,
+  ...props
 }) => {
-  const classNames = [
-    'kg-button',
-    `kg-button--${variant}`,
-    `kg-button--${size}`,
-    fullWidth ? 'kg-button--full' : '',
-    disabled ? 'kg-button--disabled' : ''
-  ].filter(Boolean).join(' ');
-
   return (
-    <button 
-      className={classNames} 
-      onClick={onClick} 
-      disabled={disabled}
+    <button
+      className={[
+        'kg-btn',
+        `kg-btn--${variant}`,
+        `kg-btn--${size}`,
+        fullWidth ? 'kg-btn--full' : '',
+        loading ? 'kg-btn--loading' : '',
+        className
+      ].filter(Boolean).join(' ')}
+      disabled={disabled || loading}
+      onClick={onClick}
+      {...props}
     >
-      {Icon && <Icon className="kg-button__icon" size={20} />}
-      <span>{children}</span>
+      {loading ? (
+        <span className="kg-btn__spinner" />
+      ) : (
+        <>
+          {icon && <span className="kg-btn__icon">{icon}</span>}
+          <span className="kg-btn__label">{children}</span>
+        </>
+      )}
     </button>
   );
 };

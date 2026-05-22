@@ -1,201 +1,274 @@
-.dashboard {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: #F8F9FA;
-}
-
-.dashboard__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 24px;
-  background: linear-gradient(135deg, #1A2B3C 0%, #2A3B4C 100%);
-  color: #FFFFFF;
-}
-
-.dashboard__date {
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  opacity: 0.85;
-}
-
-.dashboard__readiness {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.dashboard__readiness-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  opacity: 0.7;
-}
-
-.dashboard__readiness-value {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
-  font-weight: 800;
-  color: #20B2AA;
-}
-
-.dashboard__content {
-  flex: 1;
-  padding: 20px 24px;
+/* ── WorkoutDashboard — FitGuard Sports ── */
+.dashboard-screen {
+  background: var(--bg);
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-.dashboard__category-badge {
-  display: inline-flex;
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: calc(var(--safe-top) + 64px) 20px calc(var(--safe-bottom) + 24px);
+  min-height: 100%;
+}
+
+/* ── Header ── */
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dashboard-greeting {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 4px;
+}
+
+.dashboard-title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.dashboard-tier-badge {
+  display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background: rgba(255, 140, 0, 0.1);
-  border: 1px solid rgba(255, 140, 0, 0.2);
-  border-radius: 12px;
-  margin-bottom: 20px;
-}
-
-.dashboard__category-badge span {
-  font-family: 'Inter', sans-serif;
+  gap: 6px;
   font-size: 13px;
   font-weight: 600;
-  color: #FF8C00;
+  color: var(--text-secondary);
+  margin-top: 6px;
 }
 
-.dashboard__rpe-buffer {
-  background: #FFFFFF;
-  border-radius: 16px;
-  padding: 18px 20px;
-  margin-bottom: 24px;
-  box-shadow: 0 4px 16px rgba(26, 43, 60, 0.08);
+.dashboard-tier-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 6px var(--orange);
 }
 
-.dashboard__rpe-header {
+/* Readiness ring */
+.dashboard-readiness-ring {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+}
+
+.dashboard-readiness-ring svg {
+  width: 72px;
+  height: 72px;
+  transform: rotate(-90deg);
+}
+
+.dashboard-readiness-center {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
+  justify-content: center;
+  flex-direction: column;
 }
 
-.dashboard__rpe-header span {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: #708090;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.dashboard-readiness-value {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 1;
 }
 
-.dashboard__rpe-display {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 6px;
-}
-
-.dashboard__rpe-value {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 36px;
-  font-weight: 800;
-  color: #1A2B3C;
-}
-
-.dashboard__rpe-dash {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
-  color: #708090;
-}
-
-.dashboard__rpe-hint {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: #20B2AA;
-  margin: 0;
-}
-
-.dashboard__section-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 18px;
+.dashboard-readiness-label {
+  font-size: 9px;
   font-weight: 700;
-  color: #1A2B3C;
-  margin: 0 0 14px 0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 2px;
 }
 
-.dashboard__exercise-list {
+/* ── Today banner ── */
+.dashboard-today-banner {
+  background: linear-gradient(135deg, var(--orange) 0%, #FF3D00 100%);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 8px 24px rgba(255, 107, 0, 0.3);
+}
+
+.dashboard-today-banner__text {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 3px;
 }
 
-.dashboard__exercise-item {
+.dashboard-today-banner__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+}
+
+.dashboard-today-banner__count {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 900;
+  color: #fff;
+}
+
+.dashboard-today-banner__arrow {
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Exercise list ── */
+.dashboard-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  padding-left: 2px;
+}
+
+.dashboard-exercises {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exercise-row {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 14px;
-  width: 100%;
-  padding: 16px;
-  background: #FFFFFF;
-  border: none;
-  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
   cursor: pointer;
+  transition: border-color var(--transition), background var(--transition), transform var(--transition);
   text-align: left;
-  box-shadow: 0 2px 10px rgba(26, 43, 60, 0.06);
-  transition: all 0.2s ease;
+  -webkit-appearance: none;
 }
 
-.dashboard__exercise-item:hover {
-  transform: translateX(4px);
-  box-shadow: 0 4px 15px rgba(26, 43, 60, 0.1);
+[dir="rtl"] .exercise-row {
+  text-align: right;
 }
 
-.dashboard__exercise-number {
+.exercise-row:active {
+  transform: scale(0.98);
+  border-color: var(--border-active);
+  background: var(--surface-hover);
+}
+
+.exercise-row__num {
   width: 28px;
   height: 28px;
-  background: rgba(26, 43, 60, 0.05);
   border-radius: 8px;
+  background: var(--orange-dim);
+  border: 1px solid rgba(255,107,0,0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: #708090;
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 13px;
+  color: var(--orange);
+  flex-shrink: 0;
 }
 
-.dashboard__exercise-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.exercise-row__icon {
   font-size: 22px;
+  flex-shrink: 0;
+  line-height: 1;
 }
 
-.dashboard__exercise-info {
+.exercise-row__info {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
-.dashboard__exercise-name {
-  font-family: 'Inter', sans-serif;
+.exercise-row__name {
   font-size: 15px;
-  font-weight: 600;
-  color: #1A2B3C;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.dashboard__exercise-meta {
-  font-family: 'Inter', sans-serif;
+.exercise-row__meta {
   font-size: 12px;
-  color: #708090;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
-.dashboard__exercise-chevron {
-  color: #708090;
+.exercise-row__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.muscle-chip {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--orange-dim);
+  color: var(--orange);
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+.exercise-row__arrow {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform var(--transition);
+}
+
+.exercise-row:active .exercise-row__arrow {
+  transform: translateX(3px);
+}
+
+[dir="rtl"] .exercise-row:active .exercise-row__arrow {
+  transform: translateX(-3px) scaleX(-1);
+}
+
+[dir="rtl"] .exercise-row__arrow {
+  transform: scaleX(-1);
+}
+
+/* ── Start button ── */
+.dashboard-cta {
+  margin-top: 8px;
+  padding-bottom: 8px;
+}
+
+/* ── Animations ── */
+.exercise-row {
+  animation: fadeInUp 0.35s ease both;
 }

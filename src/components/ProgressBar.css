@@ -4,38 +4,59 @@
 
 .kg-progress__header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .kg-progress__label {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  color: #708090;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: var(--text-muted);
 }
 
 .kg-progress__count {
-  font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #1A2B3C;
+  color: var(--orange);
 }
 
 .kg-progress__track {
-  width: 100%;
-  height: 6px;
-  background: rgba(26, 43, 60, 0.1);
-  border-radius: 3px;
-  overflow: hidden;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-full);
+  position: relative;
+  overflow: visible;
 }
 
-.kg-progress__bar {
+.kg-progress__fill {
   height: 100%;
-  background: linear-gradient(90deg, #20B2AA 0%, #FF8C00 100%);
-  border-radius: 3px;
-  transition: width 0.4s ease;
+  background: linear-gradient(90deg, var(--purple) 0%, var(--orange) 100%);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+  position: relative;
+}
+
+.kg-progress__fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+  border-radius: inherit;
+}
+
+.kg-progress__glow {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: var(--orange);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--orange), 0 0 20px rgba(255, 107, 0, 0.5);
+  transition: left var(--transition-slow);
 }

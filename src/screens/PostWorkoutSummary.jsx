@@ -1,91 +1,124 @@
-import React from 'react';
-import { Shield, Award, TrendingUp, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { useLanguage } from '../i18n/LanguageContext';
+import LanguageToggle from '../components/LanguageToggle';
 import Button from '../components/Button';
 import './PostWorkoutSummary.css';
 
-const PostWorkoutSummary = ({ results, onComplete }) => {
-  const { safetyScore, exercisesCompleted, totalSets, category } = results;
+const StatCard = ({ value, label, color = 'var(--cyan)', icon }) => (
+  <div className="summary-stat">
+    <span className="summary-stat__icon">{icon}</span>
+    <span className="summary-stat__value" style={{ color }}>{value}</span>
+    <span className="summary-stat__label">{label}</span>
+  </div>
+);
 
-  const getSafetyRating = () => {
-    if (safetyScore >= 90) return { label: 'Excellent', color: '#20B2AA' };
-    if (safetyScore >= 75) return { label: 'Good', color: '#FF8C00' };
-    return { label: 'Needs Review', color: '#E74C3C' };
-  };
+const PostWorkoutSummary = ({ exercises, readinessScore, onDone }) => {
+  const { t, lang } = useLanguage();
+  const [animate, setAnimate] = useState(false);
 
-  const rating = getSafetyRating();
-  const nextMilestone = 3;
+  const totalSets = exercises
+    ? exercises.reduce((acc, ex) => acc + (ex.sets || 0), 0)
+    : 0;
+  const exerciseCount = exercises ? exercises.length : 0;
+  const safetyScore = Math.min(100, Math.round((readinessScore || 70) * 0.9 + 10));
+
+  useEffect(() => {
+    const timer = setTimeout(() => setAnimate(true), 200);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div className="summary">
-      <div className="summary__content">
-        <div className="summary__badge">
-          <Shield size={48} strokeWidth={1.5} />
-        </div>
-
-        <h1 className="summary__title">Workout Complete</h1>
-        <p className="summary__subtitle">Great work on your safety-focused session</p>
-
-        <div className="summary__divider" />
-
-        <div className="summary__score-card">
-          <div className="summary__score-circle" style={{ borderColor: rating.color }}>
-            <span className="summary__score-value">{safetyScore}</span>
-            <span className="summary__score-max">%</span>
-          </div>
-          <span className="summary__score-label" style={{ color: rating.color }}>
-            {rating.label} Safety Compliance
-          </span>
-        </div>
-
-        <div className="summary__stats">
-          <div className="summary__stat">
-            <span className="summary__stat-value">{exercisesCompleted || 5}</span>
-            <span className="summary__stat-label">Exercises</span>
-          </div>
-          <div className="summary__stat">
-            <span className="summary__stat-value">{totalSets || 15}</span>
-            <span className="summary__stat-label">Total Sets</span>
-          </div>
-          <div className="summary__stat">
-            <span className="summary__stat-value">{rating.label === 'Excellent' ? '✓' : '~'}</span>
-            <span className="summary__stat-label">Technical Mastery</span>
-          </div>
-        </div>
-
-        <div className="summary__highlights">
-          <h3 className="summary__highlights-title">
-            <Award size={18} />
-            Today's Achievements
-          </h3>
-          <ul className="summary__highlights-list">
-            <li>Maintained RPE within 7-8 buffer on all sets</li>
-            <li>Passed Technical Failure check on Goblet Squat</li>
-            <li>Talk Test passed throughout session</li>
-          </ul>
-        </div>
-
-        <div className="summary__progression">
-          <div className="summary__progression-header">
-            <TrendingUp size={18} />
-            <span>Technical Milestone Progress</span>
-          </div>
-          <p className="summary__progression-text">
-            You are <strong>{nextMilestone} sessions</strong> away from your next Technical Milestone.
-          </p>
-          <div className="summary__progression-bar">
-            <div className="summary__progression-fill" style={{ width: '70%' }} />
-          </div>
-        </div>
-
-        <div className="summary__category">
-          Category {category || 'B: Peak Professional'}
-        </div>
+    <div className="summary-screen screen">
+      <div className="lang-toggle-fixed">
+        <LanguageToggle />
       </div>
 
-      <div className="summary__footer">
-        <Button onClick={onComplete} icon={ChevronRight} fullWidth>
-          Continue
-        </Button>
+      <div className="summary-content">
+        {/* Trophy hero */}
+        <div className={['summary-hero', animate ? 'summary-hero--animated' : ''].filter(Boolean).join(' ')}>
+          <div className="summary-trophy">
+            <div className="summary-trophy__glow" />
+            <span className="summary-trophy__emoji">🏆</span>
+          </div>
+          <h1 className="summary-title">{t.summary.title}</h1>
+          <p className="summary-subtitle">
+            {lang === 'ar'
+              ? 'أحسنت! لقد أكملت تمرينك اليومي بنجاح.'
+              : 'Outstanding work. Every rep is an investment in your future self.'}
+          </p>
+        </div>
+
+        {/* Stats grid */}
+        <div className="summary-stats animate-fade-up" style={{ animationDelay: '0.2s' }}>
+          <StatCard
+            value={safetyScore}
+            label={t.summary.safetyScore}
+            color="var(--green)"
+            icon="🛡️"
+          />
+          <StatCard
+            value={exerciseCount}
+            label={t.summary.exercises}
+            color="var(--cyan)"
+            icon="💪"
+          />
+          <StatCard
+            value={totalSets}
+            label={t.summary.sets}
+            color="var(--purple)"
+            icon="🔁"
+          />
+        </div>
+
+        {/* Progress bar celebration */}
+        <div className="summary-achievement animate-fade-up" style={{ animationDelay: '0.35s' }}>
+          <div className="summary-achievement__header">
+            <span className="summary-achievement__label">
+              {lang === 'ar' ? 'أداء السلامة' : 'Safety Performance'}
+            </span>
+            <span className="summary-achievement__score" style={{ color: 'var(--green)' }}>
+              {safetyScore}%
+            </span>
+          </div>
+          <div className="summary-progress-track">
+            <div
+              className="summary-progress-fill"
+              style={{ width: animate ? `${safetyScore}%` : '0%' }}
+            />
+            <div
+              className="summary-progress-glow"
+              style={{ left: animate ? `${safetyScore}%` : '0%' }}
+            />
+          </div>
+        </div>
+
+        {/* Next workout preview */}
+        <div className="summary-next animate-fade-up" style={{ animationDelay: '0.45s' }}>
+          <p className="summary-next__label">{t.summary.nextWorkout}</p>
+          <div className="summary-next__card">
+            <span className="summary-next__icon">📅</span>
+            <div className="summary-next__info">
+              <p className="summary-next__name">
+                {lang === 'ar' ? 'تمرين الغد' : "Tomorrow's Session"}
+              </p>
+              <p className="summary-next__meta">
+                {lang === 'ar'
+                  ? `${exerciseCount} تمارين · نفس المستوى`
+                  : `${exerciseCount} exercises · Same tier`}
+              </p>
+            </div>
+            <span className="summary-next__badge">
+              {lang === 'ar' ? 'جاهز' : 'Ready'}
+            </span>
+          </div>
+        </div>
+
+        {/* Done button */}
+        <div className="summary-cta animate-fade-up" style={{ animationDelay: '0.55s' }}>
+          <Button variant="primary" size="xl" fullWidth onClick={onDone}>
+            {t.summary.done} 🎯
+          </Button>
+        </div>
       </div>
     </div>
   );

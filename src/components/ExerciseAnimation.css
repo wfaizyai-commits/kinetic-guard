@@ -1,0 +1,298 @@
+/* ══════════════════════════════════════════════
+   ExerciseAnimation.css
+   SVG stick-figure animation styles for FitGuard
+══════════════════════════════════════════════ */
+
+/* ── Container ── */
+.ex-anim-wrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0 4px;
+  background: var(--surface-elevated);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+}
+
+.ex-anim-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 60%, rgba(255, 107, 0, 0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.ex-anim {
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  display: block;
+}
+
+/* ════════════════════════════════════════
+   SQUAT — body moves down then up
+════════════════════════════════════════ */
+@keyframes squat-down-up {
+  0%   { transform: translateY(0); }
+  40%  { transform: translateY(30px); }
+  60%  { transform: translateY(30px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes squat-ghost-fade {
+  0%   { opacity: 0; }
+  35%  { opacity: 0.6; }
+  65%  { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+
+.squat-body {
+  animation: squat-down-up 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: 80px 90px;
+}
+
+.squat-ghost {
+  animation: squat-ghost-fade 2s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════
+   PUSH-UP — body dips down then up
+════════════════════════════════════════ */
+@keyframes pushup-dip {
+  0%   { transform: translateY(0); }
+  40%  { transform: translateY(18px); }
+  60%  { transform: translateY(18px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes pushup-arrow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.9; }
+}
+
+.pushup-body {
+  animation: pushup-dip 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: 110px 110px;
+}
+
+.pushup-arrow {
+  animation: pushup-arrow-pulse 1.8s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════
+   GLUTE BRIDGE — hips rise and fall
+════════════════════════════════════════ */
+@keyframes bridge-rise {
+  0%   { transform: translateY(0); }
+  40%  { transform: translateY(-22px); }
+  60%  { transform: translateY(-22px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes bridge-arrow-fade {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.85; }
+}
+
+.bridge-hips {
+  animation: bridge-rise 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: 108px 130px;
+}
+
+.bridge-arrow {
+  animation: bridge-arrow-fade 2s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════
+   PLANK — core pulse glow + subtle sway
+════════════════════════════════════════ */
+@keyframes plank-sway {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-3px); }
+}
+
+@keyframes plank-core-pulse {
+  0%, 100% { r: 0;  opacity: 0; }
+  40%       { r: 22; opacity: 1; }
+  60%       { r: 28; opacity: 0.4; }
+  80%       { r: 34; opacity: 0; }
+}
+
+.plank-body {
+  animation: plank-sway 3s ease-in-out infinite;
+}
+
+.plank-pulse {
+  animation: plank-core-pulse 3s ease-in-out infinite;
+  transform-origin: 130px 89px;
+}
+
+/* ════════════════════════════════════════
+   HIP HINGE — torso tilts forward/back
+════════════════════════════════════════ */
+@keyframes hinge-tilt {
+  0%   { transform: rotate(0deg); }
+  40%  { transform: rotate(40deg); }
+  60%  { transform: rotate(40deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes hinge-arrow-pulse {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.85; }
+}
+
+.hinge-body {
+  animation: hinge-tilt 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: 80px 100px;
+}
+
+.hinge-arrow {
+  animation: hinge-arrow-pulse 2.2s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════
+   ROW — arm pulls up toward torso
+════════════════════════════════════════ */
+@keyframes row-pull {
+  0%   { transform: translateY(0); }
+  40%  { transform: translateY(-18px); }
+  60%  { transform: translateY(-18px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes row-arrow-pulse {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.9; }
+}
+
+.row-arm,
+.row-forearm {
+  animation: row-pull 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: 82px 90px;
+}
+
+.row-arrow {
+  animation: row-arrow-pulse 1.8s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════
+   PULL-UP — body rises toward bar
+════════════════════════════════════════ */
+@keyframes pullup-rise {
+  0%   { transform: translateY(0); }
+  40%  { transform: translateY(-28px); }
+  60%  { transform: translateY(-28px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes pullup-arrow-blink {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.9; }
+}
+
+.pullup-body {
+  animation: pullup-rise 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.pullup-arrow {
+  animation: pullup-arrow-blink 2s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════
+   OVERHEAD PRESS — bar pushes overhead
+════════════════════════════════════════ */
+@keyframes press-up {
+  0%   { transform: translateY(0); }
+  40%  { transform: translateY(-22px); }
+  60%  { transform: translateY(-22px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes press-arrow-fade {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.9; }
+}
+
+.press-bar,
+.press-upper-l,
+.press-lower-l,
+.press-upper-r,
+.press-lower-r {
+  animation: press-up 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: 80px 55px;
+}
+
+.press-arrow {
+  animation: press-arrow-fade 2s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════
+   WALL PUSH-UP — body leans in/out
+════════════════════════════════════════ */
+@keyframes wpu-lean {
+  0%   { transform: translateX(0); }
+  40%  { transform: translateX(16px); }
+  60%  { transform: translateX(16px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes wpu-arrow-pulse {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.9; }
+}
+
+.wallpushup-body {
+  animation: wpu-lean 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: 52px 118px;
+}
+
+.wpu-arrow {
+  animation: wpu-arrow-pulse 2s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════
+   DEAD BUG — opposite arm+leg extend
+════════════════════════════════════════ */
+@keyframes db-extend-l {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  40%       { transform: translateY(-12px) translateX(-8px); }
+  60%       { transform: translateY(-12px) translateX(-8px); }
+}
+
+@keyframes db-extend-r {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  40%       { transform: translateY(10px) translateX(8px); }
+  60%       { transform: translateY(10px) translateX(8px); }
+}
+
+.db-arm-l,
+.db-forearm-l,
+.db-leg-r,
+.db-shin-r {
+  animation: db-extend-l 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: 110px 108px;
+}
+
+.db-arm-r,
+.db-forearm-r,
+.db-leg-l,
+.db-shin-l {
+  animation: db-extend-r 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: 110px 108px;
+}
+
+/* ════════════════════════════════════════
+   Entrance animation for the whole widget
+════════════════════════════════════════ */
+@keyframes anim-wrap-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.ex-anim-wrap {
+  animation: anim-wrap-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
