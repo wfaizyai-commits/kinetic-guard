@@ -12,7 +12,8 @@ import FormCheckAI from './screens/FormCheckAI';
 import PostWorkoutSummary from './screens/PostWorkoutSummary';
 import AuthScreen from './screens/AuthScreen';
 
-import { supabase, upsertProfile, saveAssessmentResult, saveWorkoutSession, getSession } from './lib/supabase';
+import useAuth from './hooks/useAuth';
+import { syncProfileTier, syncAssessmentResult, syncWorkoutSession, hydrateRemoteFromLocal } from './lib/sync';
 
 // ── Storage helpers ──────────────────────────────────────────────────────────
 const AUDIT_KEY = 'fitguard_audit_v1';
@@ -83,9 +84,9 @@ const SCREENS = {
 
 // ── App ───────────────────────────────────────────────────────────────────────
 function AppInner() {
+  const { user, loading: authLoading } = useAuth();
+
   const [screen, setScreen] = useState(SCREENS.AUTH);
-  const [user, setUser] = useState(null);
-  const [authLoading, setAuthLoading] = useState(true);
   const [auditResult, setAuditResult] = useState(null);
   const [readinessData, setReadinessData] = useState(null);
   const [currentExercise, setCurrentExercise] = useState(null);
@@ -94,42 +95,27 @@ function AppInner() {
   const [completedExercises, setCompletedExercises] = useState([]);
   const hasExistingAudit = !!loadAudit();
 
-  // On mount: check existing session
+  // Sync screen state whenever auth resolves or user changes
   useEffect(() => {
-    getSession().then(({ session }) => {
-      if (session?.user) {
-        setUser(session.user);
-        const saved = loadAudit();
-        if (saved) setAuditResult(saved);
-        setScreen(SCREENS.START);
-      } else {
-        setScreen(SCREENS.AUTH);
-      }
-      setAuthLoading(false);
-    });
-
-    // Listen for auth state changes (sign-in, sign-out, token refresh)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        setUser(session.user);
-        setScreen(prev => prev === SCREENS.AUTH ? SCREENS.START : prev);
-      } else {
-        setUser(null);
-        setScreen(SCREENS.AUTH);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+    if (authLoading) return;
+    if (user) {
+      const saved = loadAudit();
+      if (saved) setAuditResult(saved);
+      // Push any locally-saved audit to Supabase now that we have a user
+      hydrateRemoteFromLocal(user.id, loadAudit());
+      setScreen(prev => prev === SCREENS.AUTH ? SCREENS.START : prev);
+    } else {
+      setScreen(SCREENS.AUTH);
+    }
+  }, [user, authLoading]);
 
   // Show nothing while checking session
   if (authLoading) return null;
 
   const handleAuthenticated = (authUser) => {
-    setUser(authUser);
-    const saved = loadAudit();
-    if (saved) setAuditResult(saved);
-    setScreen(SCREENS.START);
+    // useAuth + useEffect above handle this automatically,
+    // but AuthScreen still calls this prop — keep it as a no-op guard.
+    if (authUser) setScreen(SCREENS.START);
   };
 
   const handleStart = (continueExisting) => {
@@ -154,12 +140,8 @@ function AppInner() {
 
     // Persist to Supabase in the background (non-blocking)
     if (user) {
-      upsertProfile(user.id, {
-        tier: result.tier,
-        safety_score: result.safetyScore,
-        risk_flags: result.riskFlags,
-      }).catch(() => {});
-      saveAssessmentResult(user.id, answers, result).catch(() => {});
+      syncProfileTier(user.id, result);
+      syncAssessmentResult(user.id, answers, result);
     }
   };
 
@@ -208,13 +190,12 @@ function AppInner() {
 
   const handleSummaryDone = () => {
     // Save workout session to Supabase (non-blocking)
-    if (user && currentExercises.length > 0) {
-      saveWorkoutSession(user.id, {
-        tier: auditResult?.tier || 'novice',
-        exercises: completedExercises.map(ex => ({ name: ex.name, sets: ex.sets, reps: ex.reps })),
-        readiness_score: readinessData?.readinessScore || null,
-        duration_minutes: null,
-      }).catch(() => {});
+    if (user) {
+      syncWorkoutSession(user.id, {
+        tier:               auditResult?.tier || 'novice',
+        completedExercises,
+        readinessData,
+      });
     }
     setCompletedExercises([]);
     setReadinessData(null);

@@ -2,70 +2,86 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import LanguageToggle from '../components/LanguageToggle';
 import Button from '../components/Button';
+import { takeCameraPhoto, requestCameraPermission, isNative } from '../services/native';
 import './FormCheckAI.css';
 
+// ── Static form-check tips (exercise-specific in a real app) ─────────────────
 const FORM_TIPS = {
   en: [
-    { label: 'Keep your back straight', status: 'good' },
-    { label: 'Knees track over toes', status: 'good' },
+    { label: 'Back is straight and neutral', status: 'good' },
+    { label: 'Knees tracking over toes', status: 'good' },
     { label: 'Core braced and engaged', status: 'good' },
-    { label: 'Controlled descent speed', status: 'improve' },
-    { label: 'Full depth achieved', status: 'improve' },
+    { label: 'Control your descent speed', status: 'improve' },
+    { label: 'Reach full depth on each rep', status: 'improve' },
   ],
   ar: [
-    { label: 'حافظ على استقامة ظهرك', status: 'good' },
+    { label: 'الظهر مستقيم ومحايد', status: 'good' },
     { label: 'الركبتان محاذيتان للأصابع', status: 'good' },
     { label: 'الجذع مشدود ومفعّل', status: 'good' },
-    { label: 'سرعة النزول متحكم بها', status: 'improve' },
-    { label: 'الوصول للعمق الكامل', status: 'improve' },
+    { label: 'تحكّم في سرعة النزول', status: 'improve' },
+    { label: 'اصل للعمق الكامل في كل تكرار', status: 'improve' },
   ]
 };
 
 const FormCheckAI = ({ exercise, onBack }) => {
   const { t, lang } = useLanguage();
-  const videoRef = useRef(null);
-  const streamRef = useRef(null);
-  const [cameraActive, setCameraActive] = useState(false);
-  const [permissionDenied, setPermissionDenied] = useState(false);
-  const [analyzing, setAnalyzing] = useState(false);
+  const fileInputRef = useRef(null);
+
+  const [photoDataUrl, setPhotoDataUrl] = useState(null);  // captured image
+  const [analyzing, setAnalyzing]       = useState(false);
   const [analysisComplete, setAnalysisComplete] = useState(false);
-  const [tips, setTips] = useState([]);
+  const [tips, setTips]                 = useState([]);
+  const [errorMsg, setErrorMsg]         = useState('');
 
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }
-      });
-      streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
-      }
-      setCameraActive(true);
-      setPermissionDenied(false);
-    } catch (e) {
-      console.error('Camera error:', e);
-      setPermissionDenied(true);
-      setCameraActive(false);
-    }
-  };
-
-  const stopCamera = () => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(t => t.stop());
-      streamRef.current = null;
-    }
-    if (videoRef.current) {
-      videoRef.current.srcObject = null;
-    }
-    setCameraActive(false);
+  // ── Take photo ──────────────────────────────────────────────────────────────
+  const takePhoto = async () => {
+    setErrorMsg('');
     setAnalysisComplete(false);
-    setAnalyzing(false);
+    setTips([]);
+
+    if (isNative) {
+      // ── Native iOS / Android: request permission then shoot ───────────────
+      try {
+        const permission = await requestCameraPermission();
+        if (permission === 'denied') {
+          setErrorMsg(isAr ? 'تعذّر الوصول للكاميرا — تحقق من إعدادات التطبيق' : 'Camera permission denied — check app settings');
+          return;
+        }
+        const dataUrl = await takeCameraPhoto();
+        if (dataUrl) setPhotoDataUrl(dataUrl);
+      } catch (e) {
+        setErrorMsg(isAr ? 'تعذّر فتح الكاميرا' : 'Could not open camera');
+      }
+    } else {
+      // ── Web / browser fallback: file input with camera capture ────────────
+      fileInputRef.current?.click();
+    }
   };
 
+  // Handles the web fallback file-input result
+  const handleFileInput = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => setPhotoDataUrl(ev.target?.result);
+    reader.readAsDataURL(file);
+    // Reset input so same file can be re-selected
+    e.target.value = '';
+  };
+
+  // ── Retake ──────────────────────────────────────────────────────────────────
+  const retakePhoto = () => {
+    setPhotoDataUrl(null);
+    setAnalysisComplete(false);
+    setTips([]);
+    setErrorMsg('');
+  };
+
+  // ── Analyse ─────────────────────────────────────────────────────────────────
   const runAnalysis = () => {
     setAnalyzing(true);
     setAnalysisComplete(false);
+    // Simulated AI analysis — replace with real model call when ready
     setTimeout(() => {
       setAnalyzing(false);
       setAnalysisComplete(true);
@@ -73,26 +89,37 @@ const FormCheckAI = ({ exercise, onBack }) => {
     }, 2200);
   };
 
-  useEffect(() => {
-    return () => {
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach(t => t.stop());
-      }
-    };
-  }, []);
+  // Cleanup on unmount
+  useEffect(() => () => {}, []);
 
-  const goodTips = tips.filter(tip => tip.status === 'good');
+  const goodTips    = tips.filter(tip => tip.status === 'good');
   const improveTips = tips.filter(tip => tip.status === 'improve');
+
+  const isAr = lang === 'ar';
 
   return (
     <div className="formcheck-screen screen">
+      {/* Hidden file input — web fallback only */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        capture="user"
+        style={{ display: 'none' }}
+        onChange={handleFileInput}
+      />
+
       <div className="lang-toggle-fixed">
         <LanguageToggle />
       </div>
 
       {/* Header */}
       <div className="formcheck-header">
-        <button type="button" className="back-btn" onClick={() => { stopCamera(); onBack && onBack(); }}>
+        <button
+          type="button"
+          className="back-btn"
+          onClick={() => { retakePhoto(); onBack && onBack(); }}
+        >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path d="M12 4L6 10L12 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -103,68 +130,65 @@ const FormCheckAI = ({ exercise, onBack }) => {
       </div>
 
       <div className="formcheck-content">
-        {/* Camera viewport */}
+        {/* Photo viewport */}
         <div className="formcheck-viewport animate-fade-up">
-          <video
-            ref={videoRef}
-            className={['formcheck-video', cameraActive ? 'formcheck-video--active' : ''].filter(Boolean).join(' ')}
-            autoPlay
-            muted
-            playsInline
-          />
-
-          {!cameraActive && !permissionDenied && (
+          {photoDataUrl ? (
+            <>
+              <img
+                src={photoDataUrl}
+                alt="Form snapshot"
+                className="formcheck-photo"
+              />
+              {analyzing && (
+                <div className="formcheck-analyzing">
+                  <div className="formcheck-analyzing__spinner" />
+                  <p>{t.formCheck.analyzing}</p>
+                </div>
+              )}
+              {/* Corner brackets overlay */}
+              <div className="formcheck-corners">
+                <span className="formcheck-corner formcheck-corner--tl" />
+                <span className="formcheck-corner formcheck-corner--tr" />
+                <span className="formcheck-corner formcheck-corner--bl" />
+                <span className="formcheck-corner formcheck-corner--br" />
+              </div>
+            </>
+          ) : (
             <div className="formcheck-placeholder">
               <div className="formcheck-placeholder__icon">📷</div>
               <p className="formcheck-placeholder__text">
-                {lang === 'ar' ? 'وجّه الكاميرا نحوك أثناء التمرين' : 'Position camera to see your full body during exercise'}
+                {isAr
+                  ? 'صوّر نفسك أثناء أداء التمرين لتحليل أدائك'
+                  : 'Take a photo of yourself performing the exercise'}
               </p>
-            </div>
-          )}
-
-          {permissionDenied && (
-            <div className="formcheck-placeholder formcheck-placeholder--error">
-              <div className="formcheck-placeholder__icon">🚫</div>
-              <p className="formcheck-placeholder__text">{t.formCheck.permissionDenied}</p>
-            </div>
-          )}
-
-          {cameraActive && analyzing && (
-            <div className="formcheck-analyzing">
-              <div className="formcheck-analyzing__spinner" />
-              <p>{t.formCheck.analyzing}</p>
-            </div>
-          )}
-
-          {cameraActive && (
-            <div className="formcheck-corners">
-              <span className="formcheck-corner formcheck-corner--tl" />
-              <span className="formcheck-corner formcheck-corner--tr" />
-              <span className="formcheck-corner formcheck-corner--bl" />
-              <span className="formcheck-corner formcheck-corner--br" />
+              {errorMsg && (
+                <p className="formcheck-placeholder__error">{errorMsg}</p>
+              )}
             </div>
           )}
         </div>
 
-        {/* Camera controls */}
+        {/* Controls */}
         <div className="formcheck-controls animate-fade-up" style={{ animationDelay: '0.1s' }}>
-          {!cameraActive ? (
-            <Button variant="primary" size="lg" fullWidth onClick={startCamera}>
+          {!photoDataUrl ? (
+            <Button variant="primary" size="lg" fullWidth onClick={takePhoto}>
               📷 {t.formCheck.startCamera}
             </Button>
           ) : (
             <div className="formcheck-controls__row">
-              <Button variant="ghost" size="md" onClick={stopCamera}>
-                {t.formCheck.stopCamera}
+              <Button variant="ghost" size="md" onClick={retakePhoto}>
+                {isAr ? '🔄 إعادة' : '🔄 Retake'}
               </Button>
               <Button
                 variant="secondary"
                 size="md"
                 onClick={runAnalysis}
-                disabled={analyzing}
+                disabled={analyzing || analysisComplete}
                 className="formcheck-analyze-btn"
               >
-                {analyzing ? t.formCheck.analyzing : (lang === 'ar' ? '🤖 تحليل الأداء' : '🤖 Analyze Form')}
+                {analyzing
+                  ? t.formCheck.analyzing
+                  : (isAr ? '🤖 تحليل الأداء' : '🤖 Analyze Form')}
               </Button>
             </div>
           )}
@@ -199,6 +223,17 @@ const FormCheckAI = ({ exercise, onBack }) => {
                 ))}
               </div>
             )}
+
+            {/* Retake CTA after results */}
+            <Button
+              variant="ghost"
+              size="md"
+              fullWidth
+              onClick={retakePhoto}
+              style={{ marginTop: '8px' }}
+            >
+              {isAr ? '📷 صوّر تمريناً آخر' : '📷 Take Another Shot'}
+            </Button>
           </div>
         )}
       </div>
