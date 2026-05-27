@@ -113,12 +113,13 @@
   gap: 3px;
 }
 
-.dashboard-today-banner__label {
+.dashboard-today-banner__tier {
+  font-family: var(--font-heading);
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.65);
   text-transform: uppercase;
-  color: rgba(255,255,255,0.75);
 }
 
 .dashboard-today-banner__count {
@@ -126,6 +127,13 @@
   font-size: 22px;
   font-weight: 900;
   color: #fff;
+  line-height: 1.1;
+}
+
+.dashboard-today-banner__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.80);
 }
 
 .dashboard-today-banner__arrow {
@@ -181,18 +189,18 @@
 }
 
 .exercise-row__num {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: var(--orange-dim);
-  border: 1px solid rgba(255,107,0,0.3);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--orange);
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-heading);
   font-weight: 900;
-  font-size: 13px;
-  color: var(--orange);
+  font-size: 14px;
+  color: #fff;
   flex-shrink: 0;
 }
 
@@ -232,15 +240,53 @@
   flex-shrink: 0;
 }
 
+/* ── Category filter chips ────────────────────────────────────────────────── */
+.cat-filter {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
+.cat-filter::-webkit-scrollbar { display: none; }
+
+.cat-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.cat-chip:active { transform: scale(0.95); }
+.cat-chip__emoji { font-size: 14px; }
+
+.cat-chip--active {
+  background: rgba(255,107,0,0.14);
+  border-color: rgba(255,107,0,0.6);
+  color: var(--orange);
+  box-shadow: 0 0 10px rgba(255,107,0,0.18);
+}
+
+/* ── Muscle chip ──────────────────────────────────────────────────────────── */
 .muscle-chip {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: var(--orange-dim);
-  color: var(--orange);
+  background: var(--orange);
+  color: #fff;
   border-radius: var(--radius-sm);
-  padding: 3px 8px;
+  padding: 4px 9px;
   white-space: nowrap;
 }
 

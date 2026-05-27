@@ -22,51 +22,64 @@ const to12h = (time24) => {
 };
 
 // ── Workout library ───────────────────────────────────────────────────────────
+// category: 'strength' | 'cardio' | 'core'
 const WORKOUTS_BY_TIER = {
   novice: {
     en: [
-      { id: 1, name: 'Bodyweight Squat',  sets: 3, reps: '12–15', rest: '60s',  muscle: 'Legs',   icon: '🦵' },
-      { id: 2, name: 'Wall Push-Up',      sets: 3, reps: '10–12', rest: '60s',  muscle: 'Chest',  icon: '💪' },
-      { id: 3, name: 'Glute Bridge',      sets: 3, reps: '15',    rest: '45s',  muscle: 'Glutes', icon: '🍑' },
-      { id: 4, name: 'Dead Bug',          sets: 2, reps: '8 each',rest: '60s',  muscle: 'Core',   icon: '🪲' },
+      { id: 1, name: 'Bodyweight Squat',        sets: 3, reps: '12–15',    rest: '60s', muscle: 'Legs',   icon: '🦵', category: 'strength' },
+      { id: 2, name: 'Wall Push-Up',            sets: 3, reps: '10–12',    rest: '60s', muscle: 'Chest',  icon: '💪', category: 'strength' },
+      { id: 3, name: 'Glute Bridge',            sets: 3, reps: '15',       rest: '45s', muscle: 'Glutes', icon: '🍑', category: 'strength' },
+      { id: 4, name: 'Dead Bug',                sets: 2, reps: '8 each',   rest: '60s', muscle: 'Core',   icon: '🪲', category: 'core' },
+      { id: 5, name: 'Jumping Jack',            sets: 2, reps: '20',       rest: '45s', muscle: 'Cardio', icon: '⭐', category: 'cardio' },
+      { id: 6, name: 'Lunge',                   sets: 2, reps: '10 each',  rest: '60s', muscle: 'Legs',   icon: '🦵', category: 'strength' },
     ],
     ar: [
-      { id: 1, name: 'قرفصاء بوزن الجسم',       sets: 3, reps: '12–15',      rest: '60ث', muscle: 'أرجل',  icon: '🦵' },
-      { id: 2, name: 'تمرين الضغط على الجدار',   sets: 3, reps: '10–12',      rest: '60ث', muscle: 'صدر',   icon: '💪' },
-      { id: 3, name: 'جسر الأرداف',              sets: 3, reps: '15',          rest: '45ث', muscle: 'أرداف', icon: '🍑' },
-      { id: 4, name: 'الدودة الميتة',            sets: 2, reps: '8 لكل جانب', rest: '60ث', muscle: 'جذع',   icon: '🪲' },
+      { id: 1, name: 'قرفصاء بوزن الجسم',       sets: 3, reps: '12–15',      rest: '60ث', muscle: 'أرجل',  icon: '🦵', category: 'strength' },
+      { id: 2, name: 'تمرين الضغط على الجدار',   sets: 3, reps: '10–12',      rest: '60ث', muscle: 'صدر',   icon: '💪', category: 'strength' },
+      { id: 3, name: 'جسر الأرداف',              sets: 3, reps: '15',          rest: '45ث', muscle: 'أرداف', icon: '🍑', category: 'strength' },
+      { id: 4, name: 'الدودة الميتة',            sets: 2, reps: '8 لكل جانب', rest: '60ث', muscle: 'جذع',   icon: '🪲', category: 'core' },
+      { id: 5, name: 'قفز النجمة',               sets: 2, reps: '20',          rest: '45ث', muscle: 'كارديو',icon: '⭐', category: 'cardio' },
+      { id: 6, name: 'تمرين الطعنة',             sets: 2, reps: '10 لكل جانب',rest: '60ث', muscle: 'أرجل',  icon: '🦵', category: 'strength' },
     ]
   },
   intermediate: {
     en: [
-      { id: 1, name: 'Goblet Squat',          sets: 4, reps: '10',       rest: '90s',  muscle: 'Legs',       icon: '🦵' },
-      { id: 2, name: 'Push-Up',               sets: 4, reps: '12',       rest: '60s',  muscle: 'Chest',      icon: '💪' },
-      { id: 3, name: 'Romanian Deadlift',     sets: 3, reps: '10',       rest: '90s',  muscle: 'Hamstrings', icon: '🔥' },
-      { id: 4, name: 'Dumbbell Row',          sets: 3, reps: '12 each',  rest: '75s',  muscle: 'Back',       icon: '🏋️' },
-      { id: 5, name: 'Plank',                 sets: 3, reps: '30–45s',   rest: '45s',  muscle: 'Core',       icon: '⚡' },
+      { id: 1, name: 'Goblet Squat',        sets: 4, reps: '10',       rest: '90s', muscle: 'Legs',       icon: '🦵', category: 'strength' },
+      { id: 2, name: 'Push-Up',             sets: 4, reps: '12',       rest: '60s', muscle: 'Chest',      icon: '💪', category: 'strength' },
+      { id: 3, name: 'Romanian Deadlift',   sets: 3, reps: '10',       rest: '90s', muscle: 'Hamstrings', icon: '🔥', category: 'strength' },
+      { id: 4, name: 'Dumbbell Row',        sets: 3, reps: '12 each',  rest: '75s', muscle: 'Back',       icon: '🏋️', category: 'strength' },
+      { id: 5, name: 'Plank',               sets: 3, reps: '30–45s',   rest: '45s', muscle: 'Core',       icon: '⚡', category: 'core' },
+      { id: 6, name: 'Mountain Climber',    sets: 3, reps: '20 each',  rest: '45s', muscle: 'Core',       icon: '🧗', category: 'cardio' },
+      { id: 7, name: 'Lunge',               sets: 3, reps: '12 each',  rest: '60s', muscle: 'Legs',       icon: '🦵', category: 'strength' },
     ],
     ar: [
-      { id: 1, name: 'قرفصاء الكأس',      sets: 4, reps: '10',             rest: '90ث', muscle: 'أرجل',       icon: '🦵' },
-      { id: 2, name: 'تمرين الضغط',       sets: 4, reps: '12',             rest: '60ث', muscle: 'صدر',        icon: '💪' },
-      { id: 3, name: 'رفع أرومانية',      sets: 3, reps: '10',             rest: '90ث', muscle: 'أوتار العرقوب',icon: '🔥' },
-      { id: 4, name: 'تجديف بالدمبل',    sets: 3, reps: '12 لكل جانب',   rest: '75ث', muscle: 'ظهر',        icon: '🏋️' },
-      { id: 5, name: 'بلانك',             sets: 3, reps: '30–45ث',         rest: '45ث', muscle: 'جذع',        icon: '⚡' },
+      { id: 1, name: 'قرفصاء الكأس',      sets: 4, reps: '10',             rest: '90ث', muscle: 'أرجل',         icon: '🦵', category: 'strength' },
+      { id: 2, name: 'تمرين الضغط',       sets: 4, reps: '12',             rest: '60ث', muscle: 'صدر',          icon: '💪', category: 'strength' },
+      { id: 3, name: 'رفع أرومانية',      sets: 3, reps: '10',             rest: '90ث', muscle: 'أوتار العرقوب', icon: '🔥', category: 'strength' },
+      { id: 4, name: 'تجديف بالدمبل',    sets: 3, reps: '12 لكل جانب',   rest: '75ث', muscle: 'ظهر',          icon: '🏋️', category: 'strength' },
+      { id: 5, name: 'بلانك',             sets: 3, reps: '30–45ث',         rest: '45ث', muscle: 'جذع',          icon: '⚡', category: 'core' },
+      { id: 6, name: 'تسلق الجبل',        sets: 3, reps: '20 لكل جانب',   rest: '45ث', muscle: 'جذع',          icon: '🧗', category: 'cardio' },
+      { id: 7, name: 'تمرين الطعنة',      sets: 3, reps: '12 لكل جانب',   rest: '60ث', muscle: 'أرجل',         icon: '🦵', category: 'strength' },
     ]
   },
   advanced: {
     en: [
-      { id: 1, name: 'Barbell Back Squat', sets: 5, reps: '5',    rest: '3 min', muscle: 'Full Body',  icon: '🏋️' },
-      { id: 2, name: 'Bench Press',        sets: 4, reps: '8',    rest: '2 min', muscle: 'Chest',      icon: '💪' },
-      { id: 3, name: 'Deadlift',           sets: 3, reps: '5',    rest: '3 min', muscle: 'Full Body',  icon: '🔥' },
-      { id: 4, name: 'Pull-Up',            sets: 4, reps: '8–10', rest: '90s',   muscle: 'Back',       icon: '⚡' },
-      { id: 5, name: 'Overhead Press',     sets: 4, reps: '8',    rest: '2 min', muscle: 'Shoulders',  icon: '🎯' },
+      { id: 1, name: 'Barbell Back Squat', sets: 5, reps: '5',    rest: '3 min', muscle: 'Full Body',  icon: '🏋️', category: 'strength' },
+      { id: 2, name: 'Bench Press',        sets: 4, reps: '8',    rest: '2 min', muscle: 'Chest',      icon: '💪', category: 'strength' },
+      { id: 3, name: 'Deadlift',           sets: 3, reps: '5',    rest: '3 min', muscle: 'Full Body',  icon: '🔥', category: 'strength' },
+      { id: 4, name: 'Pull-Up',            sets: 4, reps: '8–10', rest: '90s',   muscle: 'Back',       icon: '⚡', category: 'strength' },
+      { id: 5, name: 'Overhead Press',     sets: 4, reps: '8',    rest: '2 min', muscle: 'Shoulders',  icon: '🎯', category: 'strength' },
+      { id: 6, name: 'Bicycle Crunch',     sets: 3, reps: '20 each',rest: '45s', muscle: 'Core',       icon: '🚴', category: 'core' },
+      { id: 7, name: 'Mountain Climber',   sets: 4, reps: '30 each',rest: '30s', muscle: 'Cardio',     icon: '🧗', category: 'cardio' },
     ],
     ar: [
-      { id: 1, name: 'قرفصاء بالبار',       sets: 5, reps: '5',    rest: '3 دقائق', muscle: 'الجسم كله', icon: '🏋️' },
-      { id: 2, name: 'ضغط البنش',           sets: 4, reps: '8',    rest: 'دقيقتان', muscle: 'صدر',       icon: '💪' },
-      { id: 3, name: 'رفع ميت',            sets: 3, reps: '5',    rest: '3 دقائق', muscle: 'الجسم كله', icon: '🔥' },
-      { id: 4, name: 'سحب علوي',           sets: 4, reps: '8–10', rest: '90ث',     muscle: 'ظهر',       icon: '⚡' },
-      { id: 5, name: 'ضغط فوق الرأس',      sets: 4, reps: '8',    rest: 'دقيقتان', muscle: 'أكتاف',     icon: '🎯' },
+      { id: 1, name: 'قرفصاء بالبار',       sets: 5, reps: '5',             rest: '3 دقائق', muscle: 'الجسم كله', icon: '🏋️', category: 'strength' },
+      { id: 2, name: 'ضغط البنش',           sets: 4, reps: '8',             rest: 'دقيقتان', muscle: 'صدر',       icon: '💪', category: 'strength' },
+      { id: 3, name: 'رفع ميت',             sets: 3, reps: '5',             rest: '3 دقائق', muscle: 'الجسم كله', icon: '🔥', category: 'strength' },
+      { id: 4, name: 'سحب علوي',            sets: 4, reps: '8–10',          rest: '90ث',     muscle: 'ظهر',       icon: '⚡', category: 'strength' },
+      { id: 5, name: 'ضغط فوق الرأس',       sets: 4, reps: '8',             rest: 'دقيقتان', muscle: 'أكتاف',     icon: '🎯', category: 'strength' },
+      { id: 6, name: 'كرنش الدراجة',        sets: 3, reps: '20 لكل جانب',  rest: '45ث',     muscle: 'جذع',       icon: '🚴', category: 'core' },
+      { id: 7, name: 'تسلق الجبل',          sets: 4, reps: '30 لكل جانب',  rest: '30ث',     muscle: 'كارديو',    icon: '🧗', category: 'cardio' },
     ]
   }
 };
@@ -562,10 +575,11 @@ const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise
   const { t, lang, isRTL } = useLanguage();
   const { user } = useAuth();
 
-  const [activeTab, setActiveTab] = useState('home');
-  const [health, setHealth]       = useState(loadHealth);
+  const [activeTab, setActiveTab]       = useState('home');
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [health, setHealth]             = useState(loadHealth);
   const [ringsAnimated, setRingsAnimated] = useState(false);
-  const [hkLive, setHkLive]       = useState(false);
+  const [hkLive, setHkLive]             = useState(false);
 
   const tierKey  = (tier || 'novice').toLowerCase();
   const tierCfg  = TIER_CONFIG[tierKey] || TIER_CONFIG.novice;
@@ -755,61 +769,98 @@ const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise
         )}
 
         {/* ══ WORKOUT TAB ══ */}
-        {activeTab === 'workout' && (
-          <div className="tab-content">
-            {/* Banner */}
-            <div className="dashboard-today-banner animate-fade-up">
-              <div className="dashboard-today-banner__text">
-                <span className="dashboard-today-banner__label">{td.todayWorkout}</span>
-                <span className="dashboard-today-banner__count">{exercises.length} {td.exercises}</span>
+        {activeTab === 'workout' && (() => {
+          const CATS = [
+            { id: 'all',      labelEn: 'All',       labelAr: 'الكل',     emoji: '📋' },
+            { id: 'strength', labelEn: 'Strength',  labelAr: 'قوة',      emoji: '💪' },
+            { id: 'cardio',   labelEn: 'Cardio',    labelAr: 'كارديو',   emoji: '🔥' },
+            { id: 'core',     labelEn: 'Core',      labelAr: 'جذع',      emoji: '⚡' },
+          ];
+          const filtered = activeCategory === 'all'
+            ? exercises
+            : exercises.filter(ex => ex.category === activeCategory);
+          return (
+            <div className="tab-content">
+              {/* Banner */}
+              <div className="dashboard-today-banner animate-fade-up">
+                <div className="dashboard-today-banner__text">
+                  <span className="dashboard-today-banner__tier">
+                    {(t.tiers?.[tierKey]?.name || tierKey).toUpperCase()}
+                  </span>
+                  <span className="dashboard-today-banner__count">{td.todayWorkout}</span>
+                  <span className="dashboard-today-banner__label">{exercises.length} {td.exercises}</span>
+                </div>
+                <div className="dashboard-today-banner__arrow">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4 10h12M10 4l6 6-6 6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
               </div>
-              <div className="dashboard-today-banner__arrow">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M4 10h12M10 4l6 6-6 6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+
+              {/* Category filter chips */}
+              <div className="cat-filter animate-fade-up" style={{ animationDelay: '0.04s' }}>
+                {CATS.map(cat => (
+                  <button
+                    key={cat.id}
+                    className={`cat-chip ${activeCategory === cat.id ? 'cat-chip--active' : ''}`}
+                    onClick={() => setActiveCategory(cat.id)}
+                  >
+                    <span className="cat-chip__emoji">{cat.emoji}</span>
+                    <span>{isRTL ? cat.labelAr : cat.labelEn}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Exercise list */}
+              <p className="db-section-label" style={{ marginBottom: 10, marginTop: 4 }}>
+                {isRTL ? 'التمارين' : 'EXERCISES'}
+                {activeCategory !== 'all' && (
+                  <span style={{ color: 'var(--orange)', marginRight: 8, marginLeft: 8 }}>
+                    ({filtered.length})
+                  </span>
+                )}
+              </p>
+              <div className="dashboard-exercises">
+                {filtered.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '32px 0', color: 'var(--text-muted)' }}>
+                    {isRTL ? 'لا توجد تمارين في هذه الفئة' : 'No exercises in this category'}
+                  </div>
+                ) : filtered.map((ex, i) => (
+                  <button
+                    key={ex.id}
+                    type="button"
+                    className="exercise-row"
+                    style={{ animationDelay: `${i * 0.05}s` }}
+                    onClick={() => onViewExercise && onViewExercise(ex, exercises)}
+                  >
+                    <span className="exercise-row__num">{i + 1}</span>
+                    <span className="exercise-row__icon">{ex.icon}</span>
+                    <div className="exercise-row__info">
+                      <span className="exercise-row__name">{ex.name}</span>
+                      <span className="exercise-row__meta">
+                        {ex.sets} {t.exercise.sets} · {ex.reps} {t.exercise.reps} · {ex.rest} {t.exercise.rest}
+                      </span>
+                    </div>
+                    <div className="exercise-row__right">
+                      <span className="muscle-chip">{ex.muscle}</span>
+                      <svg className="exercise-row__arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              {/* Start CTA */}
+              <div className="dashboard-cta animate-fade-up" style={{ marginTop: 16 }}>
+                <Button variant="primary" size="xl" fullWidth
+                  onClick={() => onStartExercise && onStartExercise(exercises[0], exercises)}>
+                  {td.start}
+                </Button>
               </div>
             </div>
-
-            {/* Exercise list */}
-            <p className="db-section-label" style={{ marginBottom: 10, marginTop: 4 }}>
-              {isRTL ? 'التمارين' : 'EXERCISES'}
-            </p>
-            <div className="dashboard-exercises">
-              {exercises.map((ex, i) => (
-                <button
-                  key={ex.id}
-                  type="button"
-                  className="exercise-row"
-                  style={{ animationDelay: `${i * 0.05}s` }}
-                  onClick={() => onViewExercise && onViewExercise(ex, exercises)}
-                >
-                  <span className="exercise-row__num">{i + 1}</span>
-                  <span className="exercise-row__icon">{ex.icon}</span>
-                  <div className="exercise-row__info">
-                    <span className="exercise-row__name">{ex.name}</span>
-                    <span className="exercise-row__meta">
-                      {ex.sets} {t.exercise.sets} · {ex.reps} {t.exercise.reps} · {ex.rest} {t.exercise.rest}
-                    </span>
-                  </div>
-                  <div className="exercise-row__right">
-                    <span className="muscle-chip">{ex.muscle}</span>
-                    <svg className="exercise-row__arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                </button>
-              ))}
-            </div>
-
-            {/* Start CTA */}
-            <div className="dashboard-cta animate-fade-up" style={{ marginTop: 16 }}>
-              <Button variant="primary" size="xl" fullWidth
-                onClick={() => onStartExercise && onStartExercise(exercises[0], exercises)}>
-                {td.start}
-              </Button>
-            </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* ══ PRAYER TAB ══ */}
         {activeTab === 'prayer' && <PrayerTab />}

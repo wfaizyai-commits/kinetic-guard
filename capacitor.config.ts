@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.fitguard.app',
+  appId: 'com.wfaizy.fitguard',
   appName: 'FitGuard',
   webDir: 'dist',
   server: {
