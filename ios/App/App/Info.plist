@@ -2,12 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CAPACITOR_DEBUG</key>
+	<key>CAPACITOR_DEBUG</key>
 	<string>$(CAPACITOR_DEBUG)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-        <string>KineticGuard</string>
+	<string>FitGuard</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -24,6 +24,20 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>FitGuard uses your camera to analyze your exercise form and provide real-time safety feedback.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>FitGuard reads your steps, calories, and exercise data from Apple Health to show real-time fitness stats on your dashboard.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>FitGuard can write completed workouts to Apple Health to keep all your fitness data in sync.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>FitGuard uses your location to calculate accurate prayer times for your area.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>FitGuard may save workout snapshots to your photo library.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>FitGuard may save workout snapshots to your photo library.</string>
+	<key>NSUserNotificationUsageDescription</key>
+	<string>FitGuard sends you personalized health and fitness tips twice a day to help you train smarter.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -47,13 +61,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<!-- Camera permission — required for Form-Check AI -->
-	<key>NSCameraUsageDescription</key>
-	<string>KineticGuard uses your camera to analyze your exercise form and provide real-time safety feedback.</string>
-	<!-- Photo library — needed if saving workout screenshots -->
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>KineticGuard may save workout snapshots to your photo library.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>KineticGuard may save workout snapshots to your photo library.</string>
 </dict>
 </plist>

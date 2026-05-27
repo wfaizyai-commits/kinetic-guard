@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
-import { LanguageProvider } from './i18n/LanguageContext';
+import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 
 import StartScreen from './screens/StartScreen';
 import AssessmentScreen from './screens/AssessmentScreen';
@@ -14,6 +14,12 @@ import AuthScreen from './screens/AuthScreen';
 
 import useAuth from './hooks/useAuth';
 import { syncProfileTier, syncAssessmentResult, syncWorkoutSession, hydrateRemoteFromLocal } from './lib/sync';
+import {
+  setupNotifications,
+  loadNotifProfile,
+  saveNotifProfile,
+  rescheduleNotifications,
+} from './lib/notifications';
 
 // ── Storage helpers ──────────────────────────────────────────────────────────
 const AUDIT_KEY = 'fitguard_audit_v1';
@@ -82,9 +88,107 @@ const SCREENS = {
   SUMMARY: 'summary',
 };
 
+// ── Age Setup Modal ───────────────────────────────────────────────────────────
+function AgeSetupModal({ onConfirm, lang }) {
+  const isAR = lang === 'ar';
+  const [age, setAge] = useState('');
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    setTimeout(() => inputRef.current?.focus(), 300);
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const parsed = parseInt(age, 10);
+    if (parsed >= 10 && parsed <= 100) onConfirm(parsed);
+  };
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 9999,
+      background: 'rgba(0,0,0,0.85)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '24px',
+    }}>
+      <div style={{
+        background: 'var(--surface-elevated)',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius-xl)',
+        padding: '32px 24px',
+        width: '100%', maxWidth: '360px',
+        textAlign: isAR ? 'right' : 'left',
+        direction: isAR ? 'rtl' : 'ltr',
+      }}>
+        <div style={{ fontSize: '36px', textAlign: 'center', marginBottom: '16px' }}>🎯</div>
+        <h2 style={{
+          fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 900,
+          color: 'var(--text-primary)', marginBottom: '10px', textAlign: 'center',
+        }}>
+          {isAR ? 'خصّص تجربتك' : 'Personalise Your Tips'}
+        </h2>
+        <p style={{
+          fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.6,
+          marginBottom: '24px', textAlign: 'center',
+        }}>
+          {isAR
+            ? 'أدخل عمرك لنرسل لك نصائح صحية مناسبة لك مرتين يومياً'
+            : 'Enter your age so we can send you personalised health tips twice a day'}
+        </p>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <input
+            ref={inputRef}
+            type="number"
+            min="10" max="100"
+            value={age}
+            onChange={e => setAge(e.target.value)}
+            placeholder={isAR ? 'عمرك (مثال: 28)' : 'Your age (e.g. 28)'}
+            style={{
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              borderRadius: 'var(--radius-md)',
+              padding: '14px 16px',
+              fontSize: '18px',
+              color: 'var(--text-primary)',
+              textAlign: 'center',
+              outline: 'none',
+              width: '100%',
+              fontFamily: 'var(--font-heading)',
+              fontWeight: 700,
+            }}
+          />
+          <button
+            type="submit"
+            disabled={!age || parseInt(age) < 10 || parseInt(age) > 100}
+            style={{
+              background: 'var(--orange)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 'var(--radius-md)',
+              padding: '16px',
+              fontSize: '16px',
+              fontWeight: 700,
+              fontFamily: 'var(--font-heading)',
+              cursor: 'pointer',
+              opacity: (!age || parseInt(age) < 10 || parseInt(age) > 100) ? 0.5 : 1,
+              transition: 'opacity 0.2s',
+            }}
+          >
+            {isAR ? 'تأكيد ←' : 'Confirm →'}
+          </button>
+        </form>
+        <p style={{ fontSize: '11px', color: 'var(--text-muted)', textAlign: 'center', marginTop: '16px' }}>
+          {isAR ? '🔒 بياناتك تُحفظ على جهازك فقط' : '🔒 Stored locally on your device only'}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 // ── App ───────────────────────────────────────────────────────────────────────
 function AppInner() {
   const { user, loading: authLoading } = useAuth();
+  const { lang } = useLanguage();
 
   const [screen, setScreen] = useState(SCREENS.AUTH);
   const [auditResult, setAuditResult] = useState(null);
@@ -93,6 +197,7 @@ function AppInner() {
   const [currentExercises, setCurrentExercises] = useState([]);
   const [exerciseIndex, setExerciseIndex] = useState(0);
   const [completedExercises, setCompletedExercises] = useState([]);
+  const [showAgeModal, setShowAgeModal] = useState(false);
   const hasExistingAudit = !!loadAudit();
 
   // Sync screen state whenever auth resolves or user changes
@@ -104,10 +209,37 @@ function AppInner() {
       // Push any locally-saved audit to Supabase now that we have a user
       hydrateRemoteFromLocal(user.id, loadAudit());
       setScreen(prev => prev === SCREENS.AUTH ? SCREENS.START : prev);
+
+      // Notifications: ask for age on first login, otherwise refresh schedule
+      const profile = loadNotifProfile();
+      if (!profile.age) {
+        setShowAgeModal(true);
+      } else {
+        // Silently refresh the 14-day schedule (no permission dialog if already granted)
+        setupNotifications({ lang: profile.lang || lang, age: profile.age }).catch(() => {});
+      }
     } else {
       setScreen(SCREENS.AUTH);
     }
   }, [user, authLoading]);
+
+  // Re-schedule when user switches language
+  const langRef = useRef(lang);
+  useEffect(() => {
+    if (langRef.current === lang) return; // skip initial mount
+    langRef.current = lang;
+    const profile = loadNotifProfile();
+    if (user && profile.age) {
+      rescheduleNotifications({ lang, age: profile.age }).catch(() => {});
+    }
+  }, [lang, user]);
+
+  const handleAgeConfirm = (age) => {
+    const profile = loadNotifProfile();
+    saveNotifProfile({ ...profile, age, lang });
+    setShowAgeModal(false);
+    setupNotifications({ lang, age }).catch(() => {});
+  };
 
   // Show nothing while checking session
   if (authLoading) return null;
@@ -202,88 +334,119 @@ function AppInner() {
     setScreen(SCREENS.DASHBOARD);
   };
 
+  // Age modal overlay — shown on top of whatever screen is active
+  const ageModalOverlay = showAgeModal && (
+    <AgeSetupModal lang={lang} onConfirm={handleAgeConfirm} />
+  );
+
   switch (screen) {
     case SCREENS.AUTH:
       return (
-        <AuthScreen onAuthenticated={handleAuthenticated} />
+        <>
+          <AuthScreen onAuthenticated={handleAuthenticated} />
+          {ageModalOverlay}
+        </>
       );
 
     case SCREENS.START:
       return (
-        <StartScreen
-          onStart={handleStart}
-          hasExistingAudit={hasExistingAudit}
-        />
+        <>
+          <StartScreen onStart={handleStart} hasExistingAudit={hasExistingAudit} />
+          {ageModalOverlay}
+        </>
       );
 
     case SCREENS.ASSESSMENT:
       return (
-        <AssessmentScreen
-          onComplete={handleAssessmentComplete}
-          onBack={() => setScreen(SCREENS.START)}
-        />
+        <>
+          <AssessmentScreen
+            onComplete={handleAssessmentComplete}
+            onBack={() => setScreen(SCREENS.START)}
+          />
+          {ageModalOverlay}
+        </>
       );
 
     case SCREENS.RESULTS:
       return auditResult ? (
-        <ResultsScreen
-          tier={auditResult.tier}
-          safetyScore={auditResult.safetyScore}
-          riskFlags={auditResult.riskFlags}
-          onStart={handleStartProgram}
-          onRetake={handleRetakeAssessment}
-        />
+        <>
+          <ResultsScreen
+            tier={auditResult.tier}
+            safetyScore={auditResult.safetyScore}
+            riskFlags={auditResult.riskFlags}
+            onStart={handleStartProgram}
+            onRetake={handleRetakeAssessment}
+          />
+          {ageModalOverlay}
+        </>
       ) : null;
 
     case SCREENS.READINESS:
       return (
-        <ReadinessScreen
-          tier={auditResult?.tier || 'novice'}
-          onProceed={handleReadinessProceed}
-        />
+        <>
+          <ReadinessScreen
+            tier={auditResult?.tier || 'novice'}
+            onProceed={handleReadinessProceed}
+          />
+          {ageModalOverlay}
+        </>
       );
 
     case SCREENS.DASHBOARD:
       return (
-        <WorkoutDashboard
-          tier={auditResult?.tier || 'novice'}
-          readinessData={readinessData}
-          onStartExercise={handleStartExercise}
-          onViewExercise={handleStartExercise}
-        />
+        <>
+          <WorkoutDashboard
+            tier={auditResult?.tier || 'novice'}
+            readinessData={readinessData}
+            onStartExercise={handleStartExercise}
+            onViewExercise={handleStartExercise}
+          />
+          {ageModalOverlay}
+        </>
       );
 
     case SCREENS.EXERCISE:
       return currentExercise ? (
-        <ExerciseDetail
-          exercise={currentExercise}
-          allExercises={currentExercises}
-          exerciseIndex={exerciseIndex}
-          onComplete={handleExerciseComplete}
-          onBack={() => setScreen(SCREENS.DASHBOARD)}
-          onFormCheck={handleFormCheck}
-        />
+        <>
+          <ExerciseDetail
+            exercise={currentExercise}
+            allExercises={currentExercises}
+            exerciseIndex={exerciseIndex}
+            onComplete={handleExerciseComplete}
+            onBack={() => setScreen(SCREENS.DASHBOARD)}
+            onFormCheck={handleFormCheck}
+          />
+          {ageModalOverlay}
+        </>
       ) : null;
 
     case SCREENS.FORM_CHECK:
       return (
-        <FormCheckAI
-          exercise={currentExercise}
-          onBack={handleFormCheckBack}
-        />
+        <>
+          <FormCheckAI exercise={currentExercise} onBack={handleFormCheckBack} />
+          {ageModalOverlay}
+        </>
       );
 
     case SCREENS.SUMMARY:
       return (
-        <PostWorkoutSummary
-          exercises={currentExercises}
-          readinessScore={readinessData?.readinessScore || 70}
-          onDone={handleSummaryDone}
-        />
+        <>
+          <PostWorkoutSummary
+            exercises={currentExercises}
+            readinessScore={readinessData?.readinessScore || 70}
+            onDone={handleSummaryDone}
+          />
+          {ageModalOverlay}
+        </>
       );
 
     default:
-      return <StartScreen onStart={handleStart} hasExistingAudit={hasExistingAudit} />;
+      return (
+        <>
+          <StartScreen onStart={handleStart} hasExistingAudit={hasExistingAudit} />
+          {ageModalOverlay}
+        </>
+      );
   }
 }
 

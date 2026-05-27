@@ -3,25 +3,8 @@ import { useLanguage } from '../i18n/LanguageContext';
 import LanguageToggle from '../components/LanguageToggle';
 import Button from '../components/Button';
 import { takeCameraPhoto, requestCameraPermission, isNative } from '../services/native';
+import { analyzeForm } from '../lib/formCheckAI';
 import './FormCheckAI.css';
-
-// ── Static form-check tips (exercise-specific in a real app) ─────────────────
-const FORM_TIPS = {
-  en: [
-    { label: 'Back is straight and neutral', status: 'good' },
-    { label: 'Knees tracking over toes', status: 'good' },
-    { label: 'Core braced and engaged', status: 'good' },
-    { label: 'Control your descent speed', status: 'improve' },
-    { label: 'Reach full depth on each rep', status: 'improve' },
-  ],
-  ar: [
-    { label: 'الظهر مستقيم ومحايد', status: 'good' },
-    { label: 'الركبتان محاذيتان للأصابع', status: 'good' },
-    { label: 'الجذع مشدود ومفعّل', status: 'good' },
-    { label: 'تحكّم في سرعة النزول', status: 'improve' },
-    { label: 'اصل للعمق الكامل في كل تكرار', status: 'improve' },
-  ]
-};
 
 const FormCheckAI = ({ exercise, onBack }) => {
   const { t, lang } = useLanguage();
@@ -78,15 +61,25 @@ const FormCheckAI = ({ exercise, onBack }) => {
   };
 
   // ── Analyse ─────────────────────────────────────────────────────────────────
-  const runAnalysis = () => {
+  const runAnalysis = async () => {
+    if (!photoDataUrl) return;
     setAnalyzing(true);
     setAnalysisComplete(false);
-    // Simulated AI analysis — replace with real model call when ready
-    setTimeout(() => {
-      setAnalyzing(false);
+    setTips([]);
+    setErrorMsg('');
+    try {
+      const result = await analyzeForm({
+        photoDataUrl,
+        exercise,
+        lang,
+      });
+      setTips([...result.good, ...result.improve]);
       setAnalysisComplete(true);
-      setTips(FORM_TIPS[lang] || FORM_TIPS.en);
-    }, 2200);
+    } catch (e) {
+      setErrorMsg(e?.message || (isAr ? 'فشل التحليل — حاول مجدداً' : 'Analysis failed — please try again'));
+    } finally {
+      setAnalyzing(false);
+    }
   };
 
   // Cleanup on unmount
@@ -187,12 +180,19 @@ const FormCheckAI = ({ exercise, onBack }) => {
                 className="formcheck-analyze-btn"
               >
                 {analyzing
-                  ? t.formCheck.analyzing
+                  ? (isAr ? '🤖 جارٍ التحليل…' : '🤖 Analysing…')
                   : (isAr ? '🤖 تحليل الأداء' : '🤖 Analyze Form')}
               </Button>
             </div>
           )}
         </div>
+
+        {/* Inline error after analyze attempt */}
+        {!analyzing && errorMsg && photoDataUrl && (
+          <div className="formcheck-api-error animate-fade-up">
+            <p>{errorMsg}</p>
+          </div>
+        )}
 
         {/* Analysis results */}
         {analysisComplete && tips.length > 0 && (

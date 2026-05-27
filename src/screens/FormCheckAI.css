@@ -136,6 +136,19 @@
   margin-top: 4px;
 }
 
+.formcheck-api-error {
+  background: rgba(255, 77, 109, 0.1);
+  border: 1px solid rgba(255, 77, 109, 0.3);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+}
+.formcheck-api-error p {
+  font-size: 13px;
+  color: var(--danger);
+  margin: 0;
+  line-height: 1.5;
+}
+
 /* Analyzing overlay */
 .formcheck-analyzing {
   position: absolute;
