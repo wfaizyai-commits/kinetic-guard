@@ -11,6 +11,11 @@ import {
   PRAYER_KEYS,
 } from '../lib/prayerTimes';
 import { initHealthKit, refreshHealthKit, isHealthKitAvailable, loadHKCache } from '../lib/healthKit';
+import {
+  loadLog, togglePrayer, getTodayChecked, todayCount,
+  calcStreak, calcBestStreak, calcTotalFullDays, getEarnedMedals,
+  PRAYER_KEYS as PRAYER_LOG_KEYS,
+} from '../lib/prayerLog';
 import './WorkoutDashboard.css';
 
 // ── 12-hour time helper ───────────────────────────────────────────────────────
@@ -294,25 +299,22 @@ const PrayerTab = () => {
   const { t, isRTL } = useLanguage();
   const tp = t.prayer || {};
 
-  const [state, setState]       = useState('loading');
+  const [state, setState]         = useState('loading');
   const [prayerData, setPrayerData] = useState(null);
-  const [nextIdx, setNextIdx]   = useState(-1);
-  const [minsLeft, setMinsLeft] = useState(0);
+  const [nextIdx, setNextIdx]     = useState(-1);
+  const [minsLeft, setMinsLeft]   = useState(0);
+  const [log, setLog]             = useState(() => loadLog());
+  const [showMedals, setShowMedals] = useState(false);
 
   useEffect(() => {
     fetchPrayerTimes()
       .then((data) => {
         const idx  = getNextPrayerIndex(data.prayers);
         const mins = minutesUntilNext(idx, data.prayers);
-        setPrayerData(data);
-        setNextIdx(idx);
-        setMinsLeft(mins);
+        setPrayerData(data); setNextIdx(idx); setMinsLeft(mins);
         setState('ready');
       })
-      .catch((err) => {
-        if (err.message === 'location_denied') setState('denied');
-        else setState('error');
-      });
+      .catch((err) => setState(err.message === 'location_denied' ? 'denied' : 'error'));
   }, []);
 
   useEffect(() => {
@@ -320,11 +322,26 @@ const PrayerTab = () => {
     const id = setInterval(() => {
       const idx  = getNextPrayerIndex(prayerData.prayers);
       const mins = minutesUntilNext(idx, prayerData.prayers);
-      setNextIdx(idx);
-      setMinsLeft(mins);
+      setNextIdx(idx); setMinsLeft(mins);
     }, 60_000);
     return () => clearInterval(id);
   }, [state, prayerData]);
+
+  const handleCheck = (prayerKey) => {
+    setLog(togglePrayer(prayerKey));
+  };
+
+  // ── Derived streak data ──────────────────────────────────────────────────
+  const checked      = getTodayChecked(log);
+  const doneCount    = todayCount(log);
+  const streak       = calcStreak(log);
+  const bestStreak   = calcBestStreak(log);
+  const totalDays    = calcTotalFullDays(log);
+  const medals       = getEarnedMedals(log);
+  const earnedCount  = medals.filter(m => m.earned).length;
+  const nextMedal    = medals.find(m => !m.earned);
+
+  const progressPct  = (doneCount / 5) * 100;
 
   if (state === 'loading') {
     return (
@@ -356,7 +373,6 @@ const PrayerTab = () => {
   const { prayers, city } = prayerData;
   const nextPrayerKey  = nextIdx >= 0 ? prayers[nextIdx].key : 'Fajr';
   const nextPrayerName = tp.names?.[nextPrayerKey] || nextPrayerKey;
-
   const countdownHours = Math.floor(minsLeft / 60);
   const countdownMins  = minsLeft % 60;
   const countdownText  = countdownHours > 0
@@ -365,45 +381,160 @@ const PrayerTab = () => {
 
   return (
     <div className="tab-content">
-      {/* Header */}
+
+      {/* ── Header ── */}
       <div className="prayer-tab-header">
         <h2 className="prayer-tab-title">{tp.title || 'PRAYER TIMES'}</h2>
         {city && <span className="prayer-city">📍 {city}</span>}
       </div>
 
-      {/* Next prayer big pill */}
-      <div className="prayer-next-pill prayer-next-pill--large animate-fade-up">
+      {/* ── Streak banner ── */}
+      <div className="prayer-streak-banner animate-fade-up">
+        <div className="prayer-streak-flame">
+          <span className="prayer-streak-fire">{streak > 0 ? '🔥' : '🕊️'}</span>
+          <div className="prayer-streak-nums">
+            <span className="prayer-streak-count">{streak}</span>
+            <span className="prayer-streak-label">
+              {isRTL ? 'يوم متواصل' : 'day streak'}
+            </span>
+          </div>
+        </div>
+        <div className="prayer-streak-stats">
+          <div className="prayer-streak-stat">
+            <span className="prayer-streak-stat__val">{bestStreak}</span>
+            <span className="prayer-streak-stat__lbl">{isRTL ? 'الأفضل' : 'Best'}</span>
+          </div>
+          <div className="prayer-streak-stat">
+            <span className="prayer-streak-stat__val">{totalDays}</span>
+            <span className="prayer-streak-stat__lbl">{isRTL ? 'أيام كاملة' : 'Full days'}</span>
+          </div>
+          <div className="prayer-streak-stat">
+            <span className="prayer-streak-stat__val">{earnedCount}</span>
+            <span className="prayer-streak-stat__lbl">{isRTL ? 'ميداليات' : 'Medals'}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Today's progress bar ── */}
+      <div className="prayer-today-card animate-fade-up" style={{ animationDelay: '0.05s' }}>
+        <div className="prayer-today-header">
+          <span className="prayer-today-label">
+            {isRTL ? 'صلوات اليوم' : "Today's prayers"}
+          </span>
+          <span className="prayer-today-count" style={{
+            color: doneCount === 5 ? 'var(--green)' : 'var(--orange)',
+          }}>
+            {doneCount === 5 ? (isRTL ? '✅ مكتمل!' : '✅ Complete!') : `${doneCount} / 5`}
+          </span>
+        </div>
+        <div className="prayer-progress-bar">
+          <div
+            className="prayer-progress-fill"
+            style={{
+              width: `${progressPct}%`,
+              background: doneCount === 5 ? 'var(--green)' : 'var(--orange)',
+              boxShadow: doneCount === 5
+                ? '0 0 10px rgba(0,255,136,0.4)'
+                : '0 0 10px rgba(255,107,0,0.4)',
+            }}
+          />
+        </div>
+      </div>
+
+      {/* ── Next prayer pill ── */}
+      <div className="prayer-next-pill prayer-next-pill--large animate-fade-up" style={{ animationDelay: '0.1s' }}>
         <span className="prayer-next-icon" style={{ fontSize: 32 }}>🕌</span>
         <div className="prayer-next-info">
           <span className="prayer-next-label">{tp.next || 'Next prayer'}</span>
           <span className="prayer-next-name" style={{ fontSize: 20 }}>
             {nextIdx >= 0 ? nextPrayerName : (tp.tomorrow || 'Tomorrow — Fajr')}
           </span>
-          <span className="prayer-next-countdown">
-            {tp.in || 'in'} {countdownText}
-          </span>
+          <span className="prayer-next-countdown">{tp.in || 'in'} {countdownText}</span>
         </div>
         <div className="prayer-next-time" style={{ fontSize: 22 }}>
           {to12h(nextIdx >= 0 ? prayers[nextIdx].time : prayers[0].time)}
         </div>
       </div>
 
-      {/* All 5 prayers — full list */}
-      <div className="prayer-full-list animate-fade-up" style={{ animationDelay: '0.1s' }}>
+      {/* ── Prayer rows with check buttons ── */}
+      <div className="prayer-full-list animate-fade-up" style={{ animationDelay: '0.15s' }}>
         {prayers.map((p, i) => {
-          const isNext = i === nextIdx;
-          const isPast = nextIdx >= 0 ? i < nextIdx : true;
+          const isNext    = i === nextIdx;
+          const isPast    = nextIdx >= 0 ? i < nextIdx : true;
+          const isDone    = !!checked[p.key];
           return (
-            <div key={p.key} className={`prayer-full-row ${isNext ? 'prayer-full-row--next' : ''} ${isPast ? 'prayer-full-row--past' : ''}`}>
+            <div
+              key={p.key}
+              className={`prayer-full-row ${isNext ? 'prayer-full-row--next' : ''} ${isPast ? 'prayer-full-row--past' : ''} ${isDone ? 'prayer-full-row--done' : ''}`}
+            >
               <div className="prayer-full-row__left">
                 {isNext && <span className="prayer-row__dot" style={{ marginRight: 8 }} />}
                 <span className="prayer-full-row__name">{tp.names?.[p.key] || p.key}</span>
               </div>
-              <span className="prayer-full-row__time">{to12h(p.time)}</span>
+              <div className="prayer-full-row__right">
+                <span className="prayer-full-row__time">{to12h(p.time)}</span>
+                <button
+                  className={`prayer-check-btn ${isDone ? 'prayer-check-btn--done' : ''}`}
+                  onClick={() => handleCheck(p.key)}
+                  aria-label={isDone ? 'Unmark' : 'Mark as prayed'}
+                >
+                  {isDone ? '✓' : '○'}
+                </button>
+              </div>
             </div>
           );
         })}
       </div>
+
+      {/* ── Medals section ── */}
+      <div className="prayer-medals-section animate-fade-up" style={{ animationDelay: '0.2s' }}>
+        <button
+          className="prayer-medals-toggle"
+          onClick={() => setShowMedals(v => !v)}
+        >
+          <span>🏅 {isRTL ? 'الميداليات' : 'Medals'}</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span className="prayer-medals-earned-badge">{earnedCount}/{medals.length}</span>
+            <span style={{ opacity: 0.5, fontSize: 14 }}>{showMedals ? '▲' : '▼'}</span>
+          </span>
+        </button>
+
+        {showMedals && (
+          <div className="prayer-medals-grid animate-fade-up">
+            {medals.map(m => (
+              <div
+                key={m.id}
+                className={`prayer-medal-card ${m.earned ? 'prayer-medal-card--earned' : 'prayer-medal-card--locked'}`}
+              >
+                <span className="prayer-medal-icon"
+                  style={{ filter: m.earned ? 'none' : 'grayscale(1) opacity(0.35)' }}>
+                  {m.icon}
+                </span>
+                <span className="prayer-medal-label">
+                  {isRTL ? m.labelAr : m.labelEn}
+                </span>
+                <span className="prayer-medal-desc">
+                  {isRTL ? m.descAr : m.descEn}
+                </span>
+                {m.earned && <span className="prayer-medal-tick">✓</span>}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Next medal hint */}
+        {!showMedals && nextMedal && (
+          <div className="prayer-next-medal-hint">
+            <span style={{ filter: 'grayscale(1) opacity(0.4)', fontSize: 20 }}>{nextMedal.icon}</span>
+            <span>
+              {isRTL
+                ? `التالي: ${nextMedal.labelAr} — ${nextMedal.descAr}`
+                : `Next: ${nextMedal.labelEn} — ${nextMedal.descEn}`}
+            </span>
+          </div>
+        )}
+      </div>
+
     </div>
   );
 };
