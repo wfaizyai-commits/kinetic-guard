@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
+import { GenderProvider, useGender } from './i18n/GenderContext';
 
 import StartScreen from './screens/StartScreen';
 import AssessmentScreen from './screens/AssessmentScreen';
@@ -11,6 +12,7 @@ import ExerciseDetail from './screens/ExerciseDetail';
 import FormCheckAI from './screens/FormCheckAI';
 import PostWorkoutSummary from './screens/PostWorkoutSummary';
 import AuthScreen from './screens/AuthScreen';
+import PeriodTrackerScreen from './screens/PeriodTrackerScreen';
 
 import useAuth from './hooks/useAuth';
 import { syncProfileTier, syncAssessmentResult, syncWorkoutSession, hydrateRemoteFromLocal } from './lib/sync';
@@ -86,6 +88,7 @@ const SCREENS = {
   EXERCISE: 'exercise',
   FORM_CHECK: 'form_check',
   SUMMARY: 'summary',
+  PERIOD_TRACKER: 'period_tracker',
 };
 
 // ── Age Setup Modal ───────────────────────────────────────────────────────────
@@ -185,10 +188,84 @@ function AgeSetupModal({ onConfirm, lang }) {
   );
 }
 
+// ── Gender Setup Modal ────────────────────────────────────────────────────────
+function GenderSetupModal({ onConfirm, lang }) {
+  const isAR = lang === 'ar';
+
+  const cards = [
+    {
+      key: 'male',
+      icon: '💪',
+      label: isAR ? 'ذكر' : 'Male',
+      sub:   isAR ? 'تمارين القوة وبناء الجسم' : 'Strength & muscle building',
+      color: '#FF6B00',
+      bg:    'rgba(255,107,0,0.12)',
+    },
+    {
+      key: 'female',
+      icon: '🌸',
+      label: isAR ? 'أنثى' : 'Female',
+      sub:   isAR ? 'تمارين مخصصة + متتبع الدورة' : 'Women\'s program + cycle tracker',
+      color: '#B06AFF',
+      bg:    'rgba(176,106,255,0.12)',
+    },
+  ];
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 9999,
+      background: 'rgba(0,0,0,0.92)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '24px',
+    }}>
+      <div style={{
+        background: 'var(--surface-elevated)',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius-xl)',
+        padding: '36px 24px 28px',
+        width: '100%', maxWidth: '380px',
+        textAlign: 'center',
+        direction: isAR ? 'rtl' : 'ltr',
+      }}>
+        <div style={{ fontSize: '40px', marginBottom: '12px' }}>🏋️</div>
+        <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 900, color: 'var(--text-primary)', marginBottom: '8px' }}>
+          {isAR ? 'اختر برنامجك' : 'Choose Your Program'}
+        </h2>
+        <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '28px' }}>
+          {isAR ? 'سنخصص تجربتك بالكامل بناءً على اختيارك' : "We'll personalise your entire experience based on this"}
+        </p>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          {cards.map(c => (
+            <button key={c.key} onClick={() => onConfirm(c.key)} style={{
+              flex: 1,
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px',
+              padding: '24px 12px',
+              background: c.bg,
+              border: `2px solid ${c.color}`,
+              borderRadius: 'var(--radius-xl)',
+              cursor: 'pointer',
+              transition: 'transform 0.15s, opacity 0.15s',
+            }}>
+              <span style={{ fontSize: '36px' }}>{c.icon}</span>
+              <span style={{ fontFamily: 'var(--font-heading)', fontSize: '18px', fontWeight: 900, color: c.color }}>
+                {c.label}
+              </span>
+              <span style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.4 }}>
+                {c.sub}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── App ───────────────────────────────────────────────────────────────────────
 function AppInner() {
   const { user, loading: authLoading } = useAuth();
   const { lang } = useLanguage();
+  const { gender, setGender } = useGender();
 
   const [screen, setScreen] = useState(SCREENS.AUTH);
   const [auditResult, setAuditResult] = useState(null);
@@ -198,6 +275,7 @@ function AppInner() {
   const [exerciseIndex, setExerciseIndex] = useState(0);
   const [completedExercises, setCompletedExercises] = useState([]);
   const [showAgeModal, setShowAgeModal] = useState(false);
+  const [showGenderModal, setShowGenderModal] = useState(false);
   const hasExistingAudit = !!loadAudit();
 
   // Sync screen state whenever auth resolves or user changes
@@ -209,6 +287,10 @@ function AppInner() {
       // Push any locally-saved audit to Supabase now that we have a user
       hydrateRemoteFromLocal(user.id, loadAudit());
       setScreen(prev => prev === SCREENS.AUTH ? SCREENS.START : prev);
+
+      // Gender: ask once on first login
+      const savedGender = localStorage.getItem('fitguard_gender_v1');
+      if (!savedGender) setShowGenderModal(true);
 
       // Notifications: ask for age on first login, otherwise refresh schedule
       const profile = loadNotifProfile();
@@ -334,42 +416,52 @@ function AppInner() {
     setScreen(SCREENS.DASHBOARD);
   };
 
-  // Age modal overlay — shown on top of whatever screen is active
-  const ageModalOverlay = showAgeModal && (
-    <AgeSetupModal lang={lang} onConfirm={handleAgeConfirm} />
-  );
+  const handleGenderConfirm = (g) => {
+    setGender(g);
+    setShowGenderModal(false);
+  };
+
+  // Modal overlays
+  const ageModalOverlay    = showAgeModal    && <AgeSetupModal    lang={lang} onConfirm={handleAgeConfirm} />;
+  const genderModalOverlay = showGenderModal && <GenderSetupModal lang={lang} onConfirm={handleGenderConfirm} />;
+
+  // Root class — applies female-theme CSS variable overrides
+  const rootClass = gender === 'female' ? 'female-theme' : '';
 
   switch (screen) {
     case SCREENS.AUTH:
       return (
-        <>
+        <div className={rootClass}>
           <AuthScreen onAuthenticated={handleAuthenticated} />
           {ageModalOverlay}
-        </>
+          {genderModalOverlay}
+        </div>
       );
 
     case SCREENS.START:
       return (
-        <>
+        <div className={rootClass}>
           <StartScreen onStart={handleStart} hasExistingAudit={hasExistingAudit} />
           {ageModalOverlay}
-        </>
+          {genderModalOverlay}
+        </div>
       );
 
     case SCREENS.ASSESSMENT:
       return (
-        <>
+        <div className={rootClass}>
           <AssessmentScreen
             onComplete={handleAssessmentComplete}
             onBack={() => setScreen(SCREENS.START)}
           />
           {ageModalOverlay}
-        </>
+          {genderModalOverlay}
+        </div>
       );
 
     case SCREENS.RESULTS:
       return auditResult ? (
-        <>
+        <div className={rootClass}>
           <ResultsScreen
             tier={auditResult.tier}
             safetyScore={auditResult.safetyScore}
@@ -378,36 +470,47 @@ function AppInner() {
             onRetake={handleRetakeAssessment}
           />
           {ageModalOverlay}
-        </>
+          {genderModalOverlay}
+        </div>
       ) : null;
 
     case SCREENS.READINESS:
       return (
-        <>
+        <div className={rootClass}>
           <ReadinessScreen
             tier={auditResult?.tier || 'novice'}
             onProceed={handleReadinessProceed}
           />
           {ageModalOverlay}
-        </>
+          {genderModalOverlay}
+        </div>
       );
 
     case SCREENS.DASHBOARD:
       return (
-        <>
+        <div className={rootClass}>
           <WorkoutDashboard
             tier={auditResult?.tier || 'novice'}
             readinessData={readinessData}
             onStartExercise={handleStartExercise}
             onViewExercise={handleStartExercise}
+            onOpenCycleTracker={() => setScreen(SCREENS.PERIOD_TRACKER)}
           />
           {ageModalOverlay}
-        </>
+          {genderModalOverlay}
+        </div>
+      );
+
+    case SCREENS.PERIOD_TRACKER:
+      return (
+        <div className={rootClass}>
+          <PeriodTrackerScreen onBack={() => setScreen(SCREENS.DASHBOARD)} />
+        </div>
       );
 
     case SCREENS.EXERCISE:
       return currentExercise ? (
-        <>
+        <div className={rootClass}>
           <ExerciseDetail
             exercise={currentExercise}
             allExercises={currentExercises}
@@ -417,35 +520,39 @@ function AppInner() {
             onFormCheck={handleFormCheck}
           />
           {ageModalOverlay}
-        </>
+          {genderModalOverlay}
+        </div>
       ) : null;
 
     case SCREENS.FORM_CHECK:
       return (
-        <>
+        <div className={rootClass}>
           <FormCheckAI exercise={currentExercise} onBack={handleFormCheckBack} />
           {ageModalOverlay}
-        </>
+          {genderModalOverlay}
+        </div>
       );
 
     case SCREENS.SUMMARY:
       return (
-        <>
+        <div className={rootClass}>
           <PostWorkoutSummary
             exercises={currentExercises}
             readinessScore={readinessData?.readinessScore || 70}
             onDone={handleSummaryDone}
           />
           {ageModalOverlay}
-        </>
+          {genderModalOverlay}
+        </div>
       );
 
     default:
       return (
-        <>
+        <div className={rootClass}>
           <StartScreen onStart={handleStart} hasExistingAudit={hasExistingAudit} />
           {ageModalOverlay}
-        </>
+          {genderModalOverlay}
+        </div>
       );
   }
 }
@@ -453,7 +560,9 @@ function AppInner() {
 function App() {
   return (
     <LanguageProvider>
-      <AppInner />
+      <GenderProvider>
+        <AppInner />
+      </GenderProvider>
     </LanguageProvider>
   );
 }

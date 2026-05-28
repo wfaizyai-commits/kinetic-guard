@@ -55,6 +55,27 @@
   --safe-right: env(safe-area-inset-right, 0px);
 }
 
+/* ── Women's Theme ───────────────────────────────────────────────────────────
+   Applied via .female-theme class on the root app div.
+   Overrides --orange (primary accent) to purple.
+   All other components automatically pick up the new color.
+─────────────────────────────────────────────────────────────────────────── */
+.female-theme {
+  --orange:        #B06AFF;
+  --orange-bright: #C891FF;
+  --orange-dim:    rgba(176, 106, 255, 0.15);
+  --orange-glow:   rgba(176, 106, 255, 0.35);
+
+  /* Keep legacy --cyan alias consistent */
+  --cyan:      #B06AFF;
+  --cyan-dim:  rgba(176, 106, 255, 0.15);
+  --cyan-glow: rgba(176, 106, 255, 0.35);
+
+  --border-active: rgba(176, 106, 255, 0.5);
+  --shadow-orange: 0 0 24px rgba(176, 106, 255, 0.25);
+  --shadow-cyan:   0 0 24px rgba(176, 106, 255, 0.25);
+}
+
 /* ── Reset ── */
 *, *::before, *::after {
   box-sizing: border-box;

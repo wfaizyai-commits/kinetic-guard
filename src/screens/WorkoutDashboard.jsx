@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
+import { useGender, getCyclePhase } from '../i18n/GenderContext';
 import LanguageToggle from '../components/LanguageToggle';
 import Button from '../components/Button';
 import useAuth from '../hooks/useAuth';
@@ -80,6 +81,68 @@ const WORKOUTS_BY_TIER = {
       { id: 5, name: 'ضغط فوق الرأس',       sets: 4, reps: '8',             rest: 'دقيقتان', muscle: 'أكتاف',     icon: '🎯', category: 'strength' },
       { id: 6, name: 'كرنش الدراجة',        sets: 3, reps: '20 لكل جانب',  rest: '45ث',     muscle: 'جذع',       icon: '🚴', category: 'core' },
       { id: 7, name: 'تسلق الجبل',          sets: 4, reps: '30 لكل جانب',  rest: '30ث',     muscle: 'كارديو',    icon: '🧗', category: 'cardio' },
+    ]
+  }
+};
+
+// ── Women's workout library ───────────────────────────────────────────────────
+const WORKOUTS_WOMEN = {
+  novice: {
+    en: [
+      { id: 1, name: 'Glute Bridge',       sets: 3, reps: '15–20',   rest: '45s', muscle: 'Glutes', icon: '🍑', category: 'strength' },
+      { id: 2, name: 'Bodyweight Squat',   sets: 3, reps: '12–15',   rest: '60s', muscle: 'Legs',   icon: '🦵', category: 'strength' },
+      { id: 3, name: 'Wall Push-Up',       sets: 3, reps: '10–12',   rest: '60s', muscle: 'Chest',  icon: '💪', category: 'strength' },
+      { id: 4, name: 'Dead Bug',           sets: 2, reps: '8 each',  rest: '60s', muscle: 'Core',   icon: '🪲', category: 'core' },
+      { id: 5, name: 'Lunge',              sets: 2, reps: '10 each', rest: '60s', muscle: 'Legs',   icon: '🦵', category: 'strength' },
+      { id: 6, name: 'Jumping Jack',       sets: 2, reps: '20',      rest: '45s', muscle: 'Cardio', icon: '⭐', category: 'cardio' },
+    ],
+    ar: [
+      { id: 1, name: 'جسر الأرداف',             sets: 3, reps: '15–20',          rest: '45ث', muscle: 'أرداف',  icon: '🍑', category: 'strength' },
+      { id: 2, name: 'قرفصاء بوزن الجسم',       sets: 3, reps: '12–15',          rest: '60ث', muscle: 'أرجل',   icon: '🦵', category: 'strength' },
+      { id: 3, name: 'تمرين الضغط على الجدار',   sets: 3, reps: '10–12',          rest: '60ث', muscle: 'صدر',    icon: '💪', category: 'strength' },
+      { id: 4, name: 'الدودة الميتة',            sets: 2, reps: '8 لكل جانب',    rest: '60ث', muscle: 'جذع',    icon: '🪲', category: 'core' },
+      { id: 5, name: 'تمرين الطعنة',             sets: 2, reps: '10 لكل جانب',   rest: '60ث', muscle: 'أرجل',   icon: '🦵', category: 'strength' },
+      { id: 6, name: 'قفز النجمة',               sets: 2, reps: '20',             rest: '45ث', muscle: 'كارديو', icon: '⭐', category: 'cardio' },
+    ]
+  },
+  intermediate: {
+    en: [
+      { id: 1, name: 'Glute Bridge',       sets: 4, reps: '15',      rest: '45s', muscle: 'Glutes',     icon: '🍑', category: 'strength' },
+      { id: 2, name: 'Goblet Squat',       sets: 3, reps: '12',      rest: '75s', muscle: 'Legs',       icon: '🦵', category: 'strength' },
+      { id: 3, name: 'Romanian Deadlift',  sets: 3, reps: '10',      rest: '90s', muscle: 'Hamstrings', icon: '🔥', category: 'strength' },
+      { id: 4, name: 'Push-Up',            sets: 3, reps: '10–12',   rest: '60s', muscle: 'Chest',      icon: '💪', category: 'strength' },
+      { id: 5, name: 'Plank',              sets: 3, reps: '30–45s',  rest: '45s', muscle: 'Core',       icon: '⚡', category: 'core' },
+      { id: 6, name: 'Lunge',              sets: 3, reps: '12 each', rest: '60s', muscle: 'Legs',       icon: '🦵', category: 'strength' },
+      { id: 7, name: 'Bicycle Crunch',     sets: 3, reps: '20 each', rest: '45s', muscle: 'Core',       icon: '🚴', category: 'core' },
+    ],
+    ar: [
+      { id: 1, name: 'جسر الأرداف',      sets: 4, reps: '15',            rest: '45ث', muscle: 'أرداف',         icon: '🍑', category: 'strength' },
+      { id: 2, name: 'قرفصاء الكأس',     sets: 3, reps: '12',            rest: '75ث', muscle: 'أرجل',          icon: '🦵', category: 'strength' },
+      { id: 3, name: 'رفع أرومانية',     sets: 3, reps: '10',            rest: '90ث', muscle: 'أوتار العرقوب', icon: '🔥', category: 'strength' },
+      { id: 4, name: 'تمرين الضغط',      sets: 3, reps: '10–12',         rest: '60ث', muscle: 'صدر',           icon: '💪', category: 'strength' },
+      { id: 5, name: 'بلانك',            sets: 3, reps: '30–45ث',        rest: '45ث', muscle: 'جذع',           icon: '⚡', category: 'core' },
+      { id: 6, name: 'تمرين الطعنة',     sets: 3, reps: '12 لكل جانب',  rest: '60ث', muscle: 'أرجل',          icon: '🦵', category: 'strength' },
+      { id: 7, name: 'كرنش الدراجة',     sets: 3, reps: '20 لكل جانب',  rest: '45ث', muscle: 'جذع',           icon: '🚴', category: 'core' },
+    ]
+  },
+  advanced: {
+    en: [
+      { id: 1, name: 'Glute Bridge',       sets: 4, reps: '15',      rest: '60s',   muscle: 'Glutes',    icon: '🍑', category: 'strength' },
+      { id: 2, name: 'Barbell Back Squat', sets: 4, reps: '8',       rest: '2 min', muscle: 'Legs',      icon: '🏋️', category: 'strength' },
+      { id: 3, name: 'Deadlift',           sets: 3, reps: '6',       rest: '3 min', muscle: 'Full Body', icon: '🔥', category: 'strength' },
+      { id: 4, name: 'Pull-Up',            sets: 3, reps: '6–8',     rest: '90s',   muscle: 'Back',      icon: '⚡', category: 'strength' },
+      { id: 5, name: 'Overhead Press',     sets: 3, reps: '8',       rest: '90s',   muscle: 'Shoulders', icon: '🎯', category: 'strength' },
+      { id: 6, name: 'Mountain Climber',   sets: 3, reps: '20 each', rest: '45s',   muscle: 'Cardio',    icon: '🧗', category: 'cardio' },
+      { id: 7, name: 'Bicycle Crunch',     sets: 4, reps: '25 each', rest: '30s',   muscle: 'Core',      icon: '🚴', category: 'core' },
+    ],
+    ar: [
+      { id: 1, name: 'جسر الأرداف',      sets: 4, reps: '15',            rest: '60ث',     muscle: 'أرداف',     icon: '🍑', category: 'strength' },
+      { id: 2, name: 'قرفصاء بالبار',    sets: 4, reps: '8',             rest: 'دقيقتان', muscle: 'أرجل',      icon: '🏋️', category: 'strength' },
+      { id: 3, name: 'رفع ميت',          sets: 3, reps: '6',             rest: '3 دقائق', muscle: 'الجسم كله', icon: '🔥', category: 'strength' },
+      { id: 4, name: 'سحب علوي',         sets: 3, reps: '6–8',           rest: '90ث',     muscle: 'ظهر',       icon: '⚡', category: 'strength' },
+      { id: 5, name: 'ضغط فوق الرأس',    sets: 3, reps: '8',             rest: '90ث',     muscle: 'أكتاف',     icon: '🎯', category: 'strength' },
+      { id: 6, name: 'تسلق الجبل',       sets: 3, reps: '20 لكل جانب',  rest: '45ث',     muscle: 'كارديو',    icon: '🧗', category: 'cardio' },
+      { id: 7, name: 'كرنش الدراجة',     sets: 4, reps: '25 لكل جانب',  rest: '30ث',     muscle: 'جذع',       icon: '🚴', category: 'core' },
     ]
   }
 };
@@ -571,9 +634,11 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
 };
 
 // ── Main Component ────────────────────────────────────────────────────────────
-const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise }) => {
+const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise, onOpenCycleTracker }) => {
   const { t, lang, isRTL } = useLanguage();
   const { user } = useAuth();
+  const { gender, cycleData } = useGender();
+  const isFemale = gender === 'female';
 
   const [activeTab, setActiveTab]       = useState('home');
   const [activeCategory, setActiveCategory] = useState('all');
@@ -583,8 +648,21 @@ const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise
 
   const tierKey  = (tier || 'novice').toLowerCase();
   const tierCfg  = TIER_CONFIG[tierKey] || TIER_CONFIG.novice;
-  const tierWorkouts = WORKOUTS_BY_TIER[tierKey] || WORKOUTS_BY_TIER.novice;
+  // Pick women's or men's workout library
+  const tierWorkouts = isFemale
+    ? (WORKOUTS_WOMEN[tierKey] || WORKOUTS_WOMEN.novice)
+    : (WORKOUTS_BY_TIER[tierKey] || WORKOUTS_BY_TIER.novice);
   const exercises    = tierWorkouts[lang] || tierWorkouts.en;
+
+  // Cycle phase info (women only)
+  const cyclePhaseInfo = isFemale && cycleData
+    ? getCyclePhase(cycleData.lastPeriodDate, cycleData.cycleLength, cycleData.periodLength)
+    : null;
+
+  const CYCLE_PHASE_COLORS = { menstrual:'#FF6B8A', follicular:'#FFB347', ovulation:'#FF6B00', luteal:'#B06AFF' };
+  const CYCLE_PHASE_ICONS  = { menstrual:'🌙', follicular:'🌱', ovulation:'⚡', luteal:'🍂' };
+  const CYCLE_PHASE_NAMES_EN = { menstrual:'Menstrual', follicular:'Follicular', ovulation:'Ovulation', luteal:'Luteal' };
+  const CYCLE_PHASE_NAMES_AR = { menstrual:'الدورة', follicular:'الجريبية', ovulation:'الإباضة', luteal:'الطور الأصفر' };
   const readinessScore = readinessData?.readinessScore || 75;
   const td = t.dashboard;
 
@@ -796,6 +874,36 @@ const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise
                   </svg>
                 </div>
               </div>
+
+              {/* Cycle Phase Banner (women only) */}
+              {isFemale && (
+                <button
+                  className="cycle-phase-banner animate-fade-up"
+                  style={{
+                    animationDelay: '0.03s',
+                    borderColor: cyclePhaseInfo ? CYCLE_PHASE_COLORS[cyclePhaseInfo.phase] : '#B06AFF',
+                    background: cyclePhaseInfo ? `${CYCLE_PHASE_COLORS[cyclePhaseInfo.phase]}18` : 'rgba(176,106,255,0.1)',
+                  }}
+                  onClick={onOpenCycleTracker}
+                >
+                  <span className="cycle-phase-banner__icon">
+                    {cyclePhaseInfo ? CYCLE_PHASE_ICONS[cyclePhaseInfo.phase] : '🌸'}
+                  </span>
+                  <div className="cycle-phase-banner__text">
+                    <span className="cycle-phase-banner__name" style={{ color: cyclePhaseInfo ? CYCLE_PHASE_COLORS[cyclePhaseInfo.phase] : '#B06AFF' }}>
+                      {cyclePhaseInfo
+                        ? (lang === 'ar' ? CYCLE_PHASE_NAMES_AR[cyclePhaseInfo.phase] : CYCLE_PHASE_NAMES_EN[cyclePhaseInfo.phase])
+                        : (lang === 'ar' ? 'متتبع الدورة الشهرية' : 'Cycle Tracker')}
+                    </span>
+                    <span className="cycle-phase-banner__sub">
+                      {cyclePhaseInfo
+                        ? (lang === 'ar' ? `اليوم ${cyclePhaseInfo.day} من دورتك` : `Day ${cyclePhaseInfo.day} of your cycle`)
+                        : (lang === 'ar' ? 'اضغطي لإعداد متتبع دورتك' : 'Tap to set up your cycle tracker')}
+                    </span>
+                  </div>
+                  <span className="cycle-phase-banner__arrow" style={{ color: cyclePhaseInfo ? CYCLE_PHASE_COLORS[cyclePhaseInfo.phase] : '#B06AFF' }}>›</span>
+                </button>
+              )}
 
               {/* Category filter chips */}
               <div className="cat-filter animate-fade-up" style={{ animationDelay: '0.04s' }}>
