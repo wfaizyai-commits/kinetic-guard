@@ -305,6 +305,17 @@ function AppInner() {
     }
   }, [user, authLoading]);
 
+  // Apply female-theme to <body> so background + scrollbar also get the purple tint
+  useEffect(() => {
+    if (gender === 'female') {
+      document.body.classList.add('female-theme');
+      document.documentElement.classList.add('female-theme');
+    } else {
+      document.body.classList.remove('female-theme');
+      document.documentElement.classList.remove('female-theme');
+    }
+  }, [gender]);
+
   // Re-schedule when user switches language
   const langRef = useRef(lang);
   useEffect(() => {

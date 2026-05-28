@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useGender, getCyclePhase } from '../i18n/GenderContext';
 import LanguageToggle from '../components/LanguageToggle';
@@ -419,8 +419,10 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
   const [syncStatus, setSyncStatus]       = useState(null); // 'ok' | 'no_data' | 'error'
   const [syncMsg, setSyncMsg]             = useState('');
   const [huaweiSetup, setHuaweiSetup]     = useState(false);
-  const [pendingReturn, setPendingReturn] = useState(false); // waiting for user to come back from Huawei Health
-  const [dataAge, setDataAge]             = useState(null);  // ms since last Apple Health read
+  const [pendingReturn, setPendingReturn] = useState(false);
+  const [countdown, setCountdown]         = useState(null); // null | number
+  const [dataAge, setDataAge]             = useState(null);
+  const countdownRef                      = useRef(null);
 
   // ── Relative time helper ──────────────────────────────────────────────────
   const relTime = (ms) => {
@@ -439,33 +441,58 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
   }, []);
 
   // ── Auto-refresh when returning from Huawei Health ────────────────────────
+  // Uses both visibilitychange AND window focus — one will fire on iOS WebView
   useEffect(() => {
     if (!pendingReturn) return;
-    const onVisible = () => {
-      if (document.visibilityState === 'visible') {
-        setPendingReturn(false);
-        document.removeEventListener('visibilitychange', onVisible);
-        // Small delay so Huawei Health has time to flush to Apple Health
-        setTimeout(() => handleSync(), 1200);
-      }
+
+    const triggerSync = () => {
+      if (!pendingReturn) return;
+      setPendingReturn(false);
+      clearInterval(countdownRef.current);
+      setCountdown(null);
+      setSyncMsg(isRTL ? '⏳ جاري القراءة من Apple Health...' : '⏳ Reading from Apple Health...');
+      // 3s delay — gives Huawei Health time to finish pushing to Apple Health
+      setTimeout(() => handleSync(), 3000);
     };
+
+    const onVisible  = () => { if (document.visibilityState === 'visible') triggerSync(); };
+    const onFocus    = () => triggerSync();
+
     document.addEventListener('visibilitychange', onVisible);
-    return () => document.removeEventListener('visibilitychange', onVisible);
+    window.addEventListener('focus', onFocus);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('focus', onFocus);
+    };
   }, [pendingReturn]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Open Huawei Health app (forces its sync to Apple Health) ──────────────
+  // ── Open Huawei Health + start countdown ─────────────────────────────────
   const openHuaweiHealth = () => {
     setPendingReturn(true);
-    setSyncMsg(isRTL
-      ? '⏳ افتح Huawei Health ثم ارجع هنا — سيتم التحديث تلقائياً'
-      : '⏳ Open Huawei Health, then return — we\'ll auto-refresh');
     setSyncStatus(null);
+    setSyncMsg('');
+
+    // Start 15-second countdown so user knows to wait in Huawei Health
+    let secs = 15;
+    setCountdown(secs);
+    countdownRef.current = setInterval(() => {
+      secs -= 1;
+      if (secs <= 0) {
+        clearInterval(countdownRef.current);
+        setCountdown(0);
+      } else {
+        setCountdown(secs);
+      }
+    }, 1000);
+
     try { window.open('huaweihealth://', '_system'); } catch (_) {}
-    // Fallback: open App Store page if Huawei Health isn't installed
     setTimeout(() => {
       try { window.open('itms-apps://itunes.apple.com/app/huawei-health/id1085649519', '_system'); } catch (_) {}
     }, 1500);
   };
+
+  // Cleanup countdown on unmount
+  useEffect(() => () => clearInterval(countdownRef.current), []);
 
   const openHealthSettings = () => {
     try { window.open('app-settings:', '_system'); } catch (_) {}
@@ -596,19 +623,40 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
 
         {/* ── Open Huawei Health button ── */}
         {available && (
-          <button
-            className="watch-huawei-open-btn"
-            onClick={openHuaweiHealth}
-            disabled={syncing}
-          >
-            <span>🔴</span>
-            <span>
-              {pendingReturn
-                ? (isRTL ? '⏳ في انتظار العودة...' : '⏳ Waiting for you to return...')
-                : (isRTL ? 'افتح Huawei Health أولاً' : 'Open Huawei Health first')}
-            </span>
-            {!pendingReturn && <span className="watch-huawei-open-btn__arrow">{isRTL ? '←' : '→'}</span>}
-          </button>
+          <div className="watch-huawei-open-wrap">
+            <button
+              className={`watch-huawei-open-btn ${pendingReturn ? 'watch-huawei-open-btn--waiting' : ''}`}
+              onClick={openHuaweiHealth}
+              disabled={syncing || pendingReturn}
+            >
+              <span>🔴</span>
+              <div className="watch-huawei-open-btn__text">
+                <span className="watch-huawei-open-btn__main">
+                  {pendingReturn
+                    ? (isRTL ? 'في انتظار مزامنة Huawei Health...' : 'Waiting for Huawei Health to sync...')
+                    : (isRTL ? 'Step 1: افتح Huawei Health' : 'Step 1: Open Huawei Health')}
+                </span>
+                {!pendingReturn && (
+                  <span className="watch-huawei-open-btn__sub">
+                    {isRTL
+                      ? 'انتظر حتى تكتمل المزامنة ثم ارجع هنا'
+                      : 'Wait for sync to finish, then return here'}
+                  </span>
+                )}
+              </div>
+              {pendingReturn && countdown !== null
+                ? <span className="watch-huawei-countdown">{countdown > 0 ? countdown : '✓'}</span>
+                : <span className="watch-huawei-open-btn__arrow">{isRTL ? '←' : '→'}</span>
+              }
+            </button>
+            {pendingReturn && (
+              <p className="watch-huawei-tip animate-fade-up">
+                {isRTL
+                  ? '💡 في Huawei Health: انتظر حتى يختفي أيقونة التزامن ⟳، ثم ارجع لـ FitGuard'
+                  : '💡 In Huawei Health: wait for the sync icon ⟳ to stop spinning, then return here'}
+              </p>
+            )}
+          </div>
         )}
 
         {/* Collapsible setup guide */}

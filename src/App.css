@@ -57,23 +57,80 @@
 
 /* ── Women's Theme ───────────────────────────────────────────────────────────
    Applied via .female-theme class on the root app div.
-   Overrides --orange (primary accent) to purple.
-   All other components automatically pick up the new color.
+   Full palette override — deep violet backgrounds, purple accent,
+   softer borders and shadows. All components inherit automatically.
 ─────────────────────────────────────────────────────────────────────────── */
 .female-theme {
+  /* ── Accent: purple ── */
   --orange:        #B06AFF;
   --orange-bright: #C891FF;
   --orange-dim:    rgba(176, 106, 255, 0.15);
-  --orange-glow:   rgba(176, 106, 255, 0.35);
+  --orange-glow:   rgba(176, 106, 255, 0.40);
 
-  /* Keep legacy --cyan alias consistent */
   --cyan:      #B06AFF;
   --cyan-dim:  rgba(176, 106, 255, 0.15);
-  --cyan-glow: rgba(176, 106, 255, 0.35);
+  --cyan-glow: rgba(176, 106, 255, 0.40);
 
-  --border-active: rgba(176, 106, 255, 0.5);
-  --shadow-orange: 0 0 24px rgba(176, 106, 255, 0.25);
-  --shadow-cyan:   0 0 24px rgba(176, 106, 255, 0.25);
+  /* ── Backgrounds: deep violet-tinted dark, NOT pure black ── */
+  --bg:               #0D0818;
+  --surface:          #160F24;
+  --surface-elevated: #1E1530;
+  --surface-hover:    #271A3E;
+
+  /* ── Borders: purple-tinted ── */
+  --border:        rgba(176, 106, 255, 0.12);
+  --border-active: rgba(176, 106, 255, 0.55);
+
+  /* ── Shadows: purple glow instead of orange ── */
+  --shadow-orange:   0 0 24px rgba(176, 106, 255, 0.28);
+  --shadow-cyan:     0 0 24px rgba(176, 106, 255, 0.28);
+  --shadow-card:     0 4px 24px rgba(80, 0, 140, 0.35);
+  --shadow-elevated: 0 8px 40px rgba(80, 0, 140, 0.55);
+
+  /* ── Text: slightly warmer whites ── */
+  --text-secondary: rgba(240, 220, 255, 0.70);
+  --text-muted:     rgba(200, 170, 255, 0.40);
+
+  /* ── Rounder radius for a softer feel ── */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
+
+/* ── Female background gradient (body-level) ─────────────────────────────── */
+.female-theme .screen,
+.female-theme > div {
+  background: var(--bg);
+}
+
+/* Subtle radial glow behind content on female theme */
+.female-theme::before {
+  content: '';
+  position: fixed;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70vw;
+  height: 70vw;
+  max-width: 420px;
+  max-height: 420px;
+  background: radial-gradient(circle, rgba(176, 106, 255, 0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Lift cards slightly on female theme so they stand out from the background */
+.female-theme .db-card,
+.female-theme .watch-device-card {
+  background: var(--surface-elevated);
+  border-color: var(--border);
+}
+
+/* Green stays green — only purple tint on primary accent */
+.female-theme .glow-orange,
+.female-theme .glow-cyan {
+  box-shadow: var(--shadow-orange);
 }
 
 /* ── Reset ── */
