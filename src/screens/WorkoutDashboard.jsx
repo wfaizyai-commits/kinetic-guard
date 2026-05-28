@@ -10,7 +10,7 @@ import {
   minutesUntilNext,
   PRAYER_KEYS,
 } from '../lib/prayerTimes';
-import { initHealthKit, refreshHealthKit, isHealthKitAvailable } from '../lib/healthKit';
+import { initHealthKit, refreshHealthKit, isHealthKitAvailable, loadHKCache } from '../lib/healthKit';
 import './WorkoutDashboard.css';
 
 // ── 12-hour time helper ───────────────────────────────────────────────────────
@@ -414,14 +414,60 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
   const { isRTL } = useLanguage();
   const available = isHealthKitAvailable();
 
-  const [syncing, setSyncing]         = useState(false);
-  const [lastSync, setLastSync]       = useState(null);
-  const [syncStatus, setSyncStatus]   = useState(null); // 'ok' | 'no_data' | 'error'
-  const [syncMsg, setSyncMsg]         = useState('');
-  const [huaweiSetup, setHuaweiSetup] = useState(false);
+  const [syncing, setSyncing]             = useState(false);
+  const [lastSync, setLastSync]           = useState(null);
+  const [syncStatus, setSyncStatus]       = useState(null); // 'ok' | 'no_data' | 'error'
+  const [syncMsg, setSyncMsg]             = useState('');
+  const [huaweiSetup, setHuaweiSetup]     = useState(false);
+  const [pendingReturn, setPendingReturn] = useState(false); // waiting for user to come back from Huawei Health
+  const [dataAge, setDataAge]             = useState(null);  // ms since last Apple Health read
+
+  // ── Relative time helper ──────────────────────────────────────────────────
+  const relTime = (ms) => {
+    if (ms === null) return null;
+    const mins = Math.floor(ms / 60000);
+    if (mins < 1)  return isRTL ? 'الآن'               : 'just now';
+    if (mins < 60) return isRTL ? `منذ ${mins} دقيقة`  : `${mins} min ago`;
+    const hrs = Math.floor(mins / 60);
+    return isRTL ? `منذ ${hrs} ساعة` : `${hrs}h ago`;
+  };
+
+  // ── On mount: check if cached data exists and how old it is ───────────────
+  useEffect(() => {
+    const cached = loadHKCache();
+    if (cached?.fetchedAt) setDataAge(Date.now() - cached.fetchedAt);
+  }, []);
+
+  // ── Auto-refresh when returning from Huawei Health ────────────────────────
+  useEffect(() => {
+    if (!pendingReturn) return;
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') {
+        setPendingReturn(false);
+        document.removeEventListener('visibilitychange', onVisible);
+        // Small delay so Huawei Health has time to flush to Apple Health
+        setTimeout(() => handleSync(), 1200);
+      }
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
+  }, [pendingReturn]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Open Huawei Health app (forces its sync to Apple Health) ──────────────
+  const openHuaweiHealth = () => {
+    setPendingReturn(true);
+    setSyncMsg(isRTL
+      ? '⏳ افتح Huawei Health ثم ارجع هنا — سيتم التحديث تلقائياً'
+      : '⏳ Open Huawei Health, then return — we\'ll auto-refresh');
+    setSyncStatus(null);
+    try { window.open('huaweihealth://', '_system'); } catch (_) {}
+    // Fallback: open App Store page if Huawei Health isn't installed
+    setTimeout(() => {
+      try { window.open('itms-apps://itunes.apple.com/app/huawei-health/id1085649519', '_system'); } catch (_) {}
+    }, 1500);
+  };
 
   const openHealthSettings = () => {
-    // Deep-link to this app's entry in iOS Settings
     try { window.open('app-settings:', '_system'); } catch (_) {}
   };
 
@@ -433,7 +479,6 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
     try {
       const data = await refreshHealthKit();
       if (data && (data.steps > 0 || data.calories > 0 || data.activeMinutes > 0)) {
-        // ✅ Got real data
         setHealth((prev) => ({
           ...prev,
           steps:         data.steps         ?? prev.steps,
@@ -443,6 +488,7 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
         }));
         setHkLive(true);
         setLastSync(new Date());
+        setDataAge(0);
         setSyncStatus('ok');
         setSyncMsg(
           isRTL
@@ -450,15 +496,13 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
             : `✅ Synced — ${data.steps.toLocaleString()} steps · ${data.calories} cal · ${data.activeMinutes} active min`
         );
       } else if (data) {
-        // Plugin responded but Apple Health has no data yet (all zeros)
         setSyncStatus('no_data');
         setSyncMsg(
           isRTL
-            ? '⚠️ لا توجد بيانات في Apple Health. تأكد من منح الصلاحيات أو مزامنة ساعتك أولاً.'
-            : '⚠️ No data in Apple Health. Grant permissions below or sync your watch first.'
+            ? '⚠️ لا توجد بيانات في Apple Health. افتح Huawei Health أولاً لمزامنة بياناتك.'
+            : '⚠️ No data in Apple Health yet. Open Huawei Health first to sync your watch.'
         );
       } else {
-        // Plugin returned null — likely permission denied or not on iOS
         setSyncStatus('no_data');
         setSyncMsg(
           isRTL
@@ -478,6 +522,9 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
     ? lastSync.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })
     : (isRTL ? 'لم تتم المزامنة بعد' : 'Not synced yet');
 
+  const dataAgeText = relTime(dataAge);
+  const dataIsStale = dataAge !== null && dataAge > 20 * 60000; // older than 20 min
+
   // Huawei setup steps
   const huaweiSteps = isRTL
     ? ['افتح إعدادات iPhone', 'اضغط على "الخصوصية والأمان" ← "الصحة"', 'اختر "Huawei Health" من القائمة', 'فعّل جميع أذونات البيانات الصحية', 'ارجع لـ FitGuard واضغط "مزامنة الآن"']
@@ -496,6 +543,18 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
           </div>
         )}
       </div>
+
+      {/* ── Stale data warning ── */}
+      {dataIsStale && !syncing && (
+        <div className="watch-stale-banner animate-fade-up">
+          <span>⚠️ </span>
+          <span>
+            {isRTL
+              ? `البيانات قديمة (${dataAgeText}) — افتح Huawei Health أولاً ثم اضغط مزامنة`
+              : `Data is ${dataAgeText} old — open Huawei Health first, then sync`}
+          </span>
+        </div>
+      )}
 
       {/* ── Device: Apple Watch ── */}
       <div className="db-card watch-device-card animate-fade-up">
@@ -535,6 +594,23 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
           </button>
         </div>
 
+        {/* ── Open Huawei Health button ── */}
+        {available && (
+          <button
+            className="watch-huawei-open-btn"
+            onClick={openHuaweiHealth}
+            disabled={syncing}
+          >
+            <span>🔴</span>
+            <span>
+              {pendingReturn
+                ? (isRTL ? '⏳ في انتظار العودة...' : '⏳ Waiting for you to return...')
+                : (isRTL ? 'افتح Huawei Health أولاً' : 'Open Huawei Health first')}
+            </span>
+            {!pendingReturn && <span className="watch-huawei-open-btn__arrow">{isRTL ? '←' : '→'}</span>}
+          </button>
+        )}
+
         {/* Collapsible setup guide */}
         {huaweiSetup && (
           <div className="watch-setup-guide animate-fade-up">
@@ -560,7 +636,18 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
 
       {/* ── Live metrics ── */}
       <div className="db-card animate-fade-up" style={{ animationDelay: '0.12s' }}>
-        <p className="db-section-label">{isRTL ? 'البيانات الحالية' : 'CURRENT DATA'}</p>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+          <p className="db-section-label" style={{ marginBottom: 0 }}>{isRTL ? 'البيانات الحالية' : 'CURRENT DATA'}</p>
+          {dataAgeText && (
+            <span style={{
+              fontSize: '11px',
+              color: dataIsStale ? 'var(--warning)' : 'var(--text-muted)',
+              fontFamily: 'var(--font-body)',
+            }}>
+              {isRTL ? `من Apple Health · ${dataAgeText}` : `From Apple Health · ${dataAgeText}`}
+            </span>
+          )}
+        </div>
         <div className="watch-metrics-grid">
           <div className="watch-metric">
             <span className="watch-metric__icon">👟</span>
@@ -594,7 +681,7 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
           }}
         >
           <span className="watch-sync-banner__msg">{syncMsg}</span>
-          {syncStatus !== 'ok' && (
+          {syncStatus !== 'ok' && syncStatus !== null && (
             <button className="watch-grant-btn" onClick={openHealthSettings}>
               {isRTL ? '⚙️ منح وصول Apple Health' : '⚙️ Grant Apple Health Access'}
             </button>
@@ -604,7 +691,7 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
         <div className="db-card animate-fade-up" style={{ animationDelay: '0.18s' }}>
           <div className="watch-sync-row">
             <div>
-              <p className="db-section-label" style={{ marginBottom: 4 }}>{isRTL ? 'آخر مزامنة' : 'LAST SYNC'}</p>
+              <p className="db-section-label" style={{ marginBottom: 4 }}>{isRTL ? 'آخر مزامنة من FitGuard' : 'LAST SYNC FROM FITGUARD'}</p>
               <span className="watch-sync-time">{lastSyncText}</span>
             </div>
           </div>
@@ -619,7 +706,7 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
           disabled={syncing}
         >
           <span className="watch-sync-btn__icon">{syncing ? '⏳' : '🔄'}</span>
-          <span>{syncing ? (isRTL ? 'جاري المزامنة...' : 'Syncing...') : (isRTL ? 'مزامنة الآن' : 'Sync Now')}</span>
+          <span>{syncing ? (isRTL ? 'جاري المزامنة...' : 'Syncing...') : (isRTL ? 'مزامنة من Apple Health' : 'Sync from Apple Health')}</span>
         </button>
       ) : (
         <div className="watch-unavailable">
