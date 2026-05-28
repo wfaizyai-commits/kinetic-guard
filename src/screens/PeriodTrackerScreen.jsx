@@ -28,11 +28,11 @@ const WORKOUT_RECS = {
 
 const PHASE_NAMES = {
   en: { menstrual: 'Menstrual', follicular: 'Follicular', ovulation: 'Ovulation', luteal: 'Luteal' },
-  ar: { menstrual: 'الدورة',   follicular: 'الجريبية',   ovulation: 'الإباضة',   luteal: 'الطور الأصفر' },
+  ar: { menstrual: 'الدورة',   follicular: 'ما بعد الدورة',   ovulation: 'الإباضة',   luteal: 'الطور الأصفر' },
 };
 
 // ── Cycle Ring SVG ────────────────────────────────────────────────────────────
-const CycleRing = ({ dayOfCycle = 1, cycleLength = 28 }) => {
+const CycleRing = ({ dayOfCycle = 1, cycleLength = 28, lang = 'en' }) => {
   const cx = 150, cy = 150, R = 108;
   const dots = Array.from({ length: cycleLength }, (_, i) => {
     const day = i + 1;
@@ -82,7 +82,7 @@ const CycleRing = ({ dayOfCycle = 1, cycleLength = 28 }) => {
       {/* "Day" label */}
       <text x={cx} y={cy + 34} textAnchor="middle" fontSize="12" fill="rgba(255,255,255,0.45)"
         style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-        DAY
+        {lang === 'ar' ? 'يوم' : 'DAY'}
       </text>
     </svg>
   );
@@ -140,7 +140,7 @@ const PeriodTrackerScreen = ({ onBack }) => {
             {isAR ? 'متى بدأت آخر دورة؟' : 'When did your last period start?'}
           </h2>
           <p className="period-setup__sub">
-            {isAR ? 'هنستخدم ده عشان نحدد أفضل تمارين ليكِ كل يوم' : 'We\'ll use this to recommend the best workout for each day of your cycle'}
+            {isAR ? 'سنستخدم هذا لتحديد أفضل التمارين لكِ كل يوم من دورتك' : 'We\'ll use this to recommend the best workout for each day of your cycle'}
           </p>
 
           <div className="period-setup__field">
@@ -164,7 +164,7 @@ const PeriodTrackerScreen = ({ onBack }) => {
               </select>
             </div>
             <div className="period-setup__field period-setup__field--half">
-              <label>{isAR ? 'مدة النزيف (أيام)' : 'Period length (days)'}</label>
+              <label>{isAR ? 'مدة الدورة (أيام)' : 'Period length (days)'}</label>
               <select value={periodLen} onChange={e => setPeriodLen(+e.target.value)} className="period-setup__input">
                 {[2,3,4,5,6,7,8].map(n => (
                   <option key={n} value={n}>{n}</option>
@@ -199,7 +199,7 @@ const PeriodTrackerScreen = ({ onBack }) => {
 
           {/* Cycle Ring */}
           <div className="period-ring-wrap">
-            <CycleRing dayOfCycle={dayOfCycle} cycleLength={cycleData?.cycleLength || 28} />
+            <CycleRing dayOfCycle={dayOfCycle} cycleLength={cycleData?.cycleLength || 28} lang={lang} />
           </div>
 
           {/* Workout Recommendation */}

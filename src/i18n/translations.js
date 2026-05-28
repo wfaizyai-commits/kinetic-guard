@@ -156,7 +156,7 @@ export const translations = {
     },
     readiness: {
       title: 'فحص الجاهزية اليومية',
-      subtitle: 'كيف تشعر جسمك اليوم؟',
+      subtitle: 'كيف يشعر جسمك اليوم؟',
       sleep: 'جودة النوم', stress: 'مستوى التوتر', soreness: 'ألم العضلات',
       low: 'منخفض', high: 'عالٍ', poor: 'سيئة', excellent: 'ممتازة', none: 'لا يوجد', severe: 'شديد',
       proceed: 'انتقل إلى التمرين',
