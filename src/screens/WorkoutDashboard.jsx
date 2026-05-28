@@ -905,7 +905,7 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
 };
 
 // ── Main Component ────────────────────────────────────────────────────────────
-const WorkoutDashboard = ({ tier, readinessData, riskFlags, onStartExercise, onViewExercise, onOpenCycleTracker, onChangeGender }) => {
+const WorkoutDashboard = ({ tier, readinessData, riskFlags, onStartExercise, onViewExercise, onOpenCycleTracker, onChangeGender, onOpenGymTracker }) => {
   const { t, lang, isRTL } = useLanguage();
   const { user } = useAuth();
   const { gender, cycleData } = useGender();
@@ -1020,6 +1020,16 @@ const WorkoutDashboard = ({ tier, readinessData, riskFlags, onStartExercise, onV
                 <span className="db-xp-streak-num">{wStreak}</span>
               </div>
             </div>
+
+            {/* ── Gym Tracker entry card ── */}
+            <button className="db-gym-entry animate-fade-up" onClick={onOpenGymTracker} style={{ animationDelay: '0.04s' }}>
+              <span className="db-gym-entry__icon">🏋️</span>
+              <div className="db-gym-entry__text">
+                <span className="db-gym-entry__title">{isRTL ? 'تتبع الجيم' : 'Gym Tracker'}</span>
+                <span className="db-gym-entry__sub">{isRTL ? 'سجّل تمارينك، الأوزان والسيتات' : 'Log your lifts, track progress'}</span>
+              </div>
+              <span className="db-gym-entry__arrow">{isRTL ? '←' : '→'}</span>
+            </button>
 
             {/* ── Injury warning banner ── */}
             {injuryWarnings.length > 0 && (

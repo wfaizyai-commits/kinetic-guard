@@ -13,6 +13,7 @@ import FormCheckAI from './screens/FormCheckAI';
 import PostWorkoutSummary from './screens/PostWorkoutSummary';
 import AuthScreen from './screens/AuthScreen';
 import PeriodTrackerScreen from './screens/PeriodTrackerScreen';
+import GymTrackerScreen from './screens/GymTrackerScreen';
 
 import useAuth from './hooks/useAuth';
 import { syncProfileTier, syncAssessmentResult, syncWorkoutSession, hydrateRemoteFromLocal } from './lib/sync';
@@ -89,6 +90,7 @@ const SCREENS = {
   FORM_CHECK: 'form_check',
   SUMMARY: 'summary',
   PERIOD_TRACKER: 'period_tracker',
+  GYM_TRACKER: 'gym_tracker',
 };
 
 // ── Age Setup Modal ───────────────────────────────────────────────────────────
@@ -512,6 +514,7 @@ function AppInner() {
             onViewExercise={handleStartExercise}
             onOpenCycleTracker={() => setScreen(SCREENS.PERIOD_TRACKER)}
             onChangeGender={handleChangeGender}
+            onOpenGymTracker={() => setScreen(SCREENS.GYM_TRACKER)}
           />
           {ageModalOverlay}
           {genderModalOverlay}
@@ -522,6 +525,13 @@ function AppInner() {
       return (
         <div className={rootClass}>
           <PeriodTrackerScreen onBack={() => setScreen(SCREENS.DASHBOARD)} />
+        </div>
+      );
+
+    case SCREENS.GYM_TRACKER:
+      return (
+        <div className={rootClass}>
+          <GymTrackerScreen onBack={() => setScreen(SCREENS.DASHBOARD)} />
         </div>
       );
 
