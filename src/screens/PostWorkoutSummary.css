@@ -241,3 +241,128 @@
 .summary-cta {
   margin-top: 4px;
 }
+
+/* ── XP earned card ── */
+.summary-xp-card {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-active);
+  border-radius: var(--radius-xl);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-orange);
+}
+
+.summary-xp-earned {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.summary-xp-plus {
+  font-family: var(--font-heading);
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--orange);
+  line-height: 1;
+}
+
+.summary-xp-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.summary-xp-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.summary-xp-level {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.summary-xp-lvl-num {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--orange);
+}
+
+.summary-xp-lvl-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.summary-xp-bar {
+  height: 6px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.summary-xp-bar-fill {
+  height: 100%;
+  background: var(--orange);
+  border-radius: 3px;
+  transition: width 1.2s ease;
+  box-shadow: 0 0 8px var(--orange-glow);
+}
+
+.summary-xp-streak {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.summary-levelup-badge {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: var(--orange);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+}
+
+/* ── New badge popup ── */
+.summary-badge-popup {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(135deg, var(--orange-dim) 0%, rgba(255,184,0,0.08) 100%);
+  border: 1px solid var(--orange-glow);
+  border-radius: var(--radius-xl);
+  padding: 14px 18px;
+}
+
+.summary-badge-popup__title {
+  font-size: 11px;
+  color: var(--orange);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 3px;
+}
+
+.summary-badge-popup__name {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin: 0;
+}

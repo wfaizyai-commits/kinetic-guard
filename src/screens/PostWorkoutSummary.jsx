@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import LanguageToggle from '../components/LanguageToggle';
 import Button from '../components/Button';
+import {
+  awardXP, recordWorkoutDay, calcWorkoutStreak, getLevel,
+  loadXP, recordFullWorkout, getFullWorkouts,
+  getTotalWorkouts, getFormCheckCount, getBestReadiness,
+  evaluateBadges,
+} from '../lib/gamification';
 import './PostWorkoutSummary.css';
 
 const StatCard = ({ value, label, color = 'var(--cyan)', icon }) => (
@@ -12,20 +18,54 @@ const StatCard = ({ value, label, color = 'var(--cyan)', icon }) => (
   </div>
 );
 
-const PostWorkoutSummary = ({ exercises, readinessScore, onDone }) => {
+const PostWorkoutSummary = ({ exercises, readinessScore, totalExercises, onDone }) => {
   const { t, lang } = useLanguage();
-  const [animate, setAnimate] = useState(false);
+  const isAR = lang === 'ar';
+  const [animate, setAnimate]         = useState(false);
+  const [xpResult, setXpResult]       = useState(null);
+  const [newBadges, setNewBadges]     = useState([]);
+  const [showBadge, setShowBadge]     = useState(null);
 
-  const totalSets = exercises
-    ? exercises.reduce((acc, ex) => acc + (ex.sets || 0), 0)
-    : 0;
+  const totalSets     = exercises ? exercises.reduce((acc, ex) => acc + (ex.sets || 0), 0) : 0;
   const exerciseCount = exercises ? exercises.length : 0;
-  const safetyScore = Math.min(100, Math.round((readinessScore || 70) * 0.9 + 10));
+  const allDone       = totalExercises ? exerciseCount >= totalExercises : true;
+  const safetyScore   = Math.min(100, Math.round((readinessScore || 70) * 0.9 + 10));
 
   useEffect(() => {
     const timer = setTimeout(() => setAnimate(true), 200);
     return () => clearTimeout(timer);
   }, []);
+
+  // ── Award XP once on mount ─────────────────────────────────────────────
+  useEffect(() => {
+    const streak = calcWorkoutStreak();
+    if (allDone) recordFullWorkout();
+    recordWorkoutDay();
+    const newStreak    = calcWorkoutStreak();
+    const result       = awardXP({
+      completedCount:  exerciseCount,
+      totalCount:      totalExercises || exerciseCount,
+      readinessScore:  readinessScore || 70,
+      streak:          newStreak,
+      usedFormCheck:   false,
+    });
+    setXpResult({ ...result, streak: newStreak });
+
+    // Badge evaluation
+    const xpData = loadXP();
+    const { newlyEarned } = evaluateBadges({
+      totalWorkouts: getTotalWorkouts(),
+      streak:        newStreak,
+      formChecks:    getFormCheckCount(),
+      xpLevel:       getLevel(xpData.total).level,
+      bestReadiness: getBestReadiness(),
+      fullWorkouts:  getFullWorkouts(),
+    });
+    if (newlyEarned.length) {
+      setNewBadges(newlyEarned);
+      setTimeout(() => setShowBadge(newlyEarned[0]), 800);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="summary-screen screen">
@@ -91,6 +131,55 @@ const PostWorkoutSummary = ({ exercises, readinessScore, onDone }) => {
             />
           </div>
         </div>
+
+        {/* ── XP earned card ── */}
+        {xpResult && (
+          <div className="summary-xp-card animate-fade-up" style={{ animationDelay: '0.42s' }}>
+            <div className="summary-xp-earned">
+              <span className="summary-xp-plus">+{xpResult.earned}</span>
+              <span className="summary-xp-label">{isAR ? 'نقطة خبرة' : 'XP earned'}</span>
+            </div>
+            <div className="summary-xp-right">
+              <div className="summary-xp-level">
+                <span className="summary-xp-lvl-num">Lv.{xpResult.newLevel.level}</span>
+                <span className="summary-xp-lvl-title">
+                  {isAR ? xpResult.newLevel.titleAr : xpResult.newLevel.titleEn}
+                </span>
+              </div>
+              <div className="summary-xp-bar">
+                <div
+                  className="summary-xp-bar-fill"
+                  style={{ width: animate ? `${xpResult.newLevel.progress}%` : '0%' }}
+                />
+              </div>
+              {xpResult.streak > 1 && (
+                <span className="summary-xp-streak">
+                  🔥 {xpResult.streak}{isAR ? ' يوم متواصل' : '-day streak'}
+                </span>
+              )}
+            </div>
+            {xpResult.leveledUp && (
+              <div className="summary-levelup-badge animate-scale-in">
+                {isAR ? '🎉 ارتقيت مستوى!' : '🎉 Level Up!'}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── New badge popup ── */}
+        {showBadge && (
+          <div className="summary-badge-popup animate-scale-in" style={{ animationDelay: '0s' }}>
+            <span style={{ fontSize: 36 }}>{showBadge.icon}</span>
+            <div>
+              <p className="summary-badge-popup__title">
+                {isAR ? '🏅 وسام جديد!' : '🏅 New Badge!'}
+              </p>
+              <p className="summary-badge-popup__name">
+                {isAR ? showBadge.labelAr : showBadge.labelEn}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Next workout preview */}
         <div className="summary-next animate-fade-up" style={{ animationDelay: '0.45s' }}>

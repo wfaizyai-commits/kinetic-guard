@@ -506,6 +506,7 @@ function AppInner() {
         <div className={rootClass}>
           <WorkoutDashboard
             tier={auditResult?.tier || 'novice'}
+            riskFlags={auditResult?.riskFlags || []}
             readinessData={readinessData}
             onStartExercise={handleStartExercise}
             onViewExercise={handleStartExercise}

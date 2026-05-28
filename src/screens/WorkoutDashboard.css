@@ -433,6 +433,299 @@
   margin-top: 1px;
 }
 
+/* ── XP bar (top of home tab) ─────────────────────────────────────────── */
+.db-xp-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 8px 14px;
+  margin-bottom: 10px;
+}
+
+.db-xp-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.db-xp-level {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--orange);
+}
+
+.db-xp-title {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.db-xp-track {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.db-xp-fill {
+  height: 100%;
+  background: var(--orange);
+  border-radius: 3px;
+  transition: width 1s ease;
+  box-shadow: 0 0 8px var(--orange-glow);
+}
+
+.db-xp-streak {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.db-xp-streak-num {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+/* ── Injury warning banner ────────────────────────────────────────────── */
+.db-injury-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(255, 184, 0, 0.08);
+  border: 1px solid rgba(255, 184, 0, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+.db-injury-banner__icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+.db-injury-banner__text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.db-injury-banner__title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--warning);
+}
+
+.db-injury-banner__flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.db-injury-chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  border: 1px solid;
+  background: transparent;
+}
+
+/* ── Modified exercise badge ──────────────────────────────────────────── */
+.exercise-modified-chip {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  border: 1px solid;
+  background: transparent;
+  flex-shrink: 0;
+}
+
+.exercise-original-name {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 1px;
+}
+
+/* ── Badges tab ───────────────────────────────────────────────────────── */
+.badges-level-card {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-active);
+  border-radius: var(--radius-xl);
+  padding: 20px;
+  box-shadow: var(--shadow-orange);
+}
+
+.badges-level-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.badges-level-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--orange-dim);
+  border: 3px solid var(--orange);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-orange);
+}
+
+.badges-level-num {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--orange);
+  line-height: 1;
+}
+
+.badges-level-lbl {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.badges-level-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.badges-level-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.badges-xp-bar-wrap { display: flex; flex-direction: column; gap: 4px; }
+
+.badges-xp-bar {
+  height: 8px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.badges-xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--orange) 0%, var(--orange-bright) 100%);
+  border-radius: 4px;
+  box-shadow: 0 0 8px var(--orange-glow);
+  transition: width 1.2s ease;
+}
+
+.badges-xp-nums {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.badges-xp-to-next {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.badges-stats-row {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.badges-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.badges-stat__val {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.badges-stat__lbl {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.badge-card {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.badge-card--earned {
+  border-color: var(--orange-glow);
+  background: var(--orange-dim);
+}
+
+.badge-card__icon { font-size: 34px; line-height: 1; }
+
+.badge-card__name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.badge-card--earned .badge-card__name { color: var(--orange); }
+
+.badge-card__desc {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.badge-card__tick {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  background: var(--orange);
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 900;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Readiness badge (small ring) */
 .db-readiness-badge {
   position: relative;

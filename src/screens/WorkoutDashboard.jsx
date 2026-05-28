@@ -16,6 +16,11 @@ import {
   calcStreak, calcBestStreak, calcTotalFullDays, getEarnedMedals,
   PRAYER_KEYS as PRAYER_LOG_KEYS,
 } from '../lib/prayerLog';
+import {
+  loadXP, getLevel, calcWorkoutStreak, getTotalWorkouts,
+  getFormCheckCount, getBestReadiness, getFullWorkouts, evaluateBadges, BADGES,
+} from '../lib/gamification';
+import { applyInjuryMods, FLAG_INFO } from '../lib/injuryMods';
 import './WorkoutDashboard.css';
 
 // ── 12-hour time helper ───────────────────────────────────────────────────────
@@ -900,7 +905,7 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
 };
 
 // ── Main Component ────────────────────────────────────────────────────────────
-const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise, onOpenCycleTracker, onChangeGender }) => {
+const WorkoutDashboard = ({ tier, readinessData, riskFlags, onStartExercise, onViewExercise, onOpenCycleTracker, onChangeGender }) => {
   const { t, lang, isRTL } = useLanguage();
   const { user } = useAuth();
   const { gender, cycleData } = useGender();
@@ -914,11 +919,22 @@ const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise
 
   const tierKey  = (tier || 'novice').toLowerCase();
   const tierCfg  = TIER_CONFIG[tierKey] || TIER_CONFIG.novice;
-  // Pick women's or men's workout library
   const tierWorkouts = isFemale
     ? (WORKOUTS_WOMEN[tierKey] || WORKOUTS_WOMEN.novice)
     : (WORKOUTS_BY_TIER[tierKey] || WORKOUTS_BY_TIER.novice);
-  const exercises    = tierWorkouts[lang] || tierWorkouts.en;
+  const rawExercises = tierWorkouts[lang] || tierWorkouts.en;
+  // Apply injury modifications if user has risk flags
+  const { exercises, warnings: injuryWarnings } = applyInjuryMods(rawExercises, riskFlags, lang);
+
+  // Gamification data
+  const xpData       = loadXP();
+  const levelInfo    = getLevel(xpData.total);
+  const wStreak      = calcWorkoutStreak();
+  const { badges }   = evaluateBadges({
+    totalWorkouts: getTotalWorkouts(), streak: wStreak,
+    formChecks: getFormCheckCount(), xpLevel: levelInfo.level,
+    bestReadiness: getBestReadiness(), fullWorkouts: getFullWorkouts(),
+  });
 
   // Cycle phase info (women only)
   const cyclePhaseInfo = isFemale && cycleData
@@ -976,6 +992,7 @@ const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise
     { id: 'home',    icon: '📊', labelEn: 'Home',    labelAr: 'الرئيسية' },
     { id: 'workout', icon: '💪', labelEn: 'Workout',  labelAr: 'التمارين' },
     { id: 'prayer',  icon: '🕌', labelEn: 'Prayer',   labelAr: 'الصلاة'   },
+    { id: 'badges',  icon: '🏅', labelEn: 'Badges',   labelAr: 'الأوسمة'  },
     { id: 'watch',   icon: '⌚', labelEn: 'Watch',    labelAr: 'الساعة'   },
   ];
 
@@ -989,6 +1006,40 @@ const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise
         {/* ══ HOME TAB ══ */}
         {activeTab === 'home' && (
           <>
+            {/* ── XP + Streak bar ── */}
+            <div className="db-xp-bar animate-fade-up">
+              <div className="db-xp-left">
+                <span className="db-xp-level">Lv.{levelInfo.level}</span>
+                <span className="db-xp-title">{isRTL ? levelInfo.titleAr : levelInfo.titleEn}</span>
+              </div>
+              <div className="db-xp-track">
+                <div className="db-xp-fill" style={{ width: `${levelInfo.progress}%` }} />
+              </div>
+              <div className="db-xp-streak">
+                <span>{wStreak > 0 ? '🔥' : '💤'}</span>
+                <span className="db-xp-streak-num">{wStreak}</span>
+              </div>
+            </div>
+
+            {/* ── Injury warning banner ── */}
+            {injuryWarnings.length > 0 && (
+              <div className="db-injury-banner animate-fade-up">
+                <span className="db-injury-banner__icon">⚠️</span>
+                <div className="db-injury-banner__text">
+                  <span className="db-injury-banner__title">
+                    {isRTL ? 'برنامج مُعدَّل لسلامتك' : 'Program modified for your safety'}
+                  </span>
+                  <span className="db-injury-banner__flags">
+                    {injuryWarnings.map(w => (
+                      <span key={w.flag} className="db-injury-chip" style={{ borderColor: w.color, color: w.color }}>
+                        {FLAG_INFO[w.flag]?.icon} {isRTL ? FLAG_INFO[w.flag]?.labelAr : FLAG_INFO[w.flag]?.labelEn}
+                      </span>
+                    ))}
+                  </span>
+                </div>
+              </div>
+            )}
+
             {/* Greeting */}
             <div className="db-greeting animate-fade-up">
               <div className="db-greeting__text">
@@ -1216,10 +1267,22 @@ const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise
                     <span className="exercise-row__num">{i + 1}</span>
                     <span className="exercise-row__icon">{ex.icon}</span>
                     <div className="exercise-row__info">
-                      <span className="exercise-row__name">{ex.name}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <span className="exercise-row__name">{ex.name}</span>
+                        {ex.modified && (
+                          <span className="exercise-modified-chip" style={{ borderColor: ex.modColor, color: ex.modColor }}>
+                            ⚠️ {isRTL ? 'معدَّل' : 'Modified'}
+                          </span>
+                        )}
+                      </div>
                       <span className="exercise-row__meta">
                         {ex.sets} {t.exercise.sets} · {ex.reps} {t.exercise.reps} · {ex.rest} {t.exercise.rest}
                       </span>
+                      {ex.modified && ex.originalName && (
+                        <span className="exercise-original-name">
+                          {isRTL ? `بدلاً من: ${ex.originalName}` : `Replaces: ${ex.originalName}`}
+                        </span>
+                      )}
                     </div>
                     <div className="exercise-row__right">
                       <span className="muscle-chip">{ex.muscle}</span>
@@ -1244,6 +1307,79 @@ const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise
 
         {/* ══ PRAYER TAB ══ */}
         {activeTab === 'prayer' && <PrayerTab />}
+
+        {/* ══ BADGES TAB ══ */}
+        {activeTab === 'badges' && (
+          <div className="tab-content">
+            <div className="prayer-tab-header">
+              <h2 className="prayer-tab-title">{isRTL ? 'الأوسمة والإنجازات' : 'BADGES & ACHIEVEMENTS'}</h2>
+            </div>
+
+            {/* XP + Level hero */}
+            <div className="badges-level-card animate-fade-up">
+              <div className="badges-level-hero">
+                <div className="badges-level-circle">
+                  <span className="badges-level-num">{levelInfo.level}</span>
+                  <span className="badges-level-lbl">{isRTL ? 'مستوى' : 'Level'}</span>
+                </div>
+                <div className="badges-level-info">
+                  <span className="badges-level-title">{isRTL ? levelInfo.titleAr : levelInfo.titleEn}</span>
+                  <div className="badges-xp-bar-wrap">
+                    <div className="badges-xp-bar">
+                      <div className="badges-xp-fill" style={{ width: `${levelInfo.progress}%` }} />
+                    </div>
+                    <span className="badges-xp-nums">
+                      {xpData.total} {levelInfo.nextMin ? `/ ${levelInfo.nextMin}` : ''} XP
+                    </span>
+                  </div>
+                  {levelInfo.nextMin && (
+                    <span className="badges-xp-to-next">
+                      {isRTL
+                        ? `${levelInfo.nextMin - xpData.total} نقطة للمستوى التالي`
+                        : `${levelInfo.nextMin - xpData.total} XP to next level`}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="badges-stats-row">
+                <div className="badges-stat">
+                  <span className="badges-stat__val">{getTotalWorkouts()}</span>
+                  <span className="badges-stat__lbl">{isRTL ? 'تمارين' : 'Workouts'}</span>
+                </div>
+                <div className="badges-stat">
+                  <span className="badges-stat__val">🔥 {wStreak}</span>
+                  <span className="badges-stat__lbl">{isRTL ? 'يوم متواصل' : 'Day streak'}</span>
+                </div>
+                <div className="badges-stat">
+                  <span className="badges-stat__val">{badges.filter(b => b.earned).length}/{badges.length}</span>
+                  <span className="badges-stat__lbl">{isRTL ? 'أوسمة' : 'Badges'}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Badges grid */}
+            <div className="db-section-label" style={{ marginTop: 20, marginBottom: 12 }}>
+              {isRTL ? 'مجموعة الأوسمة' : 'BADGE COLLECTION'}
+            </div>
+            <div className="badges-grid animate-fade-up" style={{ animationDelay: '0.1s' }}>
+              {badges.map(b => (
+                <div key={b.id} className={`badge-card ${b.earned ? 'badge-card--earned' : 'badge-card--locked'}`}>
+                  <span className="badge-card__icon"
+                    style={{ filter: b.earned ? 'none' : 'grayscale(1) opacity(0.3)' }}>
+                    {b.icon}
+                  </span>
+                  <span className="badge-card__name">
+                    {isRTL ? b.labelAr : b.labelEn}
+                  </span>
+                  <span className="badge-card__desc">
+                    {isRTL ? b.descAr : b.descEn}
+                  </span>
+                  {b.earned && <span className="badge-card__tick">✓</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* ══ WATCH TAB ══ */}
         {activeTab === 'watch' && (
