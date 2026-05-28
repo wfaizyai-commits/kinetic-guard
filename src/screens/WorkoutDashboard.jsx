@@ -769,7 +769,7 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
 };
 
 // ── Main Component ────────────────────────────────────────────────────────────
-const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise, onOpenCycleTracker }) => {
+const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise, onOpenCycleTracker, onChangeGender }) => {
   const { t, lang, isRTL } = useLanguage();
   const { user } = useAuth();
   const { gender, cycleData } = useGender();
@@ -863,6 +863,12 @@ const WorkoutDashboard = ({ tier, readinessData, onStartExercise, onViewExercise
               <div className="db-greeting__text">
                 <p className="db-greeting__sub">{getGreeting()}, <span className="db-greeting__name">{firstName} 👋</span></p>
                 <h1 className="db-greeting__title">{td.title}</h1>
+                {/* Gender switch pill */}
+                <button className="db-gender-switch" onClick={onChangeGender}>
+                  <span>{isFemale ? '🌸' : '💪'}</span>
+                  <span>{isFemale ? (isRTL ? 'نسائي' : 'Women') : (isRTL ? 'رجالي' : 'Men')}</span>
+                  <span className="db-gender-switch__chevron">⌄</span>
+                </button>
               </div>
               <div className="db-readiness-badge">
                 <svg viewBox="0 0 64 64" className="db-readiness-svg">

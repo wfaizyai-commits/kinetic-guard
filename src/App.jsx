@@ -432,6 +432,10 @@ function AppInner() {
     setShowGenderModal(false);
   };
 
+  const handleChangeGender = () => {
+    setShowGenderModal(true);
+  };
+
   // Modal overlays
   const ageModalOverlay    = showAgeModal    && <AgeSetupModal    lang={lang} onConfirm={handleAgeConfirm} />;
   const genderModalOverlay = showGenderModal && <GenderSetupModal lang={lang} onConfirm={handleGenderConfirm} />;
@@ -506,6 +510,7 @@ function AppInner() {
             onStartExercise={handleStartExercise}
             onViewExercise={handleStartExercise}
             onOpenCycleTracker={() => setScreen(SCREENS.PERIOD_TRACKER)}
+            onChangeGender={handleChangeGender}
           />
           {ageModalOverlay}
           {genderModalOverlay}
