@@ -479,7 +479,7 @@ const PrayerTab = () => {
               <div className="prayer-full-row__right">
                 <span className="prayer-full-row__time">{to12h(p.time)}</span>
                 <button
-                  className={`prayer-check-btn ${isDone ? 'prayer-check-btn--done' : ''}`}
+                  className={`prayer-check-btn ${isDone ? 'prayer-check-btn--done anim-check-bounce' : ''}`}
                   onClick={() => handleCheck(p.key)}
                   aria-label={isDone ? 'Unmark' : 'Mark as prayed'}
                 >
@@ -1013,10 +1013,10 @@ const WorkoutDashboard = ({ tier, readinessData, riskFlags, onStartExercise, onV
                 <span className="db-xp-title">{isRTL ? levelInfo.titleAr : levelInfo.titleEn}</span>
               </div>
               <div className="db-xp-track">
-                <div className="db-xp-fill" style={{ width: `${levelInfo.progress}%` }} />
+                <div className="db-xp-fill anim-xp-glow" style={{ width: `${levelInfo.progress}%` }} />
               </div>
               <div className="db-xp-streak">
-                <span>{wStreak > 0 ? '🔥' : '💤'}</span>
+                <span className={wStreak > 0 ? 'anim-fire' : ''}>{wStreak > 0 ? '🔥' : '💤'}</span>
                 <span className="db-xp-streak-num">{wStreak}</span>
               </div>
             </div>

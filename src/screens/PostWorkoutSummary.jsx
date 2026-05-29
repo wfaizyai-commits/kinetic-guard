@@ -8,6 +8,8 @@ import {
   getTotalWorkouts, getFormCheckCount, getBestReadiness,
   evaluateBadges,
 } from '../lib/gamification';
+import { launchConfetti } from '../lib/confetti';
+import { useCountUp } from '../lib/countUp';
 import './PostWorkoutSummary.css';
 
 const StatCard = ({ value, label, color = 'var(--cyan)', icon }) => (
@@ -63,9 +65,20 @@ const PostWorkoutSummary = ({ exercises, readinessScore, totalExercises, onDone 
     });
     if (newlyEarned.length) {
       setNewBadges(newlyEarned);
-      setTimeout(() => setShowBadge(newlyEarned[0]), 800);
+      setTimeout(() => {
+        setShowBadge(newlyEarned[0]);
+        launchConfetti();
+      }, 800);
+    } else if (allDone) {
+      // Confetti even without new badge when all exercises done
+      setTimeout(() => launchConfetti(), 600);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Count-up animations for stats
+  const animSafety  = useCountUp(safetyScore,   900, animate);
+  const animEx      = useCountUp(exerciseCount,  600, animate);
+  const animSets    = useCountUp(totalSets,       700, animate);
 
   return (
     <div className="summary-screen screen">
@@ -91,19 +104,19 @@ const PostWorkoutSummary = ({ exercises, readinessScore, totalExercises, onDone 
         {/* Stats grid */}
         <div className="summary-stats animate-fade-up" style={{ animationDelay: '0.2s' }}>
           <StatCard
-            value={safetyScore}
+            value={animSafety}
             label={t.summary.safetyScore}
             color="var(--green)"
             icon="🛡️"
           />
           <StatCard
-            value={exerciseCount}
+            value={animEx}
             label={t.summary.exercises}
             color="var(--cyan)"
             icon="💪"
           />
           <StatCard
-            value={totalSets}
+            value={animSets}
             label={t.summary.sets}
             color="var(--purple)"
             icon="🔁"

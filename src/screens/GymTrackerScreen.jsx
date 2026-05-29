@@ -354,7 +354,7 @@ const GymTrackerScreen = ({ onBack }) => {
                             onChange={e => handleSetChange(exIdx, setIdx, 'reps', e.target.value)}
                           />
                           <button
-                            className={`gym-set-done-btn ${set.done ? 'gym-set-done-btn--done' : ''}`}
+                            className={`gym-set-done-btn ${set.done ? 'gym-set-done-btn--done anim-check-bounce' : ''}`}
                             onClick={() => toggleSetDone(exIdx, setIdx)}
                           >
                             {set.done ? '✓' : '○'}

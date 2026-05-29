@@ -14,6 +14,7 @@ import PostWorkoutSummary from './screens/PostWorkoutSummary';
 import AuthScreen from './screens/AuthScreen';
 import PeriodTrackerScreen from './screens/PeriodTrackerScreen';
 import GymTrackerScreen from './screens/GymTrackerScreen';
+import AnimatedSplash from './screens/AnimatedSplash';
 
 import useAuth from './hooks/useAuth';
 import { syncProfileTier, syncAssessmentResult, syncWorkoutSession, hydrateRemoteFromLocal } from './lib/sync';
@@ -278,6 +279,7 @@ function AppInner() {
   const [completedExercises, setCompletedExercises] = useState([]);
   const [showAgeModal, setShowAgeModal] = useState(false);
   const [showGenderModal, setShowGenderModal] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
   const hasExistingAudit = !!loadAudit();
 
   // Sync screen state whenever auth resolves or user changes
@@ -338,6 +340,11 @@ function AppInner() {
 
   // Show nothing while checking session
   if (authLoading) return null;
+
+  // Animated splash (shown once on app load)
+  if (showSplash) {
+    return <AnimatedSplash onComplete={() => setShowSplash(false)} />;
+  }
 
   const handleAuthenticated = (authUser) => {
     // useAuth + useEffect above handle this automatically,
@@ -442,8 +449,8 @@ function AppInner() {
   const ageModalOverlay    = showAgeModal    && <AgeSetupModal    lang={lang} onConfirm={handleAgeConfirm} />;
   const genderModalOverlay = showGenderModal && <GenderSetupModal lang={lang} onConfirm={handleGenderConfirm} />;
 
-  // Root class — applies female-theme CSS variable overrides
-  const rootClass = gender === 'female' ? 'female-theme' : '';
+  // Root class — applies female-theme CSS variable overrides + screen entrance animation
+  const rootClass = ['anim-screen-enter', gender === 'female' ? 'female-theme' : ''].filter(Boolean).join(' ');
 
   switch (screen) {
     case SCREENS.AUTH:
