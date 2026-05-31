@@ -451,6 +451,40 @@
 
 [dir="rtl"] .db-gym-entry { text-align: right; }
 .db-gym-entry:active { opacity: 0.8; transform: scale(0.98); }
+
+/* Training Split entry — bolder ember gradient to lead the gym flow */
+.db-split-entry {
+  background: linear-gradient(135deg, rgba(255,107,0,0.22), rgba(255,138,61,0.06));
+  margin-bottom: 12px;
+}
+
+/* Log-a-walk / cardio chip — makes walking count toward the streak */
+.db-walk-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 13px 16px;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-bottom: 16px;
+  text-align: left;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+}
+[dir="rtl"] .db-walk-entry { text-align: right; font-family: var(--font-arabic); }
+.db-walk-entry__icon { font-size: 18px; flex: 0 0 auto; }
+.db-walk-entry:active { transform: scale(0.98); }
+.db-walk-entry:disabled {
+  cursor: default;
+  border-color: rgba(43, 217, 160, 0.3);
+  background: var(--green-dim);
+  color: var(--text-secondary);
+}
 .db-gym-entry__icon { font-size: 28px; flex-shrink: 0; }
 .db-gym-entry__text { flex: 1; display: flex; flex-direction: column; gap: 2px; }
 .db-gym-entry__title { font-family: var(--font-heading); font-size: 15px; font-weight: 900; color: var(--text-primary); }

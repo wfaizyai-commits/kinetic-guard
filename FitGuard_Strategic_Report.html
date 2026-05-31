@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FitGuard — Strategic Analysis Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --orange: #FF6B00;
+    --orange-dim: #cc5500;
+    --orange-glow: rgba(255,107,0,0.15);
+    --dark: #0A0A0A;
+    --card: #111111;
+    --card2: #161616;
+    --border: rgba(255,107,0,0.18);
+    --text: #F0EDE8;
+    --muted: #888;
+    --green: #00E5A0;
+    --blue: #4A9EFF;
+    --red: #FF4A6E;
+    --yellow: #FFD700;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ─── HEADER ─── */
+  .hero {
+    background: linear-gradient(135deg, #0A0A0A 0%, #1a0800 60%, #0A0A0A 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 40px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 80% 50%, rgba(255,107,0,0.08) 0%, transparent 70%);
+  }
+  .hero-inner { max-width: 1100px; margin: auto; position: relative; }
+  .badge {
+    display: inline-block;
+    background: var(--orange-glow);
+    border: 1px solid var(--orange);
+    color: var(--orange);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    font-family: 'Rajdhani', sans-serif;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 58px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--orange); }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 640px;
+    margin-bottom: 32px;
+    font-weight: 300;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+  }
+  .hero-meta strong { color: var(--orange); }
+
+  /* ─── NAV TABS ─── */
+  .nav-tabs {
+    background: #0d0d0d;
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+  }
+  .nav-tabs a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 14px 16px;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all .2s;
+  }
+  .nav-tabs a:hover { color: var(--orange); border-color: var(--orange); }
+
+  /* ─── LAYOUT ─── */
+  .container { max-width: 1100px; margin: auto; padding: 0 40px; }
+  .section { padding: 64px 0; border-bottom: 1px solid rgba(255,107,0,0.08); }
+  .section:last-child { border-bottom: none; }
+
+  .sec-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .sec-title {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .sec-sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 36px;
+    font-weight: 300;
+  }
+
+  /* ─── CARDS ─── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  @media(max-width:768px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .container { padding: 0 20px; }
+    .nav-tabs { padding: 0 20px; }
+    .hero { padding: 40px 20px 36px; }
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+  }
+  .card-accent { border-color: var(--orange); }
+  .card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  .card h3 .icon { margin-left: 8px; }
+  .card p { font-size: 14px; color: #bbb; line-height: 1.7; }
+
+  /* ─── STAT BLOCKS ─── */
+  .stat-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 24px;
+    text-align: center;
+  }
+  .stat-block .num {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--orange);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-block .label { font-size: 13px; color: var(--muted); }
+
+  /* ─── TABLE ─── */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+  th {
+    background: rgba(255,107,0,0.1);
+    color: var(--orange);
+    padding: 12px 16px;
+    text-align: right;
+    font-weight: 700;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: #ccc;
+    vertical-align: top;
+  }
+  tr:hover td { background: rgba(255,107,0,0.03); }
+  .yes { color: var(--green); font-weight: 700; }
+  .no { color: var(--red); }
+  .partial { color: var(--yellow); }
+
+  /* ─── TIMELINE ─── */
+  .timeline { position: relative; padding-right: 32px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    right: 12px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--orange), transparent);
+  }
+  .tl-item { position: relative; margin-bottom: 32px; }
+  .tl-dot {
+    position: absolute;
+    right: -24px;
+    top: 4px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--orange);
+    border: 2px solid var(--dark);
+    box-shadow: 0 0 8px var(--orange);
+  }
+  .tl-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .tl-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+  .tl-body { font-size: 13px; color: #aaa; line-height: 1.7; }
+
+  /* ─── PILLS / TAGS ─── */
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+    margin: 3px 3px 3px 0;
+    font-weight: 600;
+  }
+  .tag-orange { color: var(--orange); border-color: var(--orange); background: rgba(255,107,0,0.08); }
+  .tag-green  { color: var(--green);  border-color: var(--green);  background: rgba(0,229,160,0.08); }
+  .tag-blue   { color: var(--blue);   border-color: var(--blue);   background: rgba(74,158,255,0.08); }
+  .tag-red    { color: var(--red);    border-color: var(--red);    background: rgba(255,74,110,0.08); }
+
+  /* ─── HIGHLIGHT BOX ─── */
+  .highlight {
+    background: var(--orange-glow);
+    border: 1px solid var(--orange);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  .highlight strong { color: var(--orange); }
+  .insight-box {
+    background: rgba(0,229,160,0.05);
+    border: 1px solid rgba(0,229,160,0.25);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: #ccc;
+  }
+  .insight-box strong { color: var(--green); }
+  .warning-box {
+    background: rgba(255,215,0,0.05);
+    border: 1px solid rgba(255,215,0,0.25);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: #ccc;
+  }
+  .warning-box strong { color: var(--yellow); }
+
+  /* ─── PRICING ─── */
+  .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+  .price-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 22px;
+    text-align: center;
+  }
+  .price-card.featured { border-color: var(--orange); background: rgba(255,107,0,0.05); }
+  .price-card .tier { font-size: 12px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; }
+  .price-card .amount { font-family: 'Rajdhani', sans-serif; font-size: 42px; font-weight: 700; color: var(--orange); }
+  .price-card .unit { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+  .price-card ul { list-style: none; text-align: right; font-size: 13px; color: #bbb; }
+  .price-card ul li { padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .price-card ul li::before { content: '✓ '; color: var(--green); }
+  .verdict { display: inline-block; margin-top: 16px; padding: 6px 18px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+  .verdict-green { background: rgba(0,229,160,0.15); color: var(--green); }
+  .verdict-orange { background: rgba(255,107,0,0.15); color: var(--orange); }
+
+  /* ─── INFLUENCER ─── */
+  .inf-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .inf-card .tier-badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(255,107,0,0.1);
+    color: var(--orange);
+    border: 1px solid var(--orange);
+    margin-bottom: 10px;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider { border: none; border-top: 1px solid rgba(255,107,0,0.1); margin: 28px 0; }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    background: #080808;
+    border-top: 1px solid var(--border);
+    padding: 32px 40px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .footer strong { color: var(--orange); }
+
+  /* ─── BILINGUAL SPLIT ─── */
+  .bilingual { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 20px 0; }
+  .bi-ar { direction: rtl; border-right: 3px solid var(--orange); padding-right: 16px; }
+  .bi-en { direction: ltr; border-left: 3px solid var(--blue); padding-left: 16px; }
+  .bi-ar h4 { color: var(--orange); font-size: 14px; margin-bottom: 8px; }
+  .bi-en h4 { color: var(--blue); font-size: 14px; margin-bottom: 8px; }
+  .bi-ar p, .bi-en p { font-size: 13px; color: #aaa; }
+  @media(max-width:700px) { .bilingual { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; } }
+
+  /* ─── PRINT / PDF (light, ink-friendly) ─── */
+  @media print {
+    body { background:#fff; color:#111; font-size:12px; }
+    .hero, .section, .footer { background:#fff !important; border-color:#ddd; }
+    .hero::before { display:none; }
+    .nav-tabs { display:none; }
+    .card, .stat-block, .price-card, .inf-card, .highlight, .insight-box, .warning-box {
+      background:#fff !important; border:1px solid #ddd !important; break-inside:avoid;
+    }
+    .card p, .stat-block .label, td, .tl-body, .sec-sub { color:#333 !important; }
+    .hero h1, .hero h1 span, .sec-title, .stat-block .num, .price-card .amount { color:#c2540a !important; }
+    th { background:#f3f3f3 !important; color:#c2540a !important; }
+    a { color:#111 !important; text-decoration:none; }
+    .section { padding:24px 0; border-bottom:1px solid #eee; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="badge">Strategic Analysis Report · May 2026</div>
+    <h1><span>FitGuard</span> — Go-To-Market &amp; Market Strategy</h1>
+    <div class="hero-sub">تحليل استراتيجي شامل للإطلاق في السوق السعودي — الفرصة والتسعير والنمو والشراكات</div>
+    <div class="hero-meta">
+      <span>📍 <strong>KSA Launch</strong> · Q4 2026</span>
+      <span>🎯 <strong>Target</strong> · Arabic-speaking 18-35</span>
+      <span>💰 <strong>Model</strong> · Freemium + B2B White-label</span>
+      <span>🤖 <strong>AI Engine</strong> · Claude Vision API</span>
+      <span>📋 <strong>Prepared for</strong> · Waleed Faizy</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ NAV ═══════════════════════════════ -->
+<div class="nav-tabs">
+  <a href="#market">📊 تحليل السوق</a>
+  <a href="#gtm">🚀 Go-To-Market</a>
+  <a href="#pricing">💰 التسعير</a>
+  <a href="#features">⚡ المميزات</a>
+  <a href="#influencers">📱 المؤثرون</a>
+  <a href="#partnerships">🤝 الشراكات</a>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 1: MARKET ═══════════════════════════════ -->
+<div id="market" class="section">
+<div class="container">
+
+  <div class="sec-label">01 — Market Analysis</div>
+  <div class="sec-title">تحليل السوق والفرصة</div>
+  <div class="sec-sub">حجم السوق · المنافسون · الفجوات الاستراتيجية | Market Size · Competitors · Strategic Gaps</div>
+
+  <!-- Stats Row -->
+  <div class="grid-4" style="margin-bottom:32px;">
+    <div class="stat-block">
+      <div class="num">$4.2B</div>
+      <div class="label">TAM — سوق تطبيقات اللياقة MENA 2026</div>
+    </div>
+    <div class="stat-block">
+      <div class="num">$820M</div>
+      <div class="label">SAM — مستخدمو iOS العرب في GCC + مصر</div>
+    </div>
+    <div class="stat-block">
+      <div class="num">12M+</div>
+      <div class="label">عضوية الجيم في المملكة العربية السعودية وحدها</div>
+    </div>
+    <div class="stat-block">
+      <div class="num">+29%</div>
+      <div class="label">نمو سنوي لقطاع اللياقة في KSA (Vision 2030)</div>
+    </div>
+  </div>
+
+  <p style="font-size:12px;color:var(--muted);margin:-18px 0 4px;">* الأرقام أعلاه تقديرية وتحتاج توثيق بمصادر (Statista · تقارير الهيئة العامة للرياضة · Sensor Tower) قبل عرضها على مستثمر أو شريك. تحقّق خاصة من رقم عضويات الجيم في KSA — يبدو مرتفعاً.</p>
+
+  <div class="highlight">
+    <strong>🔴 الفرصة الذهبية:</strong> لا يوجد حتى الآن تطبيق لياقة عربي يجمع بين الفحص الأمني قبل التمرين + تحليل الحركة بالذكاء الاصطناعي + تصميم Arabic-first. FitGuard يملأ هذا الفراغ بالكامل.
+  </div>
+
+  <!-- Market Drivers -->
+  <h3 style="margin:28px 0 16px; font-size:18px; font-weight:700;">محركات النمو في السوق السعودي</h3>
+  <div class="grid-3" style="margin-bottom:28px;">
+    <div class="card">
+      <h3>🏃 رؤية 2030</h3>
+      <p>هدف الحكومة رفع نسبة ممارسة الرياضة من 13% إلى 40% بحلول 2030. ضخ استثمارات بمليارات الريالات في البنية التحتية الرياضية. FitGuard يتوافق مع هذه الأجندة الوطنية.</p>
+    </div>
+    <div class="card">
+      <h3>📱 تغلغل الهواتف الذكية</h3>
+      <p>نسبة 98% انتشار الهواتف الذكية في KSA. iOS هو المنصة المفضلة للشريحة 18-35. الإنفاق على تطبيقات الصحة واللياقة في ارتفاع مستمر (+35% منذ 2022).</p>
+    </div>
+    <div class="card">
+      <h3>⚕️ الوعي الصحي</h3>
+      <p>ارتفاع معدلات الإصابات الرياضية يخلق طلباً حقيقياً على أدوات الوقاية والسلامة. 2.3 مليون شخص في MENA يتعافون من إصابات رياضية سنوياً — جمهور مستعد لـ FitGuard.</p>
+    </div>
+  </div>
+
+  <!-- Competitor Table -->
+  <h3 style="margin-bottom:16px; font-size:18px; font-weight:700;">🗺️ خريطة المنافسين</h3>
+  <table>
+    <tr>
+      <th>التطبيق</th>
+      <th>فحص أمني</th>
+      <th>AI Form Check</th>
+      <th>عربي RTL</th>
+      <th>أوقات الصلاة</th>
+      <th>Daily Readiness</th>
+      <th>الحكم</th>
+    </tr>
+    <tr>
+      <td><strong style="color:var(--orange)">FitGuard ✦</strong></td>
+      <td class="yes">✓ نعم</td>
+      <td class="yes">✓ Claude API</td>
+      <td class="yes">✓ كامل</td>
+      <td class="yes">✓ نعم</td>
+      <td class="yes">✓ نعم</td>
+      <td><span class="tag tag-green">لا منافس</span></td>
+    </tr>
+    <tr>
+      <td>MyFitnessPal</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td><span class="tag tag-blue">تغذية فقط</span></td>
+    </tr>
+    <tr>
+      <td>Fitbod</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td class="partial">جزئي</td>
+      <td><span class="tag tag-blue">برامج فقط</span></td>
+    </tr>
+    <tr>
+      <td>Freeletics</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td><span class="tag tag-blue">بدون AI</span></td>
+    </tr>
+    <tr>
+      <td>Kinetica</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td class="partial">جزئي</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td><span class="tag tag-blue">عربية بدون AI</span></td>
+    </tr>
+    <tr>
+      <td>Hudl Technique</td>
+      <td class="no">✗</td>
+      <td class="partial">رياضيون فقط</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td class="no">✗</td>
+      <td><span class="tag tag-blue">رياضات نخبة</span></td>
+    </tr>
+  </table>
+
+  <div class="insight-box">
+    <strong>✅ الخلاصة:</strong> FitGuard يمتلك <strong>مزايا تنافسية فريدة لا يمتلكها أي تطبيق آخر</strong>: الجمع بين الفحص الأمني + AI بالعربية + أوقات الصلاة في مكان واحد. هذا "white space" حقيقي وليس مجرد ادعاء تسويقي.
+  </div>
+
+  <!-- Positioning Map Text -->
+  <h3 style="margin:28px 0 16px; font-size:18px; font-weight:700;">📍 خريطة التموضع الاستراتيجي</h3>
+  <div class="grid-2">
+    <div class="card card-accent">
+      <h3>🎯 التموضع الموصى به</h3>
+      <p style="margin-bottom:12px;">"المدرب الشخصي الآمن للعرب" — Safe AI Coach for the Arab World</p>
+      <p>ليس مجرد تطبيق تمارين — بل شريكك الذي يقرر متى يجب أن تتمرن، وكيف، وبأي شكل صحيح.</p>
+      <div style="margin-top:14px;">
+        <span class="tag tag-orange">Safety-first</span>
+        <span class="tag tag-orange">AI-powered</span>
+        <span class="tag tag-orange">Arabic-native</span>
+        <span class="tag tag-orange">Culturally aware</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🚫 التموضع الذي يجب تجنبه</h3>
+      <p style="margin-bottom:10px;">لا تقل "تطبيق تمارين بالعربية" — هذا ضعيف جداً ولا يميزك.</p>
+      <p>لا تقل "مثل MyFitnessPal بالعربية" — هذا يقزمك ويضعك في سياق غلط.</p>
+      <p style="margin-top:10px; color:var(--red);">❌ Avoid: "workout app in Arabic"<br/>❌ Avoid: "AI fitness tracker"</p>
+      <p style="margin-top:8px; color:var(--green);">✅ Use: "Your Arabic AI Safety Coach Before Every Lift"</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 2: GTM ═══════════════════════════════ -->
+<div id="gtm" class="section">
+<div class="container">
+
+  <div class="sec-label">02 — Go-To-Market Strategy</div>
+  <div class="sec-title">استراتيجية الإطلاق في السوق السعودي</div>
+  <div class="sec-sub">الخطوات والقنوات والرسائل والجداول الزمنية | Channels · Messaging · Timeline</div>
+
+  <!-- Messaging Framework -->
+  <h3 style="margin-bottom:16px; font-size:18px; font-weight:700;">💬 الرسائل التسويقية الأساسية</h3>
+  <div class="grid-2" style="margin-bottom:32px;">
+    <div class="card card-accent">
+      <h3>📣 الرسالة الرئيسية — Arabic</h3>
+      <p style="font-size:18px; font-weight:700; color:var(--orange); margin-bottom:12px; line-height:1.4;">"قبل ما ترفع — خلنا نشوف إذا جسمك جاهز"</p>
+      <p>FitGuard هو أول مدرب AI عربي يفحص جاهزيتك قبل كل تمرين، ويراقب حركتك بالذكاء الاصطناعي، ويعدّل برنامجك على حسب يومك.</p>
+    </div>
+    <div class="card">
+      <h3>📣 Core Message — English</h3>
+      <p style="font-size:16px; font-weight:700; color:var(--blue); margin-bottom:12px;">"Before you lift — we check if you're ready."</p>
+      <p>FitGuard is the first Arabic-native AI safety coach. Injury prevention, real-time form feedback, and daily readiness — all in one app built for Arab athletes.</p>
+    </div>
+  </div>
+
+  <!-- Pain Point Messaging -->
+  <div class="grid-3" style="margin-bottom:32px;">
+    <div class="card">
+      <h3>😓 Pain → Solution 1</h3>
+      <p><strong style="color:var(--red);">Pain:</strong> "دخلت الجيم وأنا تعبان — اتأذيت"</p>
+      <hr class="divider"/>
+      <p><strong style="color:var(--green);">FitGuard:</strong> "الـ Daily Readiness Check يقول لك: اليوم مو يومك. استرح أو خفّف الشدة."</p>
+    </div>
+    <div class="card">
+      <h3>😓 Pain → Solution 2</h3>
+      <p><strong style="color:var(--red);">Pain:</strong> "ما أعرف أرفع صح — ظهري يوجعني"</p>
+      <hr class="divider"/>
+      <p><strong style="color:var(--green);">FitGuard:</strong> "AI Form Check يحلل حركتك فوراً بالعربية ويصحح وضعيتك."</p>
+    </div>
+    <div class="card">
+      <h3>😓 Pain → Solution 3</h3>
+      <p><strong style="color:var(--red);">Pain:</strong> "تطبيقات الجيم كلها إنجليزي وما تناسب جدولي"</p>
+      <hr class="divider"/>
+      <p><strong style="color:var(--green);">FitGuard:</strong> "عربي 100% + أوقات الصلاة مدمجة + يتكيف مع جدولك اليومي."</p>
+    </div>
+  </div>
+
+  <!-- Launch Timeline -->
+  <h3 style="margin:28px 0 20px; font-size:18px; font-weight:700;">📅 خط زمني الإطلاق — KSA Launch Roadmap</h3>
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">الشهر 1-2 | Jul–Aug 2026 — Pre-Launch</div>
+      <div class="tl-title">مرحلة البناء والتحضير</div>
+      <div class="tl-body">
+        ✦ تجنيد 50-100 مستخدم تجريبي عبر TestFlight (Riyadh/Jeddah gym communities)<br/>
+        ✦ إنشاء حساب TikTok + Instagram عربي للتطبيق<br/>
+        ✦ تصوير 3-5 فيديوهات "demo" بالعربية تعرض الـ Safety Audit + Form Check<br/>
+        ✦ التواصل مع 5-10 مؤثرين لياقة سعوديين لمرحلة الـ beta<br/>
+        ✦ إعداد Privacy Policy متوافقة مع PDPL السعودي<br/>
+        ✦ إعداد App Store Connect + الصور والوصف العربي
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">الشهر 3 | Sep 2026 — Soft Launch</div>
+      <div class="tl-title">الإطلاق الناعم عبر المؤثرين</div>
+      <div class="tl-body">
+        ✦ إطلاق حملة "مؤثرين" مع 3-5 حساب لياقة بعدد متابعين 50K-500K<br/>
+        ✦ كل مؤثر يجرب الـ Safety Audit الـ 6 أسئلة على الكاميرا<br/>
+        ✦ حملة hashtag: <strong style="color:var(--orange)">#فيتجارد_جربها</strong><br/>
+        ✦ نشر محتوى "Form Check بالذكاء الاصطناعي" على TikTok<br/>
+        ✦ هدف: 1,000 مستخدم مسجل خلال الشهر الأول
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">الشهر 4-5 | Oct–Nov 2026 — Full Launch</div>
+      <div class="tl-title">الإطلاق الرسمي + تفعيل Pro</div>
+      <div class="tl-body">
+        ✦ إطلاق FitGuard Pro (29 SAR/شهر) على App Store<br/>
+        ✦ حملة إعلانية مدفوعة: Meta Ads + TikTok Ads (500-1,000 USD/شهر)<br/>
+        ✦ الاستهداف: رجال/نساء 18-35، الرياض/جدة/الدمام، اهتمامات: لياقة، جيم، رياضة<br/>
+        ✦ إطلاق برنامج Referral: "دعوة صديق = شهر Pro مجاني"<br/>
+        ✦ هدف: 5,000 مستخدم + 300 مشترك Pro
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">الشهر 6+ | Dec 2026 — Scale</div>
+      <div class="tl-title">التوسع والشراكات B2B</div>
+      <div class="tl-body">
+        ✦ التفاوض مع Fitness Time + Leejam على White-label<br/>
+        ✦ توسع إلى UAE + مصر<br/>
+        ✦ إطلاق وضع رمضان 2027 (Ramadan Mode) في ديسمبر<br/>
+        ✦ هدف نهاية 2026: 500+ مشترك Pro = ~14,500 SAR/شهر MRR
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GTM Channels -->
+  <h3 style="margin:28px 0 16px; font-size:18px; font-weight:700;">📡 قنوات التسويق الموصى بها</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h3>🥇 الأولوية العالية</h3>
+      <p><strong style="color:var(--orange)">TikTok KSA</strong> — المنصة الأسرع نمواً للمحتوى الرياضي العربي. فيديوهات Form Check بالـ AI ستنتشر بسرعة</p>
+      <hr class="divider"/>
+      <p><strong style="color:var(--orange)">Instagram Reels</strong> — الجمهور الأساسي 18-35 موجود هنا. Stories + Reels للـ Daily Readiness Check</p>
+      <hr class="divider"/>
+      <p><strong style="color:var(--orange)">WhatsApp Groups</strong> — مجتمعات الجيم والرياضة في السعودية. Referral program + شاركة نتائج الـ Safety Audit</p>
+    </div>
+    <div class="card">
+      <h3>🥈 الأولوية المتوسطة</h3>
+      <p><strong style="color:var(--blue)">YouTube Arabic</strong> — محتوى تعليمي طويل عن السلامة في الجيم، بناء الـ SEO العربي</p>
+      <hr class="divider"/>
+      <p><strong style="color:var(--blue)">Snapchat KSA</strong> — انتشار قوي جداً في KSA للفئة 18-25. Filter/Lens خاص بـ FitGuard</p>
+      <hr class="divider"/>
+      <p><strong style="color:var(--blue)">Paid Ads: Meta + TikTok</strong> — ابدأ بـ 500 USD/شهر، قيس CPI والـ conversion، وسّع تدريجياً</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 3: PRICING ═══════════════════════════════ -->
+<div id="pricing" class="section">
+<div class="container">
+
+  <div class="sec-label">03 — Pricing Validation</div>
+  <div class="sec-title">تحقق التسعير: هل 29 SAR/شهر صحيح؟</div>
+  <div class="sec-sub">مقارنة السوق + التوصيات + نموذج الإيرادات</div>
+
+  <div class="pricing-grid" style="margin-bottom:28px;">
+    <div class="price-card">
+      <div class="tier">Free Forever</div>
+      <div class="amount">0</div>
+      <div class="unit">SAR / شهر</div>
+      <ul>
+        <li>Safety Audit (6 أسئلة)</li>
+        <li>3 Form Checks أسبوعياً</li>
+        <li>Daily Readiness Check</li>
+        <li>أوقات الصلاة</li>
+        <li>Dashboard أساسي</li>
+      </ul>
+      <div class="verdict verdict-orange">Door Opener</div>
+    </div>
+    <div class="price-card featured">
+      <div class="tier">FitGuard Pro ⭐</div>
+      <div class="amount">29</div>
+      <div class="unit">SAR / شهر | 249 SAR / سنة</div>
+      <ul>
+        <li>Form Checks غير محدودة</li>
+        <li>تحليلات متقدمة + رسوم بيانية</li>
+        <li>برامج تمارين مخصصة</li>
+        <li>AI Coach Chat</li>
+        <li>دعم أولوية</li>
+      </ul>
+      <div class="verdict verdict-green">✓ سعر مثالي</div>
+    </div>
+    <div class="price-card">
+      <div class="tier">B2B White-Label</div>
+      <div class="amount">99</div>
+      <div class="unit">SAR / trainer/شهر</div>
+      <ul>
+        <li>لوحة تحكم المدرب</li>
+        <li>إدارة 50 عميل</li>
+        <li>تقارير تقدم تفصيلية</li>
+        <li>Branding مخصص للنادي</li>
+        <li>API Access</li>
+      </ul>
+      <div class="verdict verdict-orange">High Value</div>
+    </div>
+  </div>
+
+  <!-- Pricing Benchmark -->
+  <h3 style="margin:28px 0 16px; font-size:18px; font-weight:700;">📊 مقارنة أسعار السوق</h3>
+  <table>
+    <tr>
+      <th>التطبيق</th>
+      <th>السعر (USD/شهر)</th>
+      <th>ما يعادله SAR</th>
+      <th>المميزات المقدمة</th>
+      <th>المقارنة مع FitGuard</th>
+    </tr>
+    <tr>
+      <td><strong>Fitbod Pro</strong></td>
+      <td>12.99 USD</td>
+      <td>~49 SAR</td>
+      <td>برامج AI فقط، بلا عربية</td>
+      <td><span class="tag tag-red">أغلى + أقل مميزات</span></td>
+    </tr>
+    <tr>
+      <td><strong>Freeletics Coach</strong></td>
+      <td>10.99 USD</td>
+      <td>~41 SAR</td>
+      <td>برامج تمارين، بلا AI Form Check</td>
+      <td><span class="tag tag-red">أغلى + بلا عربية</span></td>
+    </tr>
+    <tr>
+      <td><strong>Whoop Membership</strong></td>
+      <td>30 USD</td>
+      <td>~113 SAR</td>
+      <td>Wearable + Recovery فقط</td>
+      <td><span class="tag tag-red">أغلى بكثير</span></td>
+    </tr>
+    <tr>
+      <td><strong>Noom</strong></td>
+      <td>16 USD</td>
+      <td>~60 SAR</td>
+      <td>تغذية + سلوك، بلا لياقة</td>
+      <td><span class="tag tag-red">أغلى + مختلف</span></td>
+    </tr>
+    <tr>
+      <td><strong style="color:var(--orange)">FitGuard Pro</strong></td>
+      <td><strong>~7.7 USD</strong></td>
+      <td><strong>29 SAR</strong></td>
+      <td>AI + Safety + عربية + Prayer Times</td>
+      <td><span class="tag tag-green">✓ الأفضل قيمة</span></td>
+    </tr>
+  </table>
+
+  <div class="insight-box">
+    <strong>✅ حكم التسعير:</strong> 29 SAR/شهر هو سعر ممتاز استراتيجياً — أرخص من المنافسين الغربيين بـ 40-75%، لكن يقدم مميزات إضافية لا تجدها عندهم (عربي + AI + صلاة). هذا يجعل قرار الاشتراك سهلاً جداً.
+  </div>
+
+  <div class="warning-box">
+    <strong>⚠️ تحذير مهم:</strong> لا ترخص السعر أكثر من اللازم. 29 SAR مثالي للنمو السريع. يمكن رفعه إلى <strong>39-49 SAR</strong> بعد بلوغ 1,000 مشترك وإضافة AI Coach Chat كميزة رئيسية. ابدأ بالسعر المنخفض لبناء القاعدة أولاً.
+  </div>
+
+  <!-- Revenue Model -->
+  <h3 style="margin:28px 0 16px; font-size:18px; font-weight:700;">💵 نموذج الإيرادات المتوقع</h3>
+  <div class="grid-3">
+    <div class="stat-block">
+      <div class="num">~14.5K</div>
+      <div class="label">SAR/شهر MRR — بعد 6 أشهر (500 Pro subscribers)</div>
+    </div>
+    <div class="stat-block">
+      <div class="num">~72K</div>
+      <div class="label">SAR/شهر MRR — بعد 18 شهر (2,500 Pro subscribers)</div>
+    </div>
+    <div class="stat-block">
+      <div class="num">+200K</div>
+      <div class="label">SAR/شهر — مع B2B white-label لنادي واحد كبير</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 4: FEATURES ═══════════════════════════════ -->
+<div id="features" class="section">
+<div class="container">
+
+  <div class="sec-label">04 — Product Recommendations</div>
+  <div class="sec-title">المميزات الموصى بها قبل الإطلاق وبعده</div>
+  <div class="sec-sub">ما يجب إضافته وتغييره بناءً على احتياجات السوق</div>
+
+  <h3 style="margin-bottom:16px; font-size:18px; font-weight:700;">🔴 حرج — يجب قبل App Store (Q3 2026)</h3>
+  <div class="grid-2" style="margin-bottom:28px;">
+    <div class="card card-accent">
+      <h3>📷 Native Camera Integration</h3>
+      <p>استبدال <code>getUserMedia</code> بـ Capacitor CameraPreview. بدونها، الـ AI Form Check لن يعمل بشكل موثوق على iOS. هذا هو القلب التجاري للتطبيق.</p>
+      <div style="margin-top:10px;"><span class="tag tag-red">Critical</span> <span class="tag tag-orange">Week 1-2</span></div>
+    </div>
+    <div class="card card-accent">
+      <h3>📋 PDPL Compliance + Privacy Policy</h3>
+      <p>نظام حماية البيانات الشخصية السعودي (PDPL) أصبح إلزامياً. تحتاج Privacy Policy + Terms of Service بالعربية. Apple Store يرفض التطبيقات بدونها.</p>
+      <div style="margin-top:10px;"><span class="tag tag-red">Legal Must</span> <span class="tag tag-orange">Week 1</span></div>
+    </div>
+    <div class="card">
+      <h3>🏁 Onboarding Flow</h3>
+      <p>أول 3 شاشات تحدد ما إذا كان المستخدم سيبقى أم يحذف التطبيق. يحتاج: شرح سريع للـ Safety Audit + توجيه للـ Form Check + طلب الأذونات (كاميرا/إشعارات).</p>
+      <div style="margin-top:10px;"><span class="tag tag-orange">High Priority</span></div>
+    </div>
+    <div class="card">
+      <h3>🔔 Smart Notifications</h3>
+      <p>إشعارات مخصصة بناءً على الجدول + وقت الصلاة. مثال: "الظهر انتهت — عندك 45 دقيقة قبل العصر. جلسة سريعة؟"</p>
+      <div style="margin-top:10px;"><span class="tag tag-orange">High Priority</span></div>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:16px; font-size:18px; font-weight:700;">🟡 مهم — يزيد الـ Retention والـ Conversion</h3>
+  <div class="grid-3" style="margin-bottom:28px;">
+    <div class="card">
+      <h3>📊 Progress Timeline</h3>
+      <p>رسوم بيانية لتتبع التقدم عبر الوقت. الـ Gamification الأساسي الذي يجعل المستخدمين يفتحون التطبيق يومياً.</p>
+    </div>
+    <div class="card">
+      <h3>📤 Social Sharing</h3>
+      <p>مشاركة نتيجة Safety Audit + شارة Tier على WhatsApp/Instagram بتصميم مميز. كل مشاركة = تسويق مجاني لـ FitGuard.</p>
+    </div>
+    <div class="card">
+      <h3>🔌 Offline Mode</h3>
+      <p>الجيم في السعودية أحياناً شبكة ضعيفة. Cache للتمارين والبرامج محلياً. ضروري لتجربة مستخدم سلسة.</p>
+    </div>
+    <div class="card">
+      <h3>🕌 Ramadan Mode</h3>
+      <p>تمارين مكيفة للصيام: وقت التمرين بعد الإفطار، شدة أقل، تركيز على التنفس والمرونة. ميزة فريدة لا يقدمها أي منافس.</p>
+    </div>
+    <div class="card">
+      <h3>👥 Trainer B2B Portal</h3>
+      <p>لوحة تحكم للمدربين لإدارة العملاء. هذا يحوّل FitGuard من B2C إلى B2B2C ويرفع الإيرادات بشكل كبير.</p>
+    </div>
+    <div class="card">
+      <h3>🎯 Custom Programs</h3>
+      <p>برامج مخصصة بناءً على نتيجة Safety Audit + الأهداف. هذا هو المبرر الأقوى للترقية إلى Pro.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:16px; font-size:18px; font-weight:700;">🟢 استراتيجي — يفتح أسواق جديدة (2027)</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h3>🦴 On-Device Pose Estimation</h3>
+      <p>MediaPipe أو Apple Vision Framework لتتبع الهيكل العظمي كاملاً بدون إرسال الصورة للسيرفر. يخفض تكلفة الـ API ويرفع الخصوصية — ميزة تسويقية قوية جداً في السوق العربي.</p>
+    </div>
+    <div class="card">
+      <h3>🥗 Arabic Nutrition Database</h3>
+      <p>قاعدة بيانات غذائية عربية: مكتبة كاملة للأكل الخليجي والمصري والشامي. لا يوجد منافس يقدم هذا. يفتح قطاع التغذية كاملاً + شراكات مع مطاعم صحية وعيادات تغذية.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 5: INFLUENCERS ═══════════════════════════════ -->
+<div id="influencers" class="section">
+<div class="container">
+
+  <div class="sec-label">05 — Influencer & Content Strategy</div>
+  <div class="sec-title">استراتيجية المؤثرين والمحتوى</div>
+  <div class="sec-sub">للجمهور الرياضي العربي على TikTok وInstagram وYouTube</div>
+
+  <!-- Influencer Tiers -->
+  <h3 style="margin-bottom:16px; font-size:18px; font-weight:700;">🏆 مستويات المؤثرين الموصى بهم</h3>
+  <div class="grid-3" style="margin-bottom:28px;">
+    <div class="inf-card">
+      <div class="tier-badge">Nano — الأعلى ROI</div>
+      <h3 style="font-size:15px; margin-bottom:8px;">5K – 50K متابع</h3>
+      <p style="font-size:13px; color:#aaa; margin-bottom:12px;">معدل تفاعل 6-10%. أكثر مصداقية، أرخص، جمهور متخصص في الجيم والرياضة.</p>
+      <p style="font-size:13px;"><strong style="color:var(--orange)">الشروط:</strong> حساب مجاني لـ 6 أشهر + رابط خاص للتتبع</p>
+      <p style="font-size:13px;"><strong style="color:var(--orange)">الهدف:</strong> 20-30 nano influencer</p>
+    </div>
+    <div class="inf-card" style="border-color:var(--orange);">
+      <div class="tier-badge">Micro — الأفضل توازناً</div>
+      <h3 style="font-size:15px; margin-bottom:8px;">50K – 500K متابع</h3>
+      <p style="font-size:13px; color:#aaa; margin-bottom:12px;">تفاعل 2-4%. مدرسة التفكير الصحيح. اختر من يركز على تعليم الحركة والتقنية الصحيحة.</p>
+      <p style="font-size:13px;"><strong style="color:var(--orange)">الشروط:</strong> Pro مجاني + 500-1,500 SAR/فيديو</p>
+      <p style="font-size:13px;"><strong style="color:var(--orange)">الهدف:</strong> 5-7 micro influencer رئيسيين</p>
+    </div>
+    <div class="inf-card">
+      <div class="tier-badge">Macro — وعي واسع</div>
+      <h3 style="font-size:15px; margin-bottom:8px;">500K – 2M متابع</h3>
+      <p style="font-size:13px; color:#aaa; margin-bottom:12px;">تفاعل 1-2%. للانتشار الواسع وبناء الـ Brand Awareness في مرحلة الـ Scale.</p>
+      <p style="font-size:13px;"><strong style="color:var(--orange)">الشروط:</strong> 5,000-15,000 SAR/حملة</p>
+      <p style="font-size:13px;"><strong style="color:var(--orange)">الهدف:</strong> 1-2 في الإطلاق الرسمي</p>
+    </div>
+  </div>
+
+  <!-- Content Types -->
+  <h3 style="margin:28px 0 16px; font-size:18px; font-weight:700;">🎬 أنواع المحتوى الأعلى أداءً</h3>
+  <div class="grid-2" style="margin-bottom:28px;">
+    <div class="card card-accent">
+      <h3>📱 TikTok / Reels — المحتوى الفيروسي</h3>
+      <ul style="list-style:none;">
+        <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);">🔥 <strong>"AI اكتشف غلطتي في الـ Squat"</strong> — مقارنة قبل/بعد الـ Form Check</li>
+        <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);">🔥 <strong>"التطبيق قال لي: اليوم لا تتمرن"</strong> — Readiness Check reaction</li>
+        <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);">🔥 <strong>"6 أسئلة تحدد مستوى لياقتك"</strong> — Safety Audit challenge</li>
+        <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);">🔥 <strong>"مدرب AI عربي لأول مرة"</strong> — Product demo بالعربية</li>
+        <li style="padding:8px 0;">🔥 <strong>#تحدي_الفيتجارد</strong> — شارك نتيجة Safety Audit الخاصة بك</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📺 YouTube — المحتوى التعليمي</h3>
+      <ul style="list-style:none;">
+        <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);">📖 <strong>"أشائع أخطاء الـ Deadlift"</strong> — مع تحليل AI Form Check</li>
+        <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);">📖 <strong>"كيف أعود للتمرين بعد إصابة؟"</strong> — السوق الأكثر بحثاً</li>
+        <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);">📖 <strong>"التمرين في رمضان — الدليل الصحيح"</strong> — SEO عالي</li>
+        <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);">📖 <strong>"مراجعة FitGuard كاملة بالعربي"</strong> — Evergreen review content</li>
+        <li style="padding:8px 0;">📖 <strong>"برنامج تمرين مبتدئ — المستوى الآمن"</strong> — يستهدف Safety Audit audience</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Hashtag Strategy -->
+  <h3 style="margin:0 0 16px; font-size:18px; font-weight:700;">🏷️ استراتيجية الهاشتاق</h3>
+  <div class="card" style="margin-bottom:20px;">
+    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+      <span class="tag tag-orange">#فيتجارد</span>
+      <span class="tag tag-orange">#فيتجارد_جربها</span>
+      <span class="tag tag-orange">#مدرب_AI_عربي</span>
+      <span class="tag tag-orange">#تحدي_الفيتجارد</span>
+      <span class="tag tag-blue">#لياقة_السعودية</span>
+      <span class="tag tag-blue">#تمارين_بالعربي</span>
+      <span class="tag tag-blue">#جيم_السعودية</span>
+      <span class="tag tag-blue">#الصحة_والرياضة</span>
+      <span class="tag tag-green">#FitGuard</span>
+      <span class="tag tag-green">#ArabicFitness</span>
+      <span class="tag tag-green">#SafetyFirst</span>
+      <span class="tag tag-green">#AICoach</span>
+    </div>
+  </div>
+
+  <!-- Content Calendar Tip -->
+  <div class="highlight">
+    <strong>📅 جدول المحتوى المقترح (أسبوعياً):</strong><br/>
+    الأحد: TikTok تعليمي (Form Check tip) | الثلاثاء: Instagram Reel (Daily Readiness demo) | الخميس: YouTube video | السبت: UGC repost + Stories
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════ SECTION 6: PARTNERSHIPS ═══════════════════════════════ -->
+<div id="partnerships" class="section">
+<div class="container">
+
+  <div class="sec-label">06 — Partnership Opportunities</div>
+  <div class="sec-title">فرص الشراكات الاستراتيجية</div>
+  <div class="sec-sub">سلاسل الجيم · عيادات العلاج الطبيعي · العافية المؤسسية</div>
+
+  <!-- Gym Chains -->
+  <h3 style="margin-bottom:16px; font-size:18px; font-weight:700;">🏋️ سلاسل الجيم — B2B White-Label</h3>
+  <table style="margin-bottom:28px;">
+    <tr>
+      <th>الشريك المحتمل</th>
+      <th>الحجم في KSA</th>
+      <th>القيمة لـ FitGuard</th>
+      <th>القيمة للشريك</th>
+      <th>نموذج الشراكة</th>
+    </tr>
+    <tr>
+      <td><strong>Fitness Time (Leejam Sports)</strong></td>
+      <td>الأكبر في KSA · مدرج في تداول</td>
+      <td>تثبيت على أجهزة الفروع + رسوم شهرية</td>
+      <td>أداة تأهيل أمني للأعضاء الجدد</td>
+      <td><span class="tag tag-orange">White-label + Revenue Share</span></td>
+    </tr>
+    <tr>
+      <td><strong>Body Masters</strong></td>
+      <td>شبكة كبرى · رجال ونساء</td>
+      <td>دخول شريحة الأندية المتوسطة</td>
+      <td>تحديث رقمي لعملية التأهيل</td>
+      <td><span class="tag tag-blue">Pilot Program</span></td>
+    </tr>
+    <tr>
+      <td><strong>Gold's Gym MENA</strong></td>
+      <td>40+ فرع KSA + UAE</td>
+      <td>دخول لسوق UAE</td>
+      <td>Premium tech offering لعملائهم</td>
+      <td><span class="tag tag-blue">Pilot Program</span></td>
+    </tr>
+    <tr>
+      <td><strong>Nadi Sport</strong></td>
+      <td>Sport Clubs حكومية</td>
+      <td>Vision 2030 credibility</td>
+      <td>أداة Safety متوافقة مع الرؤية</td>
+      <td><span class="tag tag-blue">Gov Partnership</span></td>
+    </tr>
+  </table>
+
+  <div class="highlight">
+    <strong>💡 عرض القيمة للجيم:</strong> "كل عضو جديد يمر على الـ Safety Audit قبل أول جلسة. تقليل الإصابات = تقليل المطالبات التأمينية + رفع رضا العملاء + تمييز عن المنافسين."
+  </div>
+
+  <!-- Physio Clinics -->
+  <h3 style="margin:28px 0 16px; font-size:18px; font-weight:700;">🩺 عيادات العلاج الطبيعي — Referral Network</h3>
+  <div class="grid-2" style="margin-bottom:28px;">
+    <div class="card">
+      <h3>نموذج الشراكة</h3>
+      <p>المعالجون الفيزيائيون يحولون مرضى التعافي إلى FitGuard كأداة مراقبة آمنة. FitGuard يدفع عمولة أو يقدم برنامج Clinic Dashboard.</p>
+      <div style="margin-top:12px;">
+        <span class="tag tag-green">Commission: 20% لأول 3 أشهر</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>الشركاء المستهدفون</h3>
+      <p>• Saudi German Health (20+ مستشفى KSA)<br/>• عيادات Physiotherapy في المراكز الطبية الكبرى<br/>• مراكز إعادة التأهيل الرياضي<br/>• طب الرياضة في Alfaisal + KFSH</p>
+    </div>
+  </div>
+
+  <!-- Corporate Wellness -->
+  <h3 style="margin:28px 0 16px; font-size:18px; font-weight:700;">🏢 العافية المؤسسية — Corporate Wellness (Vision 2030)</h3>
+  <div class="grid-3" style="margin-bottom:28px;">
+    <div class="card card-accent">
+      <h3>🛢️ أرامكو + سابك</h3>
+      <p>برامج صحة الموظفين مع ميزانيات ضخمة. FitGuard كأداة wellness رسمية مع Dashboard للـ HR. نموذج: 15-25 SAR/موظف/شهر.</p>
+      <div style="margin-top:10px;"><span class="tag tag-orange">High Value Target</span></div>
+    </div>
+    <div class="card">
+      <h3>🏦 البنوك والشركات الكبرى</h3>
+      <p>بنك الراجحي، Al-Rajhi Bank، STC — كلها تقدم برامج صحة. FitGuard يقدم حلاً متكاملاً قابلاً للقياس والإحصاء.</p>
+      <div style="margin-top:10px;"><span class="tag tag-blue">Medium Target</span></div>
+    </div>
+    <div class="card">
+      <h3>🎓 الجامعات والمعاهد</h3>
+      <p>جامعة الملك عبدالعزيز، KAUST، Alfaisal — طلاب 18-25 هم الجمهور المثالي. نموذج: Campus License بسعر خاص للطلاب.</p>
+      <div style="margin-top:10px;"><span class="tag tag-blue">Quick Win</span></div>
+    </div>
+  </div>
+
+  <!-- Partnership Pitch -->
+  <h3 style="margin:0 0 16px; font-size:18px; font-weight:700;">📄 Template: رسالة التواصل مع الشركاء</h3>
+  <div class="bilingual">
+    <div class="bi-ar">
+      <h4>النص العربي</h4>
+      <p>نحن FitGuard — أول تطبيق AI للسلامة الرياضية بالعربية. نرى فرصة لشراكة استراتيجية معكم: نقدم لأعضائكم الجدد فحصاً ذكياً للجاهزية البدنية، مع تحليل الحركة بالذكاء الاصطناعي لتقليل الإصابات. هل يمكننا ترتيب اجتماع 20 دقيقة لعرض برنامج الشراكة؟</p>
+    </div>
+    <div class="bi-en">
+      <h4>English Version</h4>
+      <p>We're FitGuard — the first Arabic AI fitness safety app. We see a strategic opportunity: we can offer your new members intelligent readiness screening + AI movement analysis to reduce injury risk. Could we arrange a 20-minute call to walk you through our partnership program?</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════ FINAL SUMMARY ═══════════════════════════════ -->
+<div class="section" style="background: linear-gradient(135deg, #0d0500 0%, #0A0A0A 100%);">
+<div class="container">
+
+  <div class="sec-label">Summary</div>
+  <div class="sec-title">ملخص تنفيذي — الخطوات التالية الفورية</div>
+  <div class="sec-sub">الأولويات الـ 90 يوم القادمة | Next 90 Days</div>
+
+  <div class="grid-2" style="margin-bottom:28px;">
+    <div>
+      <h3 style="margin-bottom:16px; font-size:16px; color:var(--orange);">🔴 الشهر الأول — Critical Path</h3>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">✦ Native Camera + Capacitor CameraPreview integration</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">✦ PDPL Privacy Policy + Terms of Service (Arabic)</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">✦ Onboarding flow (3 screens max)</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-body">✦ TestFlight beta: 50 testers in Riyadh/Jeddah</div>
+        </div>
+        <div class="tl-item" style="margin-bottom:0">
+          <div class="tl-dot"></div>
+          <div class="tl-body">✦ تأسيس TikTok + Instagram للتطبيق</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3 style="margin-bottom:16px; font-size:16px; color:var(--blue);">🔵 الشهر 2-3 — Growth Engine</h3>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--blue); box-shadow:0 0 8px var(--blue);"></div>
+          <div class="tl-body">✦ تواصل مع 10 مؤثرين nano (مجاني لـ 3 أشهر)</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--blue); box-shadow:0 0 8px var(--blue);"></div>
+          <div class="tl-body">✦ App Store launch + Arabic listing + screenshots</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--blue); box-shadow:0 0 8px var(--blue);"></div>
+          <div class="tl-body">✦ تفعيل Freemium + FitGuard Pro (29 SAR)</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--blue); box-shadow:0 0 8px var(--blue);"></div>
+          <div class="tl-body">✦ Referral program: دعوة صديق = شهر مجاني</div>
+        </div>
+        <div class="tl-item" style="margin-bottom:0">
+          <div class="tl-dot" style="background:var(--blue); box-shadow:0 0 8px var(--blue);"></div>
+          <div class="tl-body">✦ First B2B outreach: Fitness Time / Leejam</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <strong>🎯 الرسالة النهائية:</strong> FitGuard ليس مجرد تطبيق لياقة — إنه فرصة حقيقية في سوق غير مخدوم. الجمع بين Arabic-first + AI Safety + Cultural Awareness هو positioning لا يملكه أحد آخر حالياً. <strong>السباق للإطلاق قبل دخول منافس كبير هو الأولوية القصوى.</strong>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<div class="footer">
+  <strong>FitGuard Strategic Report</strong> · Prepared by Claude for Waleed Faizy · May 2026<br/>
+  Confidential — FitGuard / Laft Co. Production Department
+</div>
+
+</body>
+</html>

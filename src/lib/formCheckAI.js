@@ -1,136 +1,123 @@
 /**
- * formCheckAI.js — Real AI form analysis via Claude vision
+ * formCheckAI.js — AI form analysis (client side)
  *
- * Sends the user's exercise photo to Claude (claude-haiku) and gets
- * specific, personalised form feedback back as structured JSON.
+ * SECURITY: This no longer calls Anthropic directly. The previous version
+ * shipped VITE_ANTHROPIC_API_KEY inside the app bundle, where it was
+ * extractable by anyone — an unbounded billing risk. We now call the
+ * `form-check` Supabase Edge Function, which holds the key server-side,
+ * authenticates the user, and rate-limits per account.
  *
- * Setup: add to .env.local →  VITE_ANTHROPIC_API_KEY=sk-ant-...
- *
- * The header 'anthropic-dangerous-direct-browser-access: true'
- * is required for calls made directly from a browser / WKWebView.
+ * The image is downscaled on-device before upload to cut latency, bandwidth
+ * and token cost (a full-res phone photo is wasteful for this task).
  */
 
-const API_URL  = 'https://api.anthropic.com/v1/messages';
-const MODEL    = 'claude-haiku-4-5-20251001';
-const MAX_TOKENS = 400;
+import { supabase } from './supabase';
 
-// ── Build the coaching prompt ────────────────────────────────────────────────
-const buildPrompt = (exerciseName, lang) => {
-  if (lang === 'ar') {
-    return `أنت مدرب لياقة بدنية متخصص في السلامة الرياضية.
-المستخدم يؤدي تمرين "${exerciseName}".
-حلّل وضعيته وأداءه في الصورة بعناية.
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const FN_URL = `${SUPABASE_URL}/functions/v1/form-check`;
 
-أعد الرد كـ JSON فقط بهذا الشكل بالضبط (لا تضف أي نص خارج الـ JSON):
-{"good":["نقطة إيجابية 1","نقطة إيجابية 2","نقطة إيجابية 3"],"improve":["نقطة للتحسين 1","نقطة للتحسين 2"]}
+const MAX_EDGE = 768; // longest image edge sent to the model
+const JPEG_QUALITY = 0.8;
 
-القواعد:
-- 3 نقاط إيجابية تحديداً و2 نقاط للتحسين تحديداً
-- كن محدداً جداً لهذا التمرين وما يظهر في الصورة
-- اذكر أجزاء الجسم المحددة (الركبة، الظهر، الذراعين، إلخ)
-- إذا لم تكن الصورة واضحة أو لا تُظهر تمريناً، اذكر ذلك في إحدى النقاط`;
-  }
+// ── Downscale a data URL via canvas → smaller JPEG data URL ───────────────────
+const downscaleDataUrl = (dataUrl) =>
+  new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, MAX_EDGE / Math.max(img.width, img.height));
+      const w = Math.round(img.width * scale);
+      const h = Math.round(img.height * scale);
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      try {
+        resolve(canvas.toDataURL('image/jpeg', JPEG_QUALITY));
+      } catch {
+        resolve(dataUrl); // tainted canvas / unexpected error → send original
+      }
+    };
+    img.onerror = () => resolve(dataUrl);
+    img.src = dataUrl;
+  });
 
-  return `You are a professional fitness coach specialising in exercise safety.
-The user is performing "${exerciseName}".
-Carefully analyse their posture and technique in the photo.
-
-Reply as JSON ONLY in this exact format (no text outside the JSON):
-{"good":["positive point 1","positive point 2","positive point 3"],"improve":["improvement point 1","improvement point 2"]}
-
-Rules:
-- Exactly 3 positive points and exactly 2 improvement points
-- Be very specific to this exercise and what you actually see in the image
-- Reference specific body parts (knee, back, arms, hips, etc.)
-- If the image is unclear or doesn't show exercise form, note that in one of the points`;
+const splitDataUrl = (dataUrl) => {
+  const commaIdx = dataUrl.indexOf(',');
+  const header = dataUrl.slice(0, commaIdx);
+  const base64 = dataUrl.slice(commaIdx + 1);
+  const mediaType = header.match(/data:([^;]+)/)?.[1] || 'image/jpeg';
+  return { base64, mediaType };
 };
 
-// ── Main export ──────────────────────────────────────────────────────────────
 /**
- * Analyse exercise form in a photo using Claude vision.
+ * Analyse exercise form in a photo.
  *
  * @param {object} params
- * @param {string} params.photoDataUrl  - base64 data URL from Capacitor camera
- * @param {object} params.exercise      - { name, ... } exercise object
- * @param {string} params.lang          - 'en' | 'ar'
- *
+ * @param {string} params.photoDataUrl - base64 data URL from camera / file input
+ * @param {object} params.exercise     - { name, ... }
+ * @param {string} params.lang         - 'en' | 'ar'
  * @returns {{ good: {label,status}[], improve: {label,status}[] }}
  */
 export const analyzeForm = async ({ photoDataUrl, exercise, lang = 'en' }) => {
-  const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY;
-
-  if (!apiKey) {
+  if (!SUPABASE_URL || !SUPABASE_ANON) {
     throw new Error(
       lang === 'ar'
-        ? 'مفتاح API غير موجود — أضف VITE_ANTHROPIC_API_KEY إلى .env.local'
-        : 'API key missing — add VITE_ANTHROPIC_API_KEY to .env.local'
+        ? 'إعداد الخادم غير مكتمل — تحقق من متغيرات البيئة'
+        : 'Server not configured — check environment variables'
     );
   }
 
-  // Extract base64 payload and media type from the data URL
-  // Format: "data:image/jpeg;base64,<payload>"
-  const commaIdx   = photoDataUrl.indexOf(',');
-  const header     = photoDataUrl.slice(0, commaIdx);         // "data:image/jpeg;base64"
-  const base64Data = photoDataUrl.slice(commaIdx + 1);        // the actual base64 string
-  const mediaType  = header.match(/data:([^;]+)/)?.[1] || 'image/jpeg';
+  // Must be signed in: the Edge Function authenticates the request.
+  const { data: { session } } = await supabase.auth.getSession();
+  const accessToken = session?.access_token;
+  if (!accessToken) {
+    throw new Error(
+      lang === 'ar'
+        ? 'يجب تسجيل الدخول لاستخدام تحليل الحركة'
+        : 'Please sign in to use form analysis'
+    );
+  }
 
+  const shrunk = await downscaleDataUrl(photoDataUrl);
+  const { base64, mediaType } = splitDataUrl(shrunk);
   const exerciseName = exercise?.name || (lang === 'ar' ? 'تمرين' : 'exercise');
 
-  const response = await fetch(API_URL, {
+  const res = await fetch(FN_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
+      apikey: SUPABASE_ANON,
+      Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify({
-      model: MODEL,
-      max_tokens: MAX_TOKENS,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'image',
-              source: {
-                type:       'base64',
-                media_type: mediaType,
-                data:       base64Data,
-              },
-            },
-            {
-              type: 'text',
-              text: buildPrompt(exerciseName, lang),
-            },
-          ],
-        },
-      ],
-    }),
+    body: JSON.stringify({ exerciseName, lang, imageBase64: base64, mediaType }),
   });
 
-  if (!response.ok) {
-    const err = await response.text().catch(() => response.statusText);
-    throw new Error(`Claude API error ${response.status}: ${err}`);
-  }
-
-  const data = await response.json();
-  const rawText = data.content?.[0]?.text ?? '';
-
-  // Extract the JSON object from the response (Claude sometimes adds commentary)
-  const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) {
+  if (!res.ok) {
+    let code = '';
+    try { code = (await res.json())?.error || ''; } catch { /* ignore */ }
+    if (res.status === 429 || code === 'rate_limited') {
+      throw new Error(
+        lang === 'ar'
+          ? 'وصلت للحد اليومي لتحليل الحركة — جرّب غداً'
+          : "You've hit today's form-check limit — try again tomorrow"
+      );
+    }
+    if (res.status === 401) {
+      throw new Error(
+        lang === 'ar' ? 'انتهت الجلسة — سجّل الدخول مجدداً' : 'Session expired — please sign in again'
+      );
+    }
     throw new Error(
-      lang === 'ar'
-        ? 'تعذّر قراءة رد الذكاء الاصطناعي — حاول مجدداً'
-        : 'Could not parse AI response — please try again'
+      lang === 'ar' ? 'تعذّر التحليل — حاول مجدداً' : 'Analysis failed — please try again'
     );
   }
 
-  const result = JSON.parse(jsonMatch[0]);
+  const result = await res.json();
 
   return {
-    good:    (result.good    || []).slice(0, 3).map(label => ({ label, status: 'good'    })),
-    improve: (result.improve || []).slice(0, 2).map(label => ({ label, status: 'improve' })),
+    good: (result.good || []).slice(0, 3).map((label) => ({ label, status: 'good' })),
+    improve: (result.improve || []).slice(0, 2).map((label) => ({ label, status: 'improve' })),
   };
 };

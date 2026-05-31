@@ -1,10 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import LanguageToggle from '../components/LanguageToggle';
 import Button from '../components/Button';
 import { takeCameraPhoto, requestCameraPermission, isNative } from '../services/native';
 import { analyzeForm } from '../lib/formCheckAI';
 import './FormCheckAI.css';
+
+const CAM_CONSENT_KEY = 'fitguard_cam_consent_v1';
 
 const FormCheckAI = ({ exercise, onBack }) => {
   const { t, lang } = useLanguage();
@@ -15,9 +17,16 @@ const FormCheckAI = ({ exercise, onBack }) => {
   const [analysisComplete, setAnalysisComplete] = useState(false);
   const [tips, setTips]                 = useState([]);
   const [errorMsg, setErrorMsg]         = useState('');
+  const [showConsent, setShowConsent]   = useState(false);
 
-  // ── Take photo ──────────────────────────────────────────────────────────────
-  const takePhoto = async () => {
+  const isAr = lang === 'ar';
+
+  const hasCameraConsent = () => {
+    try { return localStorage.getItem(CAM_CONSENT_KEY) === 'yes'; } catch { return false; }
+  };
+
+  // ── Actual capture (after consent) ────────────────────────────────────────────
+  const doCapture = async () => {
     setErrorMsg('');
     setAnalysisComplete(false);
     setTips([]);
@@ -39,6 +48,21 @@ const FormCheckAI = ({ exercise, onBack }) => {
       // ── Web / browser fallback: file input with camera capture ────────────
       fileInputRef.current?.click();
     }
+  };
+
+  // ── Take photo (consent gate) ─────────────────────────────────────────────────
+  const takePhoto = async () => {
+    if (!hasCameraConsent()) {
+      setShowConsent(true);
+      return;
+    }
+    await doCapture();
+  };
+
+  const acceptConsent = async () => {
+    try { localStorage.setItem(CAM_CONSENT_KEY, 'yes'); } catch { /* ignore */ }
+    setShowConsent(false);
+    await doCapture();
   };
 
   // Handles the web fallback file-input result
@@ -82,13 +106,8 @@ const FormCheckAI = ({ exercise, onBack }) => {
     }
   };
 
-  // Cleanup on unmount
-  useEffect(() => () => {}, []);
-
   const goodTips    = tips.filter(tip => tip.status === 'good');
   const improveTips = tips.filter(tip => tip.status === 'improve');
-
-  const isAr = lang === 'ar';
 
   return (
     <div className="formcheck-screen screen">
@@ -101,6 +120,44 @@ const FormCheckAI = ({ exercise, onBack }) => {
         style={{ display: 'none' }}
         onChange={handleFileInput}
       />
+
+      {/* ── One-time camera / data-use consent ────────────────────────────── */}
+      {showConsent && (
+        <div
+          dir={isAr ? 'rtl' : 'ltr'}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 9999,
+            background: 'rgba(0,0,0,0.88)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px',
+          }}
+        >
+          <div style={{
+            background: 'var(--surface-elevated, #141414)',
+            border: '1px solid var(--border, rgba(255,255,255,0.08))',
+            borderRadius: 'var(--radius-xl, 20px)',
+            padding: '28px 24px', width: '100%', maxWidth: '380px',
+            textAlign: isAr ? 'right' : 'left',
+          }}>
+            <div style={{ fontSize: '34px', textAlign: 'center', marginBottom: '10px' }}>🔒📷</div>
+            <h3 style={{ fontFamily: 'var(--font-heading, sans-serif)', fontSize: '19px', fontWeight: 900, color: 'var(--text-primary, #fff)', marginBottom: '10px', textAlign: 'center' }}>
+              {isAr ? 'تحليل الحركة بالصورة' : 'Photo-based form analysis'}
+            </h3>
+            <p style={{ fontSize: '13.5px', color: 'var(--text-secondary, #A0A0A0)', lineHeight: 1.7, marginBottom: '18px' }}>
+              {isAr
+                ? 'لتحليل أدائك، تُرسل صورتك بشكل آمن إلى خادمنا ثم إلى خدمة الذكاء الاصطناعي للحصول على ملاحظات فورية. لا نحتفظ بالصورة بعد التحليل. بالمتابعة فإنك توافق على ذلك.'
+                : 'To analyse your form, your photo is sent securely to our server and then to an AI service for instant feedback. We do not keep the image after analysis. By continuing you consent to this.'}
+            </p>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <Button variant="ghost" size="md" onClick={() => setShowConsent(false)}>
+                {isAr ? 'إلغاء' : 'Cancel'}
+              </Button>
+              <Button variant="primary" size="md" fullWidth onClick={acceptConsent}>
+                {isAr ? 'موافق، تابع' : 'Agree & Continue'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="lang-toggle-fixed">
         <LanguageToggle />

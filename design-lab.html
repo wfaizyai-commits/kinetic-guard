@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FitGuard — Design Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&family=Reem+Kufi:wght@500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:#0b0b0d;color:#e8e6e2;font-family:'Cairo',sans-serif;line-height:1.7;
+    background-image:radial-gradient(ellipse 70% 50% at 50% -10%, rgba(255,107,0,.06), transparent 60%);
+    padding-bottom:80px;
+  }
+  .wrap{max-width:1180px;margin:auto;padding:0 24px}
+  header.top{padding:54px 0 30px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:8px;text-align:center}
+  header.top .kicker{font-family:'Rajdhani';letter-spacing:4px;font-size:12px;color:#FF6B00;text-transform:uppercase}
+  header.top h1{font-size:clamp(30px,5vw,52px);font-weight:900;margin:10px 0 8px}
+  header.top h1 b{color:#FF6B00}
+  header.top p{color:#8c8c8c;max-width:680px;margin:auto;font-weight:300;font-size:15px}
+
+  .section-label{font-family:'Rajdhani';letter-spacing:3px;font-size:12px;color:#FF6B00;text-transform:uppercase;margin:56px 0 6px;text-align:center}
+  .section-title{font-size:clamp(22px,3vw,30px);font-weight:900;text-align:center;margin-bottom:6px}
+  .section-sub{color:#8c8c8c;text-align:center;max-width:640px;margin:0 auto 36px;font-size:14px;font-weight:300}
+
+  .options{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  @media(max-width:980px){.options{grid-template-columns:1fr;max-width:430px;margin:auto}}
+
+  .opt-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+  .opt-num{font-family:'Rajdhani';font-size:13px;font-weight:700;color:#FF6B00;border:1px solid rgba(255,107,0,.4);border-radius:6px;padding:1px 8px}
+  .opt-name{font-size:18px;font-weight:900}
+  .opt-tag{font-size:12px;color:#8c8c8c;margin-bottom:16px;font-weight:300;min-height:34px}
+
+  /* phone frame */
+  .phone{border-radius:30px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 30px 70px rgba(0,0,0,.55);aspect-ratio:9/17;position:relative;display:flex;flex-direction:column}
+  .ph-bar{height:34px;display:flex;align-items:center;justify-content:center;font-size:11px;letter-spacing:1px;opacity:.5;flex:0 0 auto}
+  .ph-body{flex:1;padding:6px 16px 18px;overflow:hidden;position:relative}
+  .ph-h{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .ph-logo{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:13px;font-weight:900}
+  .ph-title{font-size:15px;font-weight:900}
+  .ph-greet{font-size:12px;opacity:.6;margin-bottom:14px}
+
+  .ring-wrap{display:flex;align-items:center;gap:14px;border-radius:18px;padding:16px;margin-bottom:14px}
+  .ring{width:84px;height:84px;flex:0 0 auto;position:relative}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+  .ring .pc b{font-size:26px;font-weight:700;line-height:1}
+  .ring .pc small{font-size:9px;opacity:.6}
+  .ring-meta h4{font-size:14px;margin-bottom:3px}
+  .ring-meta p{font-size:11px;opacity:.6;line-height:1.5}
+  .chip{display:inline-block;font-size:10px;padding:2px 9px;border-radius:20px;margin-top:7px;font-weight:700}
+
+  .prayer{display:flex;gap:6px;margin-bottom:14px}
+  .pc-cell{flex:1;text-align:center;border-radius:10px;padding:7px 2px}
+  .pc-cell .n{font-size:9px;opacity:.55}
+  .pc-cell .t{font-size:11px;font-weight:700;margin-top:2px;font-family:'Rajdhani'}
+
+  .mini-card{border-radius:14px;padding:13px 14px;margin-bottom:10px}
+  .mini-card .mc-t{font-size:12px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .mini-card .mc-p{font-size:11px;opacity:.62;line-height:1.55}
+
+  .ph-btn{border:none;border-radius:13px;padding:13px;width:100%;font-family:'Cairo';font-size:14px;font-weight:700;cursor:pointer;margin-top:4px}
+
+  .notes{margin-top:16px;font-size:12.5px;color:#9a9a9a;line-height:1.7}
+  .notes b{color:#cfcfcf;font-weight:600}
+
+  /* ── characters ── */
+  .chars{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  @media(max-width:980px){.chars{grid-template-columns:1fr;max-width:430px;margin:auto}}
+  .char-card{background:#141414;border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden}
+  .char-stage{aspect-ratio:1;display:grid;place-items:center;position:relative;overflow:hidden}
+  .char-info{padding:16px 18px 20px}
+  .char-info .opt-head{margin-bottom:8px}
+  .char-info p{font-size:12.5px;color:#9a9a9a;line-height:1.65}
+  .char-info .moat{margin-top:10px;font-size:11px;color:#00c98a;font-weight:600}
+  .ex-anim{width:74%;height:74%}
+
+  .verdict{max-width:760px;margin:60px auto 0;background:#121212;border:1px solid rgba(255,107,0,.25);border-radius:18px;padding:26px 28px}
+  .verdict h3{font-size:18px;font-weight:900;margin-bottom:12px;color:#FF6B00}
+  .verdict p{font-size:14px;color:#c5c5c5;margin-bottom:12px}
+  .verdict .rec{background:rgba(0,201,138,.08);border:1px solid rgba(0,201,138,.3);border-radius:12px;padding:14px 16px;font-size:13.5px;color:#d6d6d6}
+  .verdict .rec b{color:#00c98a}
+
+  @keyframes lab-cross{0%,28%{opacity:1}38%,90%{opacity:0}100%{opacity:1}}
+  @keyframes lab-cross2{0%,28%{opacity:0}38%,62%{opacity:1}72%,100%{opacity:0}}
+  @keyframes lab-cross3{0%,62%{opacity:0}72%,90%{opacity:1}100%{opacity:0}}
+  .fr1{animation:lab-cross 3s infinite}
+  .fr2{animation:lab-cross2 3s infinite}
+  .fr3{animation:lab-cross3 3s infinite}
+  @keyframes glowpulse{0%,100%{opacity:.55}50%{opacity:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="kicker">Design Lab · اختر الاتجاه</div>
+    <h1>Fit<b>Guard</b> — اتجاهات التصميم</h1>
+    <p>ثلاثة اتجاهات بصرية كاملة مطبّقة على شاشة حقيقية من التطبيق، وثلاثة بدائل للشخصية بدل الـ stick figure. كل شي هنا كود فعلي قابل للتطبيق ويدعم العربي RTL والثيم النسائي. اختر اللي يعجبك وأبنيه على التطبيق كامل.</p>
+  </header>
+
+  <!-- ════════════ VISUAL DIRECTIONS ════════════ -->
+  <div class="section-label">01 — Visual System</div>
+  <div class="section-title">اتجاهات الهوية البصرية</div>
+  <div class="section-sub">نفس الشاشة (جاهزية اليوم) بثلاث أرواح مختلفة. الفرق في الحرارة، اللون، الإيقاع، ونوع الخط.</div>
+
+  <div class="options">
+
+    <!-- ─── OPTION 1: MIHRAB / EMBER ─── -->
+    <div>
+      <div class="opt-head"><span class="opt-num">A</span><span class="opt-name">المحراب · Ember</span></div>
+      <div class="opt-tag">دافئ، أصيل، مستوحى من العمارة النجدية وضوء الغروب. الأسود مائل للبني الدافئ، والبرتقالي يصير ضوء جمر مو نيون.</div>
+      <div class="phone" style="background:#0c0a08;font-family:'Cairo'">
+        <div class="ph-bar" style="color:#f5efe8">9:41</div>
+        <div class="ph-body" style="background:
+          radial-gradient(ellipse 90% 40% at 80% 0%, rgba(255,138,61,.10), transparent 60%),
+          repeating-linear-gradient(135deg, rgba(255,138,61,.025) 0 2px, transparent 2px 22px),
+          #0c0a08;color:#f5efe8">
+          <div class="ph-h">
+            <div class="ph-logo" style="background:linear-gradient(135deg,#FF6B00,#FFA94D);color:#1a0f04">🛡</div>
+            <div class="ph-title">Fit<span style="color:#FF8A3D">Guard</span></div>
+          </div>
+          <div class="ph-greet" style="font-family:'Reem Kufi'">مساء الخير، وليد ✦ جاهزيتك اليوم</div>
+
+          <div class="ring-wrap" style="background:linear-gradient(160deg,#1c140c,#16120d);border:1px solid rgba(255,138,61,.18)">
+            <div class="ring">
+              <svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="#2a2017" stroke-width="7"/><circle cx="42" cy="42" r="36" fill="none" stroke="url(#emberG)" stroke-width="7" stroke-linecap="round" stroke-dasharray="226" stroke-dashoffset="50" transform="rotate(-90 42 42)"/><defs><linearGradient id="emberG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF6B00"/><stop offset="1" stop-color="#FFC15E"/></linearGradient></defs></svg>
+              <div class="pc"><div><b style="color:#FFB066;font-family:'Reem Kufi'">78</b><br/><small>جاهزية</small></div></div>
+            </div>
+            <div class="ring-meta">
+              <h4 style="font-family:'Reem Kufi'">جاهز للتمرين 💪</h4>
+              <p>جسمك مستعد اليوم. ابدأ بإحماء ٨ دقايق وركّز على الأداء.</p>
+              <span class="chip" style="background:rgba(255,138,61,.16);color:#FFB066">جاهزية عالية</span>
+            </div>
+          </div>
+
+          <div class="prayer">
+            <div class="pc-cell" style="background:#16120d"><div class="n">الفجر</div><div class="t">4:12</div></div>
+            <div class="pc-cell" style="background:#16120d"><div class="n">الظهر</div><div class="t">11:52</div></div>
+            <div class="pc-cell" style="background:rgba(255,138,61,.14);border:1px solid rgba(255,138,61,.4)"><div class="n" style="color:#FFB066">العصر</div><div class="t" style="color:#FFB066">3:22</div></div>
+            <div class="pc-cell" style="background:#16120d"><div class="n">المغرب</div><div class="t">6:42</div></div>
+          </div>
+
+          <div class="mini-card" style="background:#16120d;border:1px solid rgba(255,138,61,.14)">
+            <div class="mc-t">🕌 العصر بعد ٤٥ دقيقة</div>
+            <div class="mc-p">وقت مناسب لجلسة خفيفة قبل الأذان.</div>
+          </div>
+
+          <button class="ph-btn" style="background:linear-gradient(135deg,#FF6B00,#FF8A3D);color:#1a0f04;font-family:'Reem Kufi'">ابدأ تمرين اليوم</button>
+        </div>
+      </div>
+      <div class="notes">
+        <b>الروح:</b> الثقة الهادئة، الانتماء الخليجي.<br/>
+        <b>اللون:</b> أسود دافئ + جمر برتقالي/كهرماني + نقش هندسي خفيف.<br/>
+        <b>الخط:</b> Reem Kufi للعناوين (هوية عربية مميزة) + Cairo للنص.<br/>
+        <b>الأقوى لـ:</b> التميّز الثقافي اللي يصعب نسخه.
+      </div>
+    </div>
+
+    <!-- ─── OPTION 2: KINETIC / INSTRUMENT ─── -->
+    <div>
+      <div class="opt-head"><span class="opt-num">B</span><span class="opt-name">Kinetic · أداة قياس</span></div>
+      <div class="opt-tag">رياضي تقني، طراز Whoop/Nike. أسود مائل للأزرق، البرتقالي لون بيانات فقط، أرقام دقيقة، كثافة معلومات.</div>
+      <div class="phone" style="background:#08090c;font-family:'Cairo'">
+        <div class="ph-bar" style="color:#eaeef5">9:41</div>
+        <div class="ph-body" style="background:radial-gradient(ellipse 80% 35% at 70% 0%, rgba(74,120,180,.08), transparent 60%),#08090c;color:#eaeef5">
+          <div class="ph-h">
+            <div class="ph-logo" style="background:#11151c;border:1px solid rgba(255,107,0,.5);color:#FF6B00">🛡</div>
+            <div class="ph-title" style="font-family:'Space Grotesk'">FitGuard</div>
+            <span style="margin-inline-start:auto;font-size:9px;font-family:'Space Grotesk';letter-spacing:1px;color:#5b6470">● LIVE</span>
+          </div>
+          <div class="ph-greet" style="font-family:'Space Grotesk';letter-spacing:.5px">READINESS · اليوم</div>
+
+          <div class="ring-wrap" style="background:#101218;border:1px solid rgba(255,255,255,.07)">
+            <div class="ring">
+              <svg viewBox="0 0 84 84">
+                <circle cx="42" cy="42" r="36" fill="none" stroke="#1a1e26" stroke-width="6"/>
+                <circle cx="42" cy="42" r="36" fill="none" stroke="#FF6B00" stroke-width="6" stroke-linecap="round" stroke-dasharray="226" stroke-dashoffset="50" transform="rotate(-90 42 42)"/>
+                <circle cx="42" cy="42" r="29" fill="none" stroke="#1a1e26" stroke-width="3"/>
+                <circle cx="42" cy="42" r="29" fill="none" stroke="#4A9EFF" stroke-width="3" stroke-linecap="round" stroke-dasharray="182" stroke-dashoffset="70" transform="rotate(-90 42 42)"/>
+              </svg>
+              <div class="pc"><div><b style="color:#fff;font-family:'Space Grotesk'">78</b><br/><small style="letter-spacing:1px">SCORE</small></div></div>
+            </div>
+            <div class="ring-meta">
+              <h4 style="font-family:'Space Grotesk'">READY TO TRAIN</h4>
+              <p>HRV ↑ · نوم ٧.٢س · إجهاد منخفض. حمل اليوم: مرتفع مسموح.</p>
+              <span class="chip" style="background:rgba(255,107,0,.14);color:#FF6B00;font-family:'Space Grotesk'">HIGH · 78</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-bottom:14px">
+            <div class="mini-card" style="flex:1;background:#101218;border:1px solid rgba(255,255,255,.06);margin:0;text-align:center">
+              <div style="font-family:'Space Grotesk';font-size:20px;color:#FF6B00">7.2<span style="font-size:10px;opacity:.5">h</span></div>
+              <div style="font-size:9px;opacity:.5">SLEEP</div>
+            </div>
+            <div class="mini-card" style="flex:1;background:#101218;border:1px solid rgba(255,255,255,.06);margin:0;text-align:center">
+              <div style="font-family:'Space Grotesk';font-size:20px;color:#4A9EFF">61</div>
+              <div style="font-size:9px;opacity:.5">HRV</div>
+            </div>
+            <div class="mini-card" style="flex:1;background:#101218;border:1px solid rgba(255,255,255,.06);margin:0;text-align:center">
+              <div style="font-family:'Space Grotesk';font-size:20px;color:#00E5A0">LOW</div>
+              <div style="font-size:9px;opacity:.5">STRAIN</div>
+            </div>
+          </div>
+
+          <div class="mini-card" style="background:#101218;border:1px solid rgba(255,255,255,.06)">
+            <div class="mc-t" style="font-family:'Space Grotesk'">NEXT · العصر 3:22</div>
+            <div class="mc-p">نافذة تمرين ٤٥ دقيقة قبل الصلاة.</div>
+          </div>
+
+          <button class="ph-btn" style="background:#FF6B00;color:#0a0a0a;font-family:'Space Grotesk';letter-spacing:.5px">START SESSION ›</button>
+        </div>
+      </div>
+      <div class="notes">
+        <b>الروح:</b> الثقة عن طريق الدقة، إحساس الجهاز الاحترافي.<br/>
+        <b>اللون:</b> أسود مائل للأزرق + برتقالي بيانات + أزرق/أخضر مؤشرات.<br/>
+        <b>الخط:</b> Space Grotesk للأرقام والعناوين + Cairo للعربي.<br/>
+        <b>الأقوى لـ:</b> المستخدم الجاد، ربط الساعة، الـ data.
+      </div>
+    </div>
+
+    <!-- ─── OPTION 3: WARM COACH ─── -->
+    <div>
+      <div class="opt-head"><span class="opt-num">C</span><span class="opt-name">المدرب · Warm Coach</span></div>
+      <div class="opt-tag">إنساني، مشجّع، أقل تخويفاً. فحمي دافئ مو أسود، زوايا أنعم، خط أكبر، الشخصية (الصقر) حاضرة.</div>
+      <div class="phone" style="background:#121011;font-family:'Cairo'">
+        <div class="ph-bar" style="color:#f2edea">9:41</div>
+        <div class="ph-body" style="background:radial-gradient(ellipse 90% 40% at 50% 0%, rgba(255,122,26,.09), transparent 65%),#121011;color:#f2edea">
+          <div class="ph-h">
+            <div class="ph-logo" style="background:#FF7A1A;color:#1a0f04">🦅</div>
+            <div class="ph-title">Fit<span style="color:#FF7A1A">Guard</span></div>
+          </div>
+          <div class="ph-greet" style="font-size:13px;opacity:.75">يا هلا وليد 👋 جاهزينك نشوفها سوا</div>
+
+          <div class="ring-wrap" style="background:#1c1819;border:1px solid rgba(255,122,26,.16);border-radius:22px">
+            <div class="ring">
+              <svg viewBox="0 0 84 84"><circle cx="42" cy="42" r="35" fill="none" stroke="#2a2324" stroke-width="8"/><circle cx="42" cy="42" r="35" fill="none" stroke="#FF7A1A" stroke-width="8" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="48" transform="rotate(-90 42 42)"/></svg>
+              <div class="pc"><div><b style="color:#FF9A4D">78</b><br/><small>جاهز</small></div></div>
+            </div>
+            <div class="ring-meta">
+              <h4>اليوم يومك! 💪</h4>
+              <p>جسمك مرتاح ومستعد. خلّنا نبدأ على مهلنا بإحماء بسيط.</p>
+              <span class="chip" style="background:rgba(255,122,26,.16);color:#FF9A4D">جاهزية عالية</span>
+            </div>
+          </div>
+
+          <div class="mini-card" style="background:#1c1819;border:1px solid rgba(255,255,255,.06);border-radius:18px;display:flex;align-items:center;gap:12px">
+            <div style="font-size:34px;line-height:1">🦅</div>
+            <div>
+              <div class="mc-t" style="margin-bottom:2px">نصيحة حامي اليوم</div>
+              <div class="mc-p">"اشرب ماي زين قبل ما تبدأ، وخلّ ظهرك مستقيم بالقرفصاء."</div>
+            </div>
+          </div>
+
+          <div class="prayer">
+            <div class="pc-cell" style="background:#1c1819;border-radius:14px"><div class="n">الظهر</div><div class="t">11:52</div></div>
+            <div class="pc-cell" style="background:rgba(255,122,26,.14);border:1px solid rgba(255,122,26,.4);border-radius:14px"><div class="n" style="color:#FF9A4D">العصر</div><div class="t" style="color:#FF9A4D">3:22</div></div>
+            <div class="pc-cell" style="background:#1c1819;border-radius:14px"><div class="n">المغرب</div><div class="t">6:42</div></div>
+          </div>
+
+          <button class="ph-btn" style="background:linear-gradient(135deg,#FF7A1A,#FF9A4D);color:#1a0f04;border-radius:16px;font-size:15px">يلا نبدأ 🚀</button>
+        </div>
+      </div>
+      <div class="notes">
+        <b>الروح:</b> مدرب يشجّعك، يناسب المبتدئ والمتعافي من إصابة والنساء.<br/>
+        <b>اللون:</b> فحمي دافئ + برتقالي أدفأ + زوايا ناعمة.<br/>
+        <b>الخط:</b> Cairo بأحجام أكبر وأودّ.<br/>
+        <b>الأقوى لـ:</b> سهولة الوصول، الشخصية "حامي"، أوسع جمهور.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════════ CHARACTERS ════════════ -->
+  <div class="section-label">02 — Character System</div>
+  <div class="section-title">بدائل الشخصية (بدل الـ Stick Figure)</div>
+  <div class="section-sub">الشخصية هي أقوى سلاح ضد التقليد — صعب أحد ينسخها. ثلاث مدارس، كلها كود SVG متحرك.</div>
+
+  <div class="chars">
+
+    <!-- CHAR 1: FALCON MASCOT -->
+    <div class="char-card">
+      <div class="char-stage" style="background:radial-gradient(circle at 50% 40%, #1c140c, #0c0a08)">
+        <svg width="62%" viewBox="0 0 200 200">
+          <!-- stylized geometric saker falcon emblem -->
+          <defs>
+            <linearGradient id="fGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF6B00"/><stop offset="1" stop-color="#FFC15E"/></linearGradient>
+          </defs>
+          <!-- head -->
+          <path d="M100 36 C76 36 60 54 58 78 C56 100 70 116 84 124 L84 150 C84 150 78 156 78 162 L122 162 C122 156 116 150 116 150 L116 124 C130 116 144 100 142 78 C140 54 124 36 100 36 Z" fill="#16120d" stroke="url(#fGrad)" stroke-width="3"/>
+          <!-- beak -->
+          <path d="M100 92 L114 100 L100 108 Z" fill="url(#fGrad)"/>
+          <!-- eyes -->
+          <circle cx="84" cy="84" r="6.5" fill="#FF6B00"/>
+          <circle cx="116" cy="84" r="6.5" fill="#FF6B00"/>
+          <circle cx="84" cy="84" r="2.6" fill="#0c0a08"/>
+          <circle cx="116" cy="84" r="2.6" fill="#0c0a08"/>
+          <!-- brow (the "guardian" determined look) -->
+          <path d="M72 70 L94 78" stroke="#FFC15E" stroke-width="4" stroke-linecap="round"/>
+          <path d="M128 70 L106 78" stroke="#FFC15E" stroke-width="4" stroke-linecap="round"/>
+          <!-- crest feathers -->
+          <path d="M100 36 C100 22 92 14 86 10 C92 18 92 28 96 34 Z" fill="url(#fGrad)"/>
+          <path d="M100 36 C100 22 108 14 114 10 C108 18 108 28 104 34 Z" fill="url(#fGrad)"/>
+          <!-- chest feather lines -->
+          <path d="M92 132 L92 148 M100 134 L100 152 M108 132 L108 148" stroke="rgba(255,138,61,.5)" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="char-info">
+        <div class="opt-head"><span class="opt-num">١</span><span class="opt-name">"حامي" الصقر</span></div>
+        <p>صقر الصقّار (الحُر) — رمز السعودية — يتحول لمدرب/حارس. شعار + شخصية تظهر في النصائح، الإنجازات، الإشعارات، والمشاركة على السوشال. زي بومة Duolingo بس رياضي وخليجي.</p>
+        <div class="moat">✓ أقوى حاجز ضد التقليد · قابل للمشاركة · هوية وطنية</div>
+      </div>
+    </div>
+
+    <!-- CHAR 2: KINETIC LIGHT FIGURE -->
+    <div class="char-card">
+      <div class="char-stage" style="background:radial-gradient(circle at 50% 45%, #14100a, #08080a)">
+        <svg viewBox="0 0 160 200" class="ex-anim" style="width:70%">
+          <defs><filter id="glow"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+          <line x1="16" y1="180" x2="144" y2="180" stroke="rgba(255,107,0,.25)" stroke-width="2"/>
+          <!-- deep squat, glowing line athlete -->
+          <g filter="url(#glow)" stroke-linecap="round" fill="none">
+            <circle cx="80" cy="40" r="13" stroke="#FFB066" stroke-width="3"/>
+            <path d="M80 53 L79 96" stroke="#fff" stroke-width="5"/>
+            <path d="M79 60 L48 76 M48 76 L34 86" stroke="rgba(255,255,255,.5)" stroke-width="4"/>
+            <path d="M79 60 L110 76 M110 76 L124 86" stroke="rgba(255,255,255,.5)" stroke-width="4"/>
+            <!-- active legs glow orange -->
+            <path d="M79 96 L40 132" stroke="#FF6B00" stroke-width="6"/>
+            <path d="M79 96 L118 132" stroke="#FF6B00" stroke-width="6"/>
+            <path d="M40 132 L38 172" stroke="#FF8A3D" stroke-width="5"/>
+            <path d="M118 132 L120 172" stroke="#FF8A3D" stroke-width="5"/>
+            <!-- joint nodes -->
+            <circle cx="79" cy="96" r="6" fill="#FF6B00" stroke="none"/>
+            <circle cx="40" cy="132" r="5" fill="#FFC15E" stroke="none"/>
+            <circle cx="118" cy="132" r="5" fill="#FFC15E" stroke="none"/>
+            <circle cx="79" cy="60" r="4" fill="rgba(255,255,255,.7)" stroke="none"/>
+          </g>
+        </svg>
+      </div>
+      <div class="char-info">
+        <div class="opt-head"><span class="opt-num">٢</span><span class="opt-name">الطاقة الحركية</span></div>
+        <p>تطوير الـ stick figure الحالي إلى هيكل ضوئي متوهّج — خطوط طاقة تتبع العضلات، العضلة الشغّالة تتوهّج برتقالي أقوى. نفس فكرتك الحالية بس بمستوى Whoop/سينمائي.</p>
+        <div class="moat">✓ أسهل ترقية · يكمّل الموجود · فخم تقني</div>
+      </div>
+    </div>
+
+    <!-- CHAR 3: MUSCLE BLUEPRINT -->
+    <div class="char-card">
+      <div class="char-stage" style="background:radial-gradient(circle at 50% 45%, #131313, #090909)">
+        <svg viewBox="0 0 160 200" style="width:68%">
+          <line x1="16" y1="180" x2="144" y2="180" stroke="rgba(255,107,0,.2)" stroke-width="2"/>
+          <!-- silhouette squat -->
+          <g fill="none" stroke="rgba(255,255,255,.85)" stroke-width="3" stroke-linecap="round">
+            <circle cx="80" cy="40" r="13"/>
+            <path d="M80 53 L79 96"/>
+            <path d="M79 60 L50 78 M50 78 L36 90"/>
+            <path d="M79 60 L108 78 M108 78 L122 90"/>
+            <path d="M79 96 L42 132 L40 172"/>
+            <path d="M79 96 L116 132 L118 172"/>
+          </g>
+          <!-- muscle heatmap glows on quads + glutes -->
+          <g>
+            <ellipse cx="60" cy="114" rx="13" ry="20" fill="#FF6B00" opacity="0.32" transform="rotate(34 60 114)"/>
+            <ellipse cx="98" cy="114" rx="13" ry="20" fill="#FF6B00" opacity="0.32" transform="rotate(-34 98 114)"/>
+            <circle cx="79" cy="98" r="11" fill="#FF6B00" opacity="0.4"/>
+          </g>
+          <!-- precise joint dots -->
+          <circle cx="79" cy="96" r="4.5" fill="#fff"/>
+          <circle cx="42" cy="132" r="4" fill="#FFB066"/>
+          <circle cx="116" cy="132" r="4" fill="#FFB066"/>
+          <text x="80" y="194" text-anchor="middle" font-size="8" fill="rgba(255,107,0,.7)" font-family="Rajdhani" letter-spacing="2" font-weight="700">QUADS · GLUTES</text>
+        </svg>
+      </div>
+      <div class="char-info">
+        <div class="opt-head"><span class="opt-num">٣</span><span class="opt-name">مخطط العضلات</span></div>
+        <p>شكل علمي/طبي راقٍ: ظِل أبيض نظيف + خريطة حرارية برتقالية على العضلة الشغّالة. يقوّي رسالة "السلامة والعلم" ويناسب جمهور المتعافين من الإصابات.</p>
+        <div class="moat">✓ يدعم رسالة السلامة · موثوق · علمي</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════════ PHOTO FEATURE VERDICT ════════════ -->
+  <div class="section-label">03 — Strategy</div>
+  <div class="section-title">رأيي في فكرة التصوير (AI Form Check)</div>
+
+  <div class="verdict">
+    <h3>الخلاصة: لا تلغيها — بدّلها بشي أقوى وأصعب نسخاً</h3>
+    <p>إحساسك صح. تصوير نفسك في الجيم بالكاميرا = احتكاك كبير + إحراج (خصوصاً للنساء والمحافظين)، صورة واحدة ما تقيس الحركة الحقيقية (العمق، الإيقاع، مسار الحديد)، وكل صورة تكلّف API. هذي ليست ميزة "صعبة التقليد"، بالعكس أي أحد يقدر يضيف نفس الشي.</p>
+    <p>الأقوى استراتيجياً: <b>تتبّع الحركة على الجهاز نفسه (On-device pose) بدل الصورة</b> — الكاميرا تشتغل لحظياً، الهيكل العظمي يتحرك فوق جسمك بالوقت الحقيقي، يعدّ التكرارات ويصحّح الزاوية فوراً — <b>وما تطلع أي صورة من جهازك أبداً</b>. خصوصية كاملة = ميزة تسويقية ضخمة في السوق العربي.</p>
+    <div class="rec">
+      <b>توصيتي:</b> حوّل "فحص الحركة" من صورة → إلى <b>كاميرا حية بتتبع هيكلي لحظي (MediaPipe، مجاني وعلى الجهاز)</b>. النتيجة: خصوصية أعلى، تكلفة أقل، إحساس "سحري" يصعب تقليده، ويربط مباشرة بشخصيتك المختارة (الهيكل المضيء فوق جسمك = الخيار ٢). والصورة تبقى كخيار اختياري ثانوي فقط لمن يبي ملخص نصي من Claude.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

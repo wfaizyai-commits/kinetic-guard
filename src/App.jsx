@@ -9,12 +9,13 @@ import ResultsScreen from './screens/ResultsScreen';
 import ReadinessScreen from './screens/ReadinessScreen';
 import WorkoutDashboard from './screens/WorkoutDashboard';
 import ExerciseDetail from './screens/ExerciseDetail';
-import FormCheckAI from './screens/FormCheckAI';
 import PostWorkoutSummary from './screens/PostWorkoutSummary';
 import AuthScreen from './screens/AuthScreen';
 import PeriodTrackerScreen from './screens/PeriodTrackerScreen';
 import GymTrackerScreen from './screens/GymTrackerScreen';
+import SplitScreen from './screens/SplitScreen';
 import AnimatedSplash from './screens/AnimatedSplash';
+import MedicalDisclaimer from './components/MedicalDisclaimer';
 
 import useAuth from './hooks/useAuth';
 import { syncProfileTier, syncAssessmentResult, syncWorkoutSession, hydrateRemoteFromLocal } from './lib/sync';
@@ -44,40 +45,9 @@ const clearAudit = () => {
 };
 
 // ── Scoring ──────────────────────────────────────────────────────────────────
-const computeTierAndScore = (answers) => {
-  let score = 60;
-  const flags = [];
-
-  // Active history (1-5 scale)
-  if (answers.activeHistory >= 4) score += 15;
-  else if (answers.activeHistory >= 3) score += 8;
-  else score -= 5;
-
-  // Injury flags
-  if (answers.injuryFlags?.includes('jointPain')) { score -= 12; flags.push('joint_pain'); }
-  if (answers.injuryFlags?.includes('priorSurgery')) { score -= 10; flags.push('prior_surgery'); }
-
-  // Mobility
-  if (answers.mobilityFlags?.includes('canTouchToes')) score += 5;
-  if (answers.mobilityFlags?.includes('canFullSquat')) score += 5;
-  if (answers.mobilityFlags?.includes('hasPostureIssues')) { score -= 8; flags.push('posture_issues'); }
-  if (!answers.mobilityFlags?.includes('canTouchToes') && !answers.mobilityFlags?.includes('canFullSquat')) {
-    flags.push('limited_mobility');
-  }
-
-  // Daily load
-  if (answers.dailyLoad === 'demanding') score += 8;
-  else if (answers.dailyLoad === 'sedentary') { score -= 5; flags.push('sedentary_lifestyle'); }
-
-  score = Math.max(10, Math.min(100, score));
-
-  let tier;
-  if (score >= 75) tier = 'advanced';
-  else if (score >= 50) tier = 'intermediate';
-  else tier = 'novice';
-
-  return { tier, safetyScore: score, riskFlags: flags };
-};
+// Tiering logic lives in a single source of truth: src/lib/scoring.js
+// (previously duplicated & divergent between here and services/assessment.js)
+import { computeTierAndScore } from './lib/scoring';
 
 // ── Screens enum ─────────────────────────────────────────────────────────────
 const SCREENS = {
@@ -88,10 +58,10 @@ const SCREENS = {
   READINESS: 'readiness',
   DASHBOARD: 'dashboard',
   EXERCISE: 'exercise',
-  FORM_CHECK: 'form_check',
   SUMMARY: 'summary',
   PERIOD_TRACKER: 'period_tracker',
   GYM_TRACKER: 'gym_tracker',
+  SPLIT: 'split',
 };
 
 // ── Age Setup Modal ───────────────────────────────────────────────────────────
@@ -280,6 +250,9 @@ function AppInner() {
   const [showAgeModal, setShowAgeModal] = useState(false);
   const [showGenderModal, setShowGenderModal] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
+  const [medicalAccepted, setMedicalAccepted] = useState(() => {
+    try { return localStorage.getItem('fitguard_medical_v1') === 'yes'; } catch { return false; }
+  });
   const hasExistingAudit = !!loadAudit();
 
   // Sync screen state whenever auth resolves or user changes
@@ -338,12 +311,22 @@ function AppInner() {
     setupNotifications({ lang, age }).catch(() => {});
   };
 
+  const handleMedicalAccept = () => {
+    try { localStorage.setItem('fitguard_medical_v1', 'yes'); } catch { /* ignore */ }
+    setMedicalAccepted(true);
+  };
+
   // Show nothing while checking session
   if (authLoading) return null;
 
   // Animated splash (shown once on app load)
   if (showSplash) {
     return <AnimatedSplash onComplete={() => setShowSplash(false)} />;
+  }
+
+  // Medical safety disclaimer — must be acknowledged once before using the app
+  if (!medicalAccepted) {
+    return <MedicalDisclaimer lang={lang} onAccept={handleMedicalAccept} />;
   }
 
   const handleAuthenticated = (authUser) => {
@@ -412,14 +395,6 @@ function AppInner() {
     } else {
       setScreen(SCREENS.SUMMARY);
     }
-  };
-
-  const handleFormCheck = () => {
-    setScreen(SCREENS.FORM_CHECK);
-  };
-
-  const handleFormCheckBack = () => {
-    setScreen(SCREENS.EXERCISE);
   };
 
   const handleSummaryDone = () => {
@@ -522,6 +497,7 @@ function AppInner() {
             onOpenCycleTracker={() => setScreen(SCREENS.PERIOD_TRACKER)}
             onChangeGender={handleChangeGender}
             onOpenGymTracker={() => setScreen(SCREENS.GYM_TRACKER)}
+            onOpenSplit={() => setScreen(SCREENS.SPLIT)}
           />
           {ageModalOverlay}
           {genderModalOverlay}
@@ -542,6 +518,18 @@ function AppInner() {
         </div>
       );
 
+    case SCREENS.SPLIT:
+      return (
+        <div className={rootClass}>
+          <SplitScreen
+            onBack={() => setScreen(SCREENS.DASHBOARD)}
+            onStartGym={() => setScreen(SCREENS.GYM_TRACKER)}
+            riskFlags={auditResult?.riskFlags || []}
+            readinessScore={readinessData?.readinessScore || 75}
+          />
+        </div>
+      );
+
     case SCREENS.EXERCISE:
       return currentExercise ? (
         <div className={rootClass}>
@@ -551,21 +539,11 @@ function AppInner() {
             exerciseIndex={exerciseIndex}
             onComplete={handleExerciseComplete}
             onBack={() => setScreen(SCREENS.DASHBOARD)}
-            onFormCheck={handleFormCheck}
           />
           {ageModalOverlay}
           {genderModalOverlay}
         </div>
       ) : null;
-
-    case SCREENS.FORM_CHECK:
-      return (
-        <div className={rootClass}>
-          <FormCheckAI exercise={currentExercise} onBack={handleFormCheckBack} />
-          {ageModalOverlay}
-          {genderModalOverlay}
-        </div>
-      );
 
     case SCREENS.SUMMARY:
       return (

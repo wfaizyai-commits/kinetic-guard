@@ -29,7 +29,7 @@ const SetTracker = ({ sets, completedSets, onCompleteSet }) => {
   );
 };
 
-const ExerciseDetail = ({ exercise, allExercises, exerciseIndex, onComplete, onBack, onFormCheck }) => {
+const ExerciseDetail = ({ exercise, allExercises, exerciseIndex, onComplete, onBack }) => {
   const { t, lang } = useLanguage();
   const [completedSets, setCompletedSets] = useState(0);
   const [isResting, setIsResting] = useState(false);
@@ -146,12 +146,6 @@ const ExerciseDetail = ({ exercise, allExercises, exerciseIndex, onComplete, onB
 
         {/* Form check button */}
         <div className="exercise-detail-actions animate-fade-up" style={{ animationDelay: '0.3s' }}>
-          {onFormCheck && (
-            <Button variant="secondary" size="md" fullWidth onClick={onFormCheck}>
-              📷 {t.exercise.formCheck}
-            </Button>
-          )}
-
           {allSetsComplete ? (
             <Button variant="primary" size="lg" fullWidth onClick={() => onComplete && onComplete()}>
               {t.exercise.complete} ✓

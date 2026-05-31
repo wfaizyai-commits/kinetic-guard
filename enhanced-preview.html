@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FitGuard — Final Direction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet"/>
+<style>
+  /* ── Final merged tokens: Heritage (A) + Data (B), matching App.css ── */
+  :root{
+    --bg:#0C0A08; --surface:#16120D; --surface-elevated:#1E1810; --surface-hover:#271F15;
+    --border:rgba(255,170,110,.10); --border-active:rgba(255,107,0,.55);
+    --orange:#FF6B00; --orange-bright:#FF8C38; --orange-ember:#FFC15E;
+    --orange-glow:rgba(255,107,0,.30);
+    --ember:linear-gradient(135deg,#FF6B00 0%,#FFA94D 60%,#FFC15E 100%);
+    --green:#2BD9A0; --danger:#FF5A6E; --warning:#FFB23D;
+    --text:#F5EFE8; --text-2:rgba(245,239,232,.66); --text-3:rgba(245,239,232,.36);
+    --num:'Rajdhani',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(ellipse 90% 50% at 80% -5%, rgba(255,138,61,.06), transparent 60%), var(--bg);
+    color:var(--text);font-family:'Cairo',sans-serif;line-height:1.6;
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;
+    padding:34px 16px 60px;position:relative;
+  }
+  body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background-image:repeating-linear-gradient(135deg,rgba(255,138,61,.022) 0,rgba(255,138,61,.022) 1px,transparent 1px,transparent 26px)}
+  .lead{position:relative;z-index:1;text-align:center;margin-bottom:26px;max-width:760px}
+  .lead .k{font-family:var(--num);letter-spacing:4px;font-size:12px;color:var(--orange);text-transform:uppercase}
+  .lead h1{font-size:clamp(26px,4vw,40px);font-weight:900;margin:8px 0 6px}
+  .lead h1 b{color:var(--orange)}
+  .lead p{color:var(--text-2);font-size:14px;font-weight:300}
+
+  .rail{position:relative;z-index:1;display:flex;gap:24px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+  .cap{font-size:12px;color:var(--text-3);text-align:center;margin-top:10px;font-weight:300}
+
+  .phone{width:320px;background:var(--bg);border-radius:30px;border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 30px 70px rgba(0,0,0,.55);overflow:hidden}
+  .bar{height:32px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-3)}
+  .body{padding:4px 16px 20px}
+  .h{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .logo{width:26px;height:26px;border-radius:8px;background:var(--ember);color:#1a0f04;display:grid;place-items:center;font-weight:900;font-size:13px}
+  .ttl{font-weight:900;font-size:16px}
+  .ttl b{color:var(--orange)}
+  .live{margin-inline-start:auto;font-family:var(--num);font-size:10px;letter-spacing:1px;color:var(--green)}
+  .greet{font-size:12.5px;color:var(--text-2);margin-bottom:14px}
+
+  /* readiness */
+  .ring-card{display:flex;align-items:center;gap:14px;background:linear-gradient(160deg,#1c140c,#16120d);
+    border:1px solid var(--border-active);border-radius:20px;padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+  .ring-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 15%,rgba(255,107,0,.10),transparent 60%)}
+  .ring{width:86px;height:86px;position:relative;flex:0 0 auto}
+  .ring .pc{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+  .ring .pc b{font-family:var(--num);font-size:30px;color:var(--orange-ember);line-height:1}
+  .ring .pc small{font-size:9px;color:var(--text-3)}
+  .rm h4{font-size:14px;margin-bottom:3px}
+  .rm p{font-size:11.5px;color:var(--text-2);line-height:1.5}
+  .pill{display:inline-block;font-size:10px;font-weight:700;padding:2px 10px;border-radius:20px;margin-top:7px;
+    background:rgba(255,107,0,.15);color:var(--orange-ember)}
+
+  /* data tiles (B) */
+  .tiles{display:flex;gap:8px;margin-bottom:12px}
+  .tile{flex:1;background:var(--surface-elevated);border:1px solid var(--border);border-radius:14px;padding:11px 6px;text-align:center}
+  .tile .v{font-family:var(--num);font-size:21px;font-weight:700}
+  .tile .v small{font-size:10px;color:var(--text-3)}
+  .tile .l{font-size:9.5px;color:var(--text-3);letter-spacing:.5px}
+
+  /* prayer */
+  .pray{display:flex;gap:6px;margin-bottom:6px}
+  .pcell{flex:1;text-align:center;background:var(--surface-elevated);border:1px solid var(--border);border-radius:12px;padding:7px 2px}
+  .pcell.n{background:rgba(255,107,0,.13);border-color:rgba(255,107,0,.4)}
+  .pcell .nm{font-size:9px;color:var(--text-3)}
+  .pcell.n .nm{color:var(--orange-ember)}
+  .pcell .tm{font-family:var(--num);font-size:13px;font-weight:700;margin-top:2px}
+
+  /* exercise detail */
+  .ex-head{text-align:center;margin-bottom:8px}
+  .ex-head .ic{font-size:30px}
+  .ex-head h2{font-size:20px;font-weight:900}
+  .ex-head .ms{font-size:12px;color:var(--orange-ember)}
+  .stage{background:radial-gradient(circle at 50% 42%,#15110b,#0c0a08);border:1px solid var(--border);
+    border-radius:18px;height:228px;display:grid;place-items:center;margin:10px 0}
+  .mb-active{filter:drop-shadow(0 0 3px var(--orange)) drop-shadow(0 0 8px var(--orange-glow))}
+  .exrow{display:flex;justify-content:space-around;background:var(--surface-elevated);border:1px solid var(--border);border-radius:16px;padding:12px;margin-bottom:12px}
+  .exrow .c{text-align:center}
+  .exrow .c .v{font-family:var(--num);font-size:20px;font-weight:700;color:var(--orange)}
+  .exrow .c .l{font-size:10px;color:var(--text-3)}
+  .btn{border:none;border-radius:14px;padding:14px;width:100%;font-family:'Cairo';font-weight:700;font-size:14px;color:#1a0f04;background:var(--ember);cursor:pointer}
+  .blueprint-tag{position:absolute;bottom:10px;width:100%;text-align:center;font-family:var(--num);font-size:9px;letter-spacing:2px;color:rgba(255,107,0,.7)}
+</style>
+</head>
+<body>
+
+  <div class="lead">
+    <div class="k">Final Direction · Heritage + Data</div>
+    <h1>Fit<b>Guard</b> — الشكل الجديد</h1>
+    <p>أسود دافئ + جمر برتقالي + نقش نجدي خفيف، مع دقّة بيانات. والشخصية الجديدة: مخطط العضلات — العضلة الشغّالة تتوهّج برتقالي. هذا الشكل مطبّق فعلياً على كل التطبيق الآن.</p>
+  </div>
+
+  <div class="rail">
+
+    <!-- HOME -->
+    <div>
+      <div class="phone">
+        <div class="bar">9:41</div>
+        <div class="body">
+          <div class="h">
+            <div class="logo">🛡</div>
+            <div class="ttl">Fit<b>Guard</b></div>
+            <div class="live">● READY</div>
+          </div>
+          <div class="greet">مساء الخير، وليد ✦ جاهزيتك اليوم</div>
+
+          <div class="ring-card">
+            <div class="ring">
+              <svg viewBox="0 0 86 86"><circle cx="43" cy="43" r="36" fill="none" stroke="#2a2017" stroke-width="7"/><circle cx="43" cy="43" r="36" fill="none" stroke="url(#g)" stroke-width="7" stroke-linecap="round" stroke-dasharray="226" stroke-dashoffset="50" transform="rotate(-90 43 43)"/><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF6B00"/><stop offset="1" stop-color="#FFC15E"/></linearGradient></defs></svg>
+              <div class="pc"><div><b>78</b><br/><small>جاهزية</small></div></div>
+            </div>
+            <div class="rm">
+              <h4>جاهز للتمرين 💪</h4>
+              <p>جسمك مستعد اليوم. ابدأ بإحماء ٨ دقايق.</p>
+              <span class="pill">جاهزية عالية</span>
+            </div>
+          </div>
+
+          <div class="tiles">
+            <div class="tile"><div class="v">7.2<small>س</small></div><div class="l">النوم</div></div>
+            <div class="tile"><div class="v" style="color:var(--orange-bright)">61</div><div class="l">الطاقة</div></div>
+            <div class="tile"><div class="v" style="color:var(--green)">منخفض</div><div class="l">الإجهاد</div></div>
+          </div>
+
+          <div class="pray">
+            <div class="pcell"><div class="nm">الظهر</div><div class="tm">11:52</div></div>
+            <div class="pcell n"><div class="nm">العصر</div><div class="tm">3:22</div></div>
+            <div class="pcell"><div class="nm">المغرب</div><div class="tm">6:42</div></div>
+            <div class="pcell"><div class="nm">العشاء</div><div class="tm">8:12</div></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-2);text-align:center;margin:8px 0 12px">العصر بعد ٤٥ دقيقة — وقت مناسب لجلسة 🕌</div>
+
+          <button class="btn">ابدأ تمرين اليوم</button>
+        </div>
+      </div>
+      <div class="cap">الرئيسية · جاهزية + بيانات + صلاة</div>
+    </div>
+
+    <!-- EXERCISE w/ MUSCLE BLUEPRINT -->
+    <div>
+      <div class="phone">
+        <div class="bar">9:41</div>
+        <div class="body">
+          <div class="ex-head">
+            <div class="ic">🦵</div>
+            <h2>القرفصاء</h2>
+            <div class="ms">الأرجل · المؤخرة</div>
+          </div>
+
+          <div class="stage" style="position:relative">
+            <!-- Muscle Blueprint squat: white silhouette + glowing active quads/glutes -->
+            <svg viewBox="0 0 160 210" style="width:64%">
+              <line x1="16" y1="186" x2="144" y2="186" stroke="rgba(255,107,0,.22)" stroke-width="2"/>
+              <!-- silhouette -->
+              <g fill="none" stroke="rgba(245,239,232,0.90)" stroke-width="3" stroke-linecap="round">
+                <circle cx="80" cy="34" r="13"/>
+                <path d="M80 47 L79 92"/>
+                <path d="M79 56 L50 74 M50 74 L36 86"/>
+                <path d="M79 56 L108 74 M108 74 L122 86"/>
+              </g>
+              <!-- active legs (glow) -->
+              <g stroke-linecap="round" class="mb-active">
+                <path d="M79 92 L40 130" stroke="var(--orange)" stroke-width="7" fill="none"/>
+                <path d="M79 92 L118 130" stroke="var(--orange)" stroke-width="7" fill="none"/>
+                <path d="M40 130 L38 176" stroke="var(--orange)" stroke-width="6" fill="none"/>
+                <path d="M118 130 L120 176" stroke="var(--orange)" stroke-width="6" fill="none"/>
+              </g>
+              <!-- feet -->
+              <g fill="none" stroke="rgba(245,239,232,0.30)" stroke-width="5" stroke-linecap="round">
+                <path d="M38 176 L22 180"/><path d="M120 176 L136 180"/>
+              </g>
+              <!-- joints -->
+              <circle cx="79" cy="92" r="6" fill="var(--orange)" class="mb-active"/>
+              <circle cx="40" cy="130" r="5.5" fill="var(--orange)" class="mb-active"/>
+              <circle cx="118" cy="130" r="5.5" fill="var(--orange)" class="mb-active"/>
+              <circle cx="79" cy="56" r="4" fill="rgba(245,239,232,0.7)"/>
+            </svg>
+            <div class="blueprint-tag">ACTIVE · QUADS + GLUTES</div>
+          </div>
+
+          <div class="exrow">
+            <div class="c"><div class="v">3</div><div class="l">مجموعات</div></div>
+            <div class="c"><div class="v">12</div><div class="l">تكرار</div></div>
+            <div class="c"><div class="v">60ث</div><div class="l">راحة</div></div>
+          </div>
+
+          <div style="text-align:center;font-size:12px;color:var(--text-2);margin-bottom:10px">١ / ٣ مجموعات</div>
+          <button class="btn">إتمام المجموعة ١</button>
+        </div>
+      </div>
+      <div class="cap">التمرين · الشخصية الجديدة "مخطط العضلات"</div>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -84,6 +84,47 @@ export const recordWorkoutDay = () => {
   return calcWorkoutStreak();
 };
 
+// ── Activity (walking / cardio) counts as an active day too ─────────────────────
+// Previously only an in-app workout advanced the streak, so a 10k-step walk
+// never counted. Now any active day (walk logged, or step goal met) keeps the
+// streak alive and shows as "active".
+const ACTIVE_KEY = 'fitguard_active_days_v1';
+export const STEP_GOAL = 6000; // steps that count a day as "active"
+
+const loadActiveDays = () => {
+  try { return JSON.parse(localStorage.getItem(ACTIVE_KEY)) || { days: [] }; }
+  catch { return { days: [] }; }
+};
+const saveActiveDays = (d) => {
+  try { localStorage.setItem(ACTIVE_KEY, JSON.stringify(d)); } catch {}
+};
+
+/** Mark today active from a walk/cardio log or from meeting the step goal. */
+export const recordActiveDay = (date = dateStr()) => {
+  const data = loadActiveDays();
+  if (!data.days.includes(date)) {
+    data.days.push(date);
+    data.days.sort();
+    saveActiveDays(data);
+    // Active days also feed the workout streak so walking keeps it alive.
+    const sd = loadStreakData();
+    if (!sd.days.includes(date)) { sd.days.push(date); sd.days.sort(); saveStreakData(sd); }
+  }
+  return calcWorkoutStreak();
+};
+
+/** True if today already counts as active (walk logged or steps ≥ goal). */
+export const isTodayActive = (steps = 0) =>
+  loadActiveDays().days.includes(dateStr()) || steps >= STEP_GOAL;
+
+/** Auto-mark active when the step goal is met (call when health data loads). */
+export const syncStepActivity = (steps = 0) => {
+  if (steps >= STEP_GOAL) return recordActiveDay();
+  return calcWorkoutStreak();
+};
+
+export const getActiveDayCount = () => loadActiveDays().days.length;
+
 export const calcWorkoutStreak = () => {
   const { days } = loadStreakData();
   if (!days.length) return 0;

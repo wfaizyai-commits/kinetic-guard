@@ -19,6 +19,7 @@ import {
 import {
   loadXP, getLevel, calcWorkoutStreak, getTotalWorkouts,
   getFormCheckCount, getBestReadiness, getFullWorkouts, evaluateBadges, BADGES,
+  recordActiveDay, isTodayActive, syncStepActivity,
 } from '../lib/gamification';
 import { applyInjuryMods, FLAG_INFO } from '../lib/injuryMods';
 import './WorkoutDashboard.css';
@@ -905,7 +906,7 @@ const WatchTab = ({ health, setHealth, hkLive, setHkLive }) => {
 };
 
 // ── Main Component ────────────────────────────────────────────────────────────
-const WorkoutDashboard = ({ tier, readinessData, riskFlags, onStartExercise, onViewExercise, onOpenCycleTracker, onChangeGender, onOpenGymTracker }) => {
+const WorkoutDashboard = ({ tier, readinessData, riskFlags, onStartExercise, onViewExercise, onOpenCycleTracker, onChangeGender, onOpenGymTracker, onOpenSplit }) => {
   const { t, lang, isRTL } = useLanguage();
   const { user } = useAuth();
   const { gender, cycleData } = useGender();
@@ -916,6 +917,7 @@ const WorkoutDashboard = ({ tier, readinessData, riskFlags, onStartExercise, onV
   const [health, setHealth]             = useState(loadHealth);
   const [ringsAnimated, setRingsAnimated] = useState(false);
   const [hkLive, setHkLive]             = useState(false);
+  const [activeToday, setActiveToday]   = useState(() => isTodayActive(loadHealth().steps));
 
   const tierKey  = (tier || 'novice').toLowerCase();
   const tierCfg  = TIER_CONFIG[tierKey] || TIER_CONFIG.novice;
@@ -967,9 +969,16 @@ const WorkoutDashboard = ({ tier, readinessData, riskFlags, onStartExercise, onV
           weekWorkouts:  prev.weekWorkouts.map((v, i) => Math.max(v, hkData.weekWorkouts?.[i] ?? 0)),
         }));
         setHkLive(true);
+        // Walking counts: if step goal met, mark today active (keeps streak alive).
+        if (hkData.steps) { syncStepActivity(hkData.steps); setActiveToday(isTodayActive(hkData.steps)); }
       })
       .catch(() => {});
   }, []);
+
+  const handleLogWalk = () => {
+    recordActiveDay();
+    setActiveToday(true);
+  };
 
   const getGreeting = () => {
     const h = new Date().getHours();
@@ -1021,6 +1030,18 @@ const WorkoutDashboard = ({ tier, readinessData, riskFlags, onStartExercise, onV
               </div>
             </div>
 
+            {/* ── Training Split entry card (gym-focused program) ── */}
+            {onOpenSplit && (
+              <button className="db-gym-entry db-split-entry animate-fade-up" onClick={onOpenSplit}>
+                <span className="db-gym-entry__icon">💥</span>
+                <div className="db-gym-entry__text">
+                  <span className="db-gym-entry__title">{isRTL ? 'برنامج التمرين' : 'Training Split'}</span>
+                  <span className="db-gym-entry__sub">{isRTL ? '٥ أيام · صدر، ظهر، أرجل، أكتاف، ذراعين' : '5-day split · chest, back, legs, shoulders, arms'}</span>
+                </div>
+                <span className="db-gym-entry__arrow">{isRTL ? '←' : '→'}</span>
+              </button>
+            )}
+
             {/* ── Gym Tracker entry card ── */}
             <button className="db-gym-entry animate-fade-up" onClick={onOpenGymTracker} style={{ animationDelay: '0.04s' }}>
               <span className="db-gym-entry__icon">🏋️</span>
@@ -1029,6 +1050,16 @@ const WorkoutDashboard = ({ tier, readinessData, riskFlags, onStartExercise, onV
                 <span className="db-gym-entry__sub">{isRTL ? 'سجّل تمارينك، الأوزان والسيتات' : 'Log your lifts, track progress'}</span>
               </div>
               <span className="db-gym-entry__arrow">{isRTL ? '←' : '→'}</span>
+            </button>
+
+            {/* ── Log a walk / cardio — makes walking count toward the streak ── */}
+            <button className="db-walk-entry animate-fade-up" onClick={handleLogWalk} disabled={activeToday} style={{ animationDelay: '0.06s' }}>
+              <span className="db-walk-entry__icon">{activeToday ? '✅' : '🚶'}</span>
+              <span className="db-walk-entry__text">
+                {activeToday
+                  ? (isRTL ? 'نشاط اليوم مُحتسب — أحسنت!' : "Today counts as active — nice!")
+                  : (isRTL ? 'سجّل مشي / كارديو — يُحتسب في سلسلتك' : 'Log a walk / cardio — counts toward your streak')}
+              </span>
             </button>
 
             {/* ── Injury warning banner ── */}

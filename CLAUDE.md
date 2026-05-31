@@ -1,59 +1,75 @@
 # FitGuard — Claude Code Context
 
 ## What This App Is
-FitGuard (formerly KineticGuard) is a **bilingual Arabic/English iOS fitness safety app** built with React 18 + Vite + Capacitor 5. It runs as a native iPhone app. Users complete a Safety Audit assessment, get assigned a fitness tier (Novice / Intermediate / Advanced), then follow a personalized workout program with real-time AI form checking via camera.
+FitGuard (formerly KineticGuard) is a **bilingual Arabic/English iOS fitness safety app** built with React 19 + Vite + Capacitor 8. It runs as a native iPhone app. Users acknowledge a medical safety disclaimer, complete a Safety Audit assessment, get assigned a fitness tier (Novice / Intermediate / Advanced), then follow a personalized workout program with AI form checking via camera.
 
 ## Tech Stack
-- **Frontend**: React 18 + Vite (JSX), CSS custom properties (no Tailwind)
-- **Native**: Capacitor 5 → iOS (Xcode), Android
-- **Backend**: Supabase (PostgreSQL + Auth + RLS)
+- **Frontend**: React 19 + Vite (JSX), CSS custom properties (no Tailwind)
+- **Native**: Capacitor 8 → iOS (Xcode), Android
+- **Backend**: Supabase (PostgreSQL + Auth + RLS) + Supabase Edge Functions (Deno)
+- **AI**: Claude (claude-haiku-4-5) vision — called via a **server-side Edge Function**, never directly from the app
 - **Language**: Bilingual Arabic 🇸🇦 / English 🇬🇧 with RTL support
 - **Build**: `npm run build && npx cap sync ios` → Xcode → iPhone
+
+## 🔐 Security model (IMPORTANT — read before touching AI code)
+- The Anthropic API key is **NEVER** in the client. Any `VITE_*` var is inlined
+  into the JS bundle and is extractable from a shipped app → unbounded bill.
+- `src/lib/formCheckAI.js` calls the **`form-check` Supabase Edge Function**
+  (`supabase/functions/form-check/index.ts`). That function holds the key,
+  authenticates the user via their Supabase JWT, rate-limits per user
+  (table `ai_usage`, 40 calls / 24h), and forwards the image to Claude.
+- The image is downscaled on-device (≤768px JPEG) before upload.
+- **The Supabase *anon* key is fine to be public** (protected by RLS). Only the
+  Anthropic key must stay server-side.
+
+### Deploy the function
+```bash
+supabase functions deploy form-check
+supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
+# SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are injected automatically.
+# Apply the new migration too:
+supabase db push   # (or run supabase/migrations/003_ai_usage.sql)
+```
 
 ## Project Structure
 ```
 kinetic-guard/
 ├── src/
-│   ├── App.jsx                  # Main router (screen state machine)
+│   ├── App.jsx                  # Main router (screen state machine) + medical-disclaimer gate
 │   ├── App.css                  # Global design tokens (--orange, --surface, etc.)
 │   ├── lib/
-│   │   └── supabase.js          # Supabase client + auth helpers
-│   ├── i18n/
-│   │   ├── translations.js      # All EN + AR strings
-│   │   └── LanguageContext.jsx  # useLanguage() hook
+│   │   ├── supabase.js          # Supabase client + auth helpers
+│   │   ├── scoring.js           # ⭐ Single source of truth for tier/score logic
+│   │   ├── formCheckAI.js       # Calls the form-check Edge Function (no API key client-side)
+│   │   ├── prayerTimes.js       # Aladhan API + geolocation
+│   │   ├── injuryMods.js        # Risk-flag → safe exercise substitutions
+│   │   └── ...                  # gamification, notifications, sync, etc.
 │   ├── components/
-│   │   ├── Button.jsx/css
-│   │   ├── OptionButton.jsx/css
-│   │   ├── ProgressBar.jsx/css
-│   │   ├── LanguageToggle.jsx/css
-│   │   └── ExerciseAnimation.jsx/css   # SVG stick figure @keyframes animations
+│   │   ├── MedicalDisclaimer.jsx # ⭐ One-time safety/liability gate
+│   │   └── ...
 │   └── screens/
-│       ├── AuthScreen.jsx/css          # Sign In / Sign Up (Supabase auth)
-│       ├── StartScreen.jsx/css
-│       ├── AssessmentScreen.jsx/css    # 6-question Safety Audit
-│       ├── ResultsScreen.jsx/css       # Tier + safety score
-│       ├── ReadinessScreen.jsx/css     # Daily check (sleep/stress/soreness)
-│       ├── WorkoutDashboard.jsx/css
-│       ├── ExerciseDetail.jsx/css      # Exercise + animation + form check
-│       ├── FormCheckAI.jsx/css         # Camera-based AI form analysis
-│       └── PostWorkoutSummary.jsx/css
+│       ├── AssessmentScreen.jsx  # 6-question Safety Audit
+│       ├── FormCheckAI.jsx       # Camera form analysis + one-time data-use consent
+│       └── ...
 ├── supabase/
+│   ├── functions/
+│   │   ├── _shared/cors.ts
+│   │   └── form-check/index.ts   # ⭐ AI proxy (holds Anthropic key)
 │   └── migrations/
-│       ├── 001_initial_schema.sql      # profiles, assessment_results, workout_sessions
-│       └── 002_rls_policies.sql        # RLS: users own their data
-├── ios/App/                            # Capacitor iOS project
-├── .env.local                          # VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY (gitignored)
+│       ├── 001_initial_schema.sql
+│       ├── 002_rls_policies.sql
+│       └── 003_ai_usage.sql       # ⭐ usage log for rate limiting
+├── ios/App/                       # Capacitor iOS project
 ├── capacitor.config.ts
-└── CLAUDE.md                           # ← this file
+└── CLAUDE.md                      # ← this file
 ```
 
 ## Supabase Config
 - **Project URL**: `https://pxhdptebzbudswrkgapf.supabase.co`
 - **Project ref**: `pxhdptebzbudswrkgapf`
 - **Region**: AWS ap-south-1 (Mumbai)
-- **Anon key**: in `.env.local` as `VITE_SUPABASE_ANON_KEY`
-- **Email confirmation**: DISABLED (users sign up → immediately active)
-- **Tables**: `profiles`, `assessment_results`, `workout_sessions`
+- **Email confirmation**: DISABLED (users sign up → immediately active) — revisit before public launch (abuse vector).
+- **Tables**: `profiles`, `assessment_results`, `workout_sessions`, `ai_usage`
 - **Trigger**: `handle_new_user()` auto-creates profile row on signup
 
 ## Design System
@@ -62,90 +78,58 @@ All colors/spacing are CSS custom properties in `src/App.css`:
 --orange: #FF6B00       /* primary accent */
 --surface: #0A0A0A      /* app background */
 --surface-elevated: #141414
---surface-hover: #1A1A1A
 --text-primary: #FFFFFF
 --text-secondary: #A0A0A0
---text-muted: #606060
 --border: rgba(255,255,255,0.08)
---danger: #FF4D6D
---radius-md: 12px
---radius-xl: 20px
---radius-full: 999px
---font-heading: 'Montserrat', sans-serif
---font-body: 'Inter', sans-serif
+--radius-md: 12px  --radius-xl: 20px
 ```
 **Rule**: Never use hardcoded colors. Always use CSS variables.
 
+## Bundle ID (RESOLVED)
+- Unified to **`com.wfaizy.fitguard`** across `capacitor.config.ts`, the iOS
+  Xcode project (`PRODUCT_BUNDLE_IDENTIFIER`), and the Android `applicationId`.
+- ⚠️ After this change, **re-select your Signing Team** in Xcode (Targets →
+  App → Signing & Capabilities) so provisioning matches the new ID.
+- The Android Java package dir stays `com.kineticguard.app` (that's fine —
+  `applicationId` may differ from the package).
+
 ## iOS Build Commands
 ```bash
-# Build + sync to Xcode
-npm run build && npx cap sync ios
-
-# Or double-click the script:
-./build_and_sync.command
-
+npm run build && npx cap sync ios     # or ./build_and_sync.command
 # Then in Xcode: select Waleed_iPhone → ▶ Run
 ```
 
-## Bundle ID Issue (known)
-- `capacitor.config.ts` has `com.fitguard.app`
-- Xcode project still shows `com.kineticguard.app`
-- Not causing build failures yet — fix before App Store submission
-
-## Current State (as of May 2026)
+## Current State
 ### ✅ Complete
-- Full auth flow (sign in / sign up) with Supabase
-- Safety Audit assessment (6 questions → tier assignment)
-- Results screen with risk flags
-- Daily readiness check
-- Workout dashboard
-- Exercise detail with SVG animations
-- Camera-based AI form check screen (FormCheckAI)
-- Post-workout summary
-- Arabic/English bilingual with RTL support
-- Supabase schema + RLS policies (deployed)
-- App deployed to Waleed's iPhone successfully
+- Auth (Supabase), Safety Audit → tier, Results, Daily readiness, Dashboard
+- Exercise detail + SVG animations, AI form check, post-workout summary
+- Prayer times, gender tracks + cycle tracker, gym tracker, gamification, notifications
+- Arabic/English bilingual + RTL
+- **Medical disclaimer gate + camera/data-use consent**
+- **AI form check moved server-side (Edge Function) — no key in client**
+- **Single scoring source of truth (`src/lib/scoring.js`)**
+- **Bundle IDs unified**
 
 ### 🔴 Pending
-- **Task #7**: Wire up real camera + full workout flow end-to-end
-  - `@capacitor/camera` plugin installed but FormCheckAI uses browser `getUserMedia`
-  - Need to use `CameraPreview` or native camera for iOS
-- **Task #8**: Push latest changes to GitHub (auth incomplete — see below)
-- Bundle ID fix in Xcode project
-
-## GitHub
-- **Repo**: https://github.com/wfaizyai-commits/kinetic-guard
-- **Branch**: `master`
-- **Auth method**: HTTPS (requires GitHub PAT)
-
-## Key Patterns
-- All screens receive props for navigation, no router library
-- `SCREENS` enum in `App.jsx` controls current screen
-- Supabase writes are non-blocking: `.catch(() => {})`
-- `loadAudit()` / `saveAudit()` persist tier result to localStorage
-- RTL: `isRTL` from `useLanguage()`, `dir="rtl"` on root when Arabic
-- Animations: CSS `@keyframes` on SVG groups in `ExerciseAnimation.jsx`
+- **Deploy** `form-check` function + `supabase secrets set ANTHROPIC_API_KEY` + apply `003_ai_usage.sql`. (Until deployed, form check returns an error.)
+- Remove now-unused `VITE_ANTHROPIC_API_KEY` from `.env.local` (no longer read by the app).
+- Re-select iOS signing team for the new bundle ID.
+- Optional next milestones: MediaPipe on-device pose (real-time, free), progress history charts, paywall scaffolding.
+- `src/services/assessment.js` is legacy (different input shape) — verify unused, then delete.
 
 ## How to Run Locally
 ```bash
 npm install
-# Create .env.local with:
-# VITE_SUPABASE_URL=https://pxhdptebzbudswrkgapf.supabase.co
-# VITE_SUPABASE_ANON_KEY=sb_publishable_T8V39HVugJIhJfeXqubSqg_6HQ8Oqj5
-npm run dev
-# → http://localhost:5173
+# .env.local needs ONLY:
+#   VITE_SUPABASE_URL=https://pxhdptebzbudswrkgapf.supabase.co
+#   VITE_SUPABASE_ANON_KEY=sb_publishable_...
+# (No Anthropic key here anymore — it lives in the Edge Function secret.)
+npm run dev   # → http://localhost:5173
 ```
 
-## Next Session Prompt (copy this)
-```
-Continue building FitGuard (see CLAUDE.md for full context).
-
-Next task: Wire up the real camera flow for AI Form Check on iOS.
-- Replace browser getUserMedia in FormCheckAI.jsx with @capacitor/camera or CameraPreview
-- The plugin is already installed (see package.json)
-- Test on Waleed_iPhone via Xcode
-- Keep existing UI/CSS, only replace the camera capture logic
-- Bilingual strings are in src/i18n/translations.js (formCheck key)
-
-After camera works: push everything to GitHub (master branch, HTTPS auth with PAT).
-```
+## Key Patterns
+- All screens receive props for navigation, no router library; `SCREENS` enum in `App.jsx`.
+- Supabase writes are non-blocking: `.catch(() => {})`.
+- `loadAudit()` / `saveAudit()` persist tier result to localStorage.
+- RTL: `lang`/`isRTL` from `useLanguage()`.
+- Gates stored in localStorage: `fitguard_medical_v1` (disclaimer), `fitguard_cam_consent_v1` (camera).

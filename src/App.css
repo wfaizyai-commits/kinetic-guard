@@ -2,34 +2,39 @@
 
 /* ── CSS Variables ── */
 :root {
-  --bg: #0A0A0A;
-  --surface: #141414;
-  --surface-elevated: #1C1C1C;
-  --surface-hover: #222222;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(255, 107, 0, 0.5);
+  /* ── Surfaces: warm tinted near-black (never pure #000), Heritage direction ── */
+  --bg: #0C0A08;
+  --surface: #16120D;
+  --surface-elevated: #1E1810;
+  --surface-hover: #271F15;
+  --border: rgba(255, 170, 110, 0.10);
+  --border-active: rgba(255, 107, 0, 0.55);
 
-  /* FitGuard Orange — primary brand color */
+  /* FitGuard Orange — primary brand color + ember gradient */
   --orange: #FF6B00;
   --orange-bright: #FF8C38;
-  --orange-dim: rgba(255, 107, 0, 0.15);
-  --orange-glow: rgba(255, 107, 0, 0.35);
+  --orange-ember: #FFC15E;            /* warm top-end of the ember gradient */
+  --orange-dim: rgba(255, 107, 0, 0.14);
+  --orange-glow: rgba(255, 107, 0, 0.30);
+  --ember-gradient: linear-gradient(135deg, #FF6B00 0%, #FFA94D 60%, #FFC15E 100%);
 
   /* Keep legacy --cyan alias so existing components don't break */
   --cyan: #FF6B00;
-  --cyan-dim: rgba(255, 107, 0, 0.15);
-  --cyan-glow: rgba(255, 107, 0, 0.35);
+  --cyan-dim: rgba(255, 107, 0, 0.14);
+  --cyan-glow: rgba(255, 107, 0, 0.30);
 
-  --green: #00FF88;
-  --green-dim: rgba(0, 255, 136, 0.15);
-  --danger: #FF4D6D;
-  --danger-dim: rgba(255, 77, 109, 0.15);
-  --warning: #FFB800;
-  --warning-dim: rgba(255, 184, 0, 0.15);
+  /* Calmer mint (was a harsh, high-chroma #00FF88) */
+  --green: #2BD9A0;
+  --green-dim: rgba(43, 217, 160, 0.14);
+  --danger: #FF5A6E;
+  --danger-dim: rgba(255, 90, 110, 0.14);
+  --warning: #FFB23D;
+  --warning-dim: rgba(255, 178, 61, 0.14);
 
-  --text-primary: #FFFFFF;
-  --text-secondary: rgba(255, 255, 255, 0.65);
-  --text-muted: rgba(255, 255, 255, 0.35);
+  /* Warm whites, not pure #FFF */
+  --text-primary: #F5EFE8;
+  --text-secondary: rgba(245, 239, 232, 0.66);
+  --text-muted: rgba(245, 239, 232, 0.36);
 
   --font-heading: 'Montserrat', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -41,10 +46,10 @@
   --radius-xl: 24px;
   --radius-full: 9999px;
 
-  --shadow-orange: 0 0 24px rgba(255, 107, 0, 0.25);
-  --shadow-cyan: 0 0 24px rgba(255, 107, 0, 0.25);
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.5);
-  --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.7);
+  --shadow-orange: 0 0 20px rgba(255, 107, 0, 0.20);
+  --shadow-cyan: 0 0 20px rgba(255, 107, 0, 0.20);
+  --shadow-card: 0 6px 26px rgba(0, 0, 0, 0.45);
+  --shadow-elevated: 0 10px 42px rgba(12, 6, 0, 0.62);
 
   --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -148,7 +153,9 @@ html {
 }
 
 body {
-  background: var(--bg);
+  background:
+    radial-gradient(ellipse 90% 50% at 80% -5%, rgba(255, 138, 61, 0.06), transparent 60%),
+    var(--bg);
   color: var(--text-primary);
   font-family: var(--font-body);
   line-height: 1.5;
@@ -158,6 +165,24 @@ body {
   min-height: 100dvh;
   min-height: -webkit-fill-available;
 }
+
+/* ── Najdi geometric texture — faint, behind everything (Heritage soul) ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255, 138, 61, 0.022) 0,
+    rgba(255, 138, 61, 0.022) 1px,
+    transparent 1px,
+    transparent 26px
+  );
+}
+#root { position: relative; z-index: 1; }
 
 #root {
   min-height: 100dvh;
@@ -200,11 +225,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ── Utility ── */
+/* Solid orange — replaced the background-clip:text gradient (an anti-pattern
+   that renders unreliably and reads as AI-generated). Emphasis via color + weight. */
 .gradient-text {
-  background: linear-gradient(135deg, var(--orange) 0%, var(--orange-bright) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--orange);
+}
+
+/* ── Muscle Blueprint — active-muscle heatmap glow for the exercise character.
+   Applied per active limb/joint in ExerciseAnimation.jsx. One rule themes
+   all 13 exercises at once and follows the active accent (orange / violet). ── */
+.mb-active {
+  filter:
+    drop-shadow(0 0 3px var(--orange))
+    drop-shadow(0 0 8px var(--orange-glow));
 }
 
 .glow-orange {

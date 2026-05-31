@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">KineticGuard</string>
-    <string name="title_activity_main">KineticGuard</string>
-    <string name="package_name">com.kineticguard.app</string>
-    <string name="custom_url_scheme">com.kineticguard.app</string>
+    <string name="app_name">FitGuard</string>
+    <string name="title_activity_main">FitGuard</string>
+    <string name="package_name">com.wfaizy.fitguard</string>
+    <string name="custom_url_scheme">com.wfaizy.fitguard</string>
 </resources>

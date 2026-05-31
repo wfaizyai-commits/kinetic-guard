@@ -4,7 +4,7 @@ android {
     namespace = "com.kineticguard.app"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.kineticguard.app"
+        applicationId "com.wfaizy.fitguard"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -9,20 +9,27 @@ import './ExerciseAnimation.css';
   3-frame crossfade via CSS .fr1 / .fr2 / .fr3.
 */
 
-// ── Design tokens ─────────────────────────────────────────────────────────────
-const W  = 'rgba(255,255,255,0.92)';  // spine / torso
-const WM = 'rgba(255,255,255,0.58)';  // upper arms / inactive limbs
-const WL = 'rgba(255,255,255,0.35)';  // forearms / feet / passive
-const A  = '#FF6B00';                  // active muscle
+// ── Design tokens — "Muscle Blueprint" ──────────────────────────────────────────
+// Clean warm-white silhouette; the ACTIVE muscle glows orange like a heatmap.
+// Active strokes/joints carry className "mb-active" → CSS in App.css adds the glow
+// and follows the live accent (orange default, violet women's theme).
+const W  = 'rgba(245,239,232,0.90)';  // spine / torso (silhouette)
+const WM = 'rgba(245,239,232,0.50)';  // structural limbs (inactive)
+const WL = 'rgba(245,239,232,0.30)';  // forearms / feet / passive
+const A  = 'var(--orange)';            // active muscle (themeable)
 const B  = WM;                         // alias kept for any leftover refs
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
-/** Stroked line limb between two joints */
-const L = (x1, y1, x2, y2, w, c) => (
-  <line x1={x1} y1={y1} x2={x2} y2={y2}
-    stroke={c} strokeWidth={w} strokeLinecap="round" />
-);
+/** Stroked line limb between two joints. Active (orange) limbs get the heatmap glow. */
+const L = (x1, y1, x2, y2, w, c) => {
+  const active = c === A;
+  return (
+    <line x1={x1} y1={y1} x2={x2} y2={y2}
+      stroke={c} strokeWidth={active ? w + 1 : w} strokeLinecap="round"
+      className={active ? 'mb-active' : undefined} />
+  );
+};
 
 /** No-op — shadows removed in this style */
 const Sh = () => null;
@@ -32,10 +39,10 @@ const Hd = (cx, cy, r = 12) => (
   <circle cx={cx} cy={cy} r={r} fill="none" stroke={W} strokeWidth="2.5" />
 );
 
-/** Joint dot — orange fill when active, white ring when inactive */
+/** Joint dot — glowing orange fill when active, soft ring when inactive */
 const Jt = (cx, cy, r = 5, c = A) => (
   c === A
-    ? <circle cx={cx} cy={cy} r={r} fill={A} />
+    ? <circle cx={cx} cy={cy} r={r} fill={A} className="mb-active" />
     : <circle cx={cx} cy={cy} r={r} fill="none" stroke={WM} strokeWidth="1.5" />
 );
 
