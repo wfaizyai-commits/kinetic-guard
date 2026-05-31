@@ -1,0 +1,35 @@
+/* ── ExerciseImage — static + 2-frame crossfade ("rep moving") ── */
+.exercise-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.exercise-anim {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.exercise-anim__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Frame 1 = start (bottom layer, always visible).
+   Frame 2 = end (top layer) fades in/out → reads as the rep cycling.
+   Hold each end, smooth crossfade between. ~2.4s loop. */
+.exercise-anim__frame--2 {
+  animation: exercise-rep 2.4s ease-in-out infinite;
+}
+@keyframes exercise-rep {
+  0%,  35% { opacity: 0; }   /* holding start */
+  50%, 85% { opacity: 1; }   /* holding end   */
+  100%     { opacity: 0; }   /* back to start */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .exercise-anim__frame--2 { animation: none; opacity: 0; }
+}
