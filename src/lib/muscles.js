@@ -44,7 +44,7 @@ export const EXERCISE_MUSCLES = {
   overhead_ext:    { primary: ['triceps'],          secondary: [] },
   skull_crusher:   { primary: ['triceps'],          secondary: [] },
   // Back & Biceps
-  deadlift:        { primary: ['lats', 'midBack'],  secondary: ['hamstrings', 'glutes', 'traps'] },
+  deadlift:        { primary: ['hamstrings', 'glutes', 'midBack'], secondary: ['lats', 'traps'] },
   lat_pulldown:    { primary: ['lats'],             secondary: ['biceps'] },
   barbell_row:     { primary: ['lats', 'midBack'],  secondary: ['biceps'] },
   seated_row:      { primary: ['midBack', 'lats'],  secondary: ['biceps'] },

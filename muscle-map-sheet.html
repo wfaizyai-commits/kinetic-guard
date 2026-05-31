@@ -1,813 +1,139 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>FitGuard — Muscle Map Verification</title>
 <style>
-  body{background:#0C0A08;color:#F5EFE8;font-family:system-ui,sans-serif;margin:0;padding:32px}
+  body{background:#0C0A08;color:#F5EFE8;font-family:system-ui,-apple-system,sans-serif;margin:0;padding:32px}
   h1{font-size:26px;margin:0 0 6px}
-  .sub{color:#8c8c8c;font-size:14px;margin-bottom:8px}
-  .legend{display:flex;gap:18px;font-size:12px;color:#aaa;margin-bottom:24px}
-  .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
-  .day{font-size:16px;margin:30px 0 12px;color:#FF8C38}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
-  .card{background:#16120D;border:1px solid rgba(255,170,110,.1);border-radius:14px;padding:14px;display:flex;gap:12px;align-items:center}
-  .body{width:60px;height:100px;flex:0 0 auto}
+  .sub{color:#8c8c8c;font-size:14px;margin-bottom:10px;max-width:720px}
+  .sub code{color:#FFB066}
+  .legend{display:flex;gap:20px;font-size:12px;color:#aaa;margin-bottom:8px;flex-wrap:wrap}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+  .day{font-size:16px;margin:30px 0 12px;color:#FF8C38;font-weight:700}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+  .card{background:#16120D;border:1px solid rgba(255,170,110,.12);border-radius:14px;padding:14px;display:flex;gap:14px;align-items:center}
+  .body{width:64px;height:108px;flex:0 0 auto}
   .meta{min-width:0}
   .name{font-weight:700;font-size:14px}
-  .file{font-size:11px;color:#777;margin:2px 0 6px;font-family:monospace}
-  .view{color:#FF8C38;text-transform:uppercase}
+  .file{font-size:11px;color:#777;margin:3px 0 7px;font-family:monospace}
+  .view{color:#FF8C38;text-transform:uppercase;font-size:10px}
   .tgt{font-size:12px;color:#FFB066}
+  .tgt b{color:#F5EFE8;font-weight:600}
   .sec{font-size:11px;color:#888;margin-top:2px}
-</style></head><body>
+  .mb-active{filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))}
+</style>
+</head>
+<body>
 <h1>FitGuard — Muscle Map Verification</h1>
-<div class="sub">Generated from <code>src/lib/muscles.js</code> — this is exactly what the app glows. Check each Primary is the correct muscle.</div>
+<div class="sub">This is exactly what the app glows for each exercise (data mirrors <code>src/lib/muscles.js</code>). Check that each <b>Primary</b> muscle is anatomically correct. If any are wrong, tell me the exercise and the fix.</div>
 <div class="legend">
   <span><i style="background:#FF6B00"></i>Primary (bright glow)</span>
   <span><i style="background:rgba(255,107,0,0.45)"></i>Secondary (dim)</span>
   <span><i style="background:rgba(245,239,232,0.16)"></i>Inactive</span>
 </div>
-<h2 class="day">💥 Chest & Triceps — الصدر والترايسبس</h2><div class="grid">
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(255,107,0,0.45)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(255,107,0,0.45)" style=""/>
-  <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 26 86)"/>
-  <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 94 86)"/>
-  <rect x="51" y="74" width="18" height="30" rx="5" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 112 h11 l-2 40 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 112 h-11 l2 40 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Bench Press</div>
-        <div class="file">bench_press · <span class="view">front</span></div>
-        <div class="tgt"><b>Primary:</b> Chest</div>
-        <div class="sec">Secondary: Triceps, Shoulders</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(255,107,0,0.45)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(255,107,0,0.45)" style=""/>
-  <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 26 86)"/>
-  <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 94 86)"/>
-  <rect x="51" y="74" width="18" height="30" rx="5" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 112 h11 l-2 40 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 112 h-11 l2 40 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Incline Bench Press</div>
-        <div class="file">incline_press · <span class="view">front</span></div>
-        <div class="tgt"><b>Primary:</b> Chest</div>
-        <div class="sec">Secondary: Shoulders, Triceps</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 26 86)"/>
-  <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 94 86)"/>
-  <rect x="51" y="74" width="18" height="30" rx="5" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 112 h11 l-2 40 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 112 h-11 l2 40 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Chest Fly</div>
-        <div class="file">chest_fly · <span class="view">front</span></div>
-        <div class="tgt"><b>Primary:</b> Chest</div>
-        <div class="sec"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Tricep Pushdown</div>
-        <div class="file">tricep_pushdown · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Triceps</div>
-        <div class="sec"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Overhead Extension</div>
-        <div class="file">overhead_ext · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Triceps</div>
-        <div class="sec"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Skull Crushers</div>
-        <div class="file">skull_crusher · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Triceps</div>
-        <div class="sec"></div>
-      </div>
-    </div></div><h2 class="day">🔙 Back & Biceps — الظهر والبايسبس</h2><div class="grid">
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="rgba(255,107,0,0.45)" style=""/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="rgba(255,107,0,0.45)" style=""/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="rgba(255,107,0,0.45)" style=""/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="rgba(255,107,0,0.45)" style=""/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Deadlift</div>
-        <div class="file">deadlift · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Lats, Mid Back</div>
-        <div class="sec">Secondary: Hamstrings, Glutes, Traps</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Lat Pulldown</div>
-        <div class="file">lat_pulldown · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Lats</div>
-        <div class="sec">Secondary: Biceps</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Barbell Row</div>
-        <div class="file">barbell_row · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Lats, Mid Back</div>
-        <div class="sec">Secondary: Biceps</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Seated Cable Row</div>
-        <div class="file">seated_row · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Mid Back, Lats</div>
-        <div class="sec">Secondary: Biceps</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(-12 87 66)"/>
-  <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="rgba(255,107,0,0.45)" style="" transform="rotate(12 26 86)"/>
-  <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="rgba(255,107,0,0.45)" style="" transform="rotate(-12 94 86)"/>
-  <rect x="51" y="74" width="18" height="30" rx="5" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 112 h11 l-2 40 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 112 h-11 l2 40 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Barbell Curl</div>
-        <div class="file">barbell_curl · <span class="view">front</span></div>
-        <div class="tgt"><b>Primary:</b> Biceps</div>
-        <div class="sec">Secondary: Forearms</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(-12 87 66)"/>
-  <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(12 26 86)"/>
-  <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(-12 94 86)"/>
-  <rect x="51" y="74" width="18" height="30" rx="5" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 112 h11 l-2 40 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 112 h-11 l2 40 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Hammer Curl</div>
-        <div class="file">hammer_curl · <span class="view">front</span></div>
-        <div class="tgt"><b>Primary:</b> Biceps, Forearms</div>
-        <div class="sec"></div>
-      </div>
-    </div></div><h2 class="day">🦵 Legs — الأرجل</h2><div class="grid">
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="rgba(255,107,0,0.45)" style=""/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="rgba(255,107,0,0.45)" style=""/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Barbell Squat</div>
-        <div class="file">squat · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Quads, Glutes</div>
-        <div class="sec">Secondary: Hamstrings</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 26 86)"/>
-  <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 94 86)"/>
-  <rect x="51" y="74" width="18" height="30" rx="5" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 112 h11 l-2 40 h-9 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <path d="M73 112 h-11 l2 40 h9 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Leg Press</div>
-        <div class="file">leg_press · <span class="view">front</span></div>
-        <div class="tgt"><b>Primary:</b> Quads</div>
-        <div class="sec">Secondary: Glutes</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="rgba(255,107,0,0.45)" style=""/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Romanian Deadlift</div>
-        <div class="file">rdl · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Hamstrings, Glutes</div>
-        <div class="sec">Secondary: Lats</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Leg Curl</div>
-        <div class="file">leg_curl · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Hamstrings</div>
-        <div class="sec"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 26 86)"/>
-  <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 94 86)"/>
-  <rect x="51" y="74" width="18" height="30" rx="5" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 112 h11 l-2 40 h-9 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <path d="M73 112 h-11 l2 40 h9 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Leg Extension</div>
-        <div class="file">leg_ext · <span class="view">front</span></div>
-        <div class="tgt"><b>Primary:</b> Quads</div>
-        <div class="sec"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Calf Raise</div>
-        <div class="file">calf_raise · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Calves</div>
-        <div class="sec"></div>
-      </div>
-    </div></div><h2 class="day">🎯 Shoulders — الأكتاف</h2><div class="grid">
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 26 86)"/>
-  <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 94 86)"/>
-  <rect x="51" y="74" width="18" height="30" rx="5" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 112 h11 l-2 40 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 112 h-11 l2 40 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Overhead Press</div>
-        <div class="file">overhead_press · <span class="view">front</span></div>
-        <div class="tgt"><b>Primary:</b> Shoulders</div>
-        <div class="sec">Secondary: Triceps, Traps</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 26 86)"/>
-  <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 94 86)"/>
-  <rect x="51" y="74" width="18" height="30" rx="5" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 112 h11 l-2 40 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 112 h-11 l2 40 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Lateral Raise</div>
-        <div class="file">lateral_raise · <span class="view">front</span></div>
-        <div class="tgt"><b>Primary:</b> Shoulders</div>
-        <div class="sec"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 26 86)"/>
-  <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 94 86)"/>
-  <rect x="51" y="74" width="18" height="30" rx="5" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 112 h11 l-2 40 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 112 h-11 l2 40 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Front Raise</div>
-        <div class="file">front_raise · <span class="view">front</span></div>
-        <div class="tgt"><b>Primary:</b> Shoulders</div>
-        <div class="sec"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Rear Delt Fly</div>
-        <div class="file">rear_delt_fly · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Rear Delts, Mid Back</div>
-        <div class="sec"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Barbell Shrug</div>
-        <div class="file">shrug · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Traps</div>
-        <div class="sec"></div>
-      </div>
-    </div></div><h2 class="day">💪 Arms & Abs — الذراعين والبطن</h2><div class="grid">
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(-12 87 66)"/>
-  <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="rgba(255,107,0,0.45)" style="" transform="rotate(12 26 86)"/>
-  <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="rgba(255,107,0,0.45)" style="" transform="rotate(-12 94 86)"/>
-  <rect x="51" y="74" width="18" height="30" rx="5" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 112 h11 l-2 40 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 112 h-11 l2 40 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Barbell Curl</div>
-        <div class="file">barbell_curl · <span class="view">front</span></div>
-        <div class="tgt"><b>Primary:</b> Biceps</div>
-        <div class="sec">Secondary: Forearms</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Tricep Pushdown</div>
-        <div class="file">tricep_pushdown · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Triceps</div>
-        <div class="sec"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(-12 87 66)"/>
-  <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(12 26 86)"/>
-  <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(-12 94 86)"/>
-  <rect x="51" y="74" width="18" height="30" rx="5" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 112 h11 l-2 40 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 112 h-11 l2 40 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Hammer Curl</div>
-        <div class="file">hammer_curl · <span class="view">front</span></div>
-        <div class="tgt"><b>Primary:</b> Biceps, Forearms</div>
-        <div class="sec"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M50 36 h20 l-4 14 h-12 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <rect x="52" y="54" width="16" height="20" rx="4" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))" transform="rotate(-12 87 66)"/>
-  <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M47 120 h11 l-2 34 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 120 h-11 l2 34 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="51" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="69" cy="166" rx="5" ry="11" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Overhead Extension</div>
-        <div class="file">overhead_ext · <span class="view">back</span></div>
-        <div class="tgt"><b>Primary:</b> Triceps</div>
-        <div class="sec"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 26 86)"/>
-  <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 94 86)"/>
-  <rect x="51" y="74" width="18" height="30" rx="5" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <path d="M47 112 h11 l-2 40 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 112 h-11 l2 40 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Cable Crunch</div>
-        <div class="file">cable_crunch · <span class="view">front</span></div>
-        <div class="tgt"><b>Primary:</b> Abs / Core</div>
-        <div class="sec"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="body">
-<svg viewBox="0 0 120 200" width="100%" height="100%">
-  <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
-    <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
-    <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
-    <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/>
-  </g>
-  <ellipse cx="40" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="80" cy="46" rx="9" ry="7" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 33 66)"/>
-  <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 87 66)"/>
-  <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(12 26 86)"/>
-  <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="rgba(245,239,232,0.16)" style="" transform="rotate(-12 94 86)"/>
-  <rect x="51" y="74" width="18" height="30" rx="5" fill="#FF6B00" style="filter:drop-shadow(0 0 2px #FF6B00) drop-shadow(0 0 5px rgba(255,107,0,.5))"/>
-  <path d="M47 112 h11 l-2 40 h-9 z" fill="rgba(245,239,232,0.16)" style=""/>
-  <path d="M73 112 h-11 l2 40 h9 z" fill="rgba(245,239,232,0.16)" style=""/>
-</svg></div>
-      <div class="meta">
-        <div class="name">Hanging Leg Raise</div>
-        <div class="file">leg_raise · <span class="view">front</span></div>
-        <div class="tgt"><b>Primary:</b> Abs / Core</div>
-        <div class="sec"></div>
-      </div>
-    </div></div>
-</body></html>
+<div id="root"></div>
+
+<script>
+const LABELS = {
+  chest:'Chest', triceps:'Triceps', biceps:'Biceps', forearms:'Forearms', delts:'Shoulders',
+  rearDelts:'Rear Delts', traps:'Traps', lats:'Lats', midBack:'Mid Back', abs:'Abs / Core',
+  quads:'Quads', hamstrings:'Hamstrings', glutes:'Glutes', calves:'Calves'
+};
+// Mirror of src/lib/muscles.js EXERCISE_MUSCLES (keep in sync)
+const EX = {
+  bench_press:{p:['chest'],s:['triceps','delts']},
+  incline_press:{p:['chest'],s:['delts','triceps']},
+  chest_fly:{p:['chest'],s:[]},
+  tricep_pushdown:{p:['triceps'],s:[]},
+  overhead_ext:{p:['triceps'],s:[]},
+  skull_crusher:{p:['triceps'],s:[]},
+  deadlift:{p:['hamstrings','glutes','midBack'],s:['lats','traps']},
+  lat_pulldown:{p:['lats'],s:['biceps']},
+  barbell_row:{p:['lats','midBack'],s:['biceps']},
+  seated_row:{p:['midBack','lats'],s:['biceps']},
+  barbell_curl:{p:['biceps'],s:['forearms']},
+  hammer_curl:{p:['biceps','forearms'],s:[]},
+  squat:{p:['quads','glutes'],s:['hamstrings']},
+  leg_press:{p:['quads'],s:['glutes']},
+  rdl:{p:['hamstrings','glutes'],s:['lats']},
+  leg_curl:{p:['hamstrings'],s:[]},
+  leg_ext:{p:['quads'],s:[]},
+  calf_raise:{p:['calves'],s:[]},
+  overhead_press:{p:['delts'],s:['triceps','traps']},
+  lateral_raise:{p:['delts'],s:[]},
+  front_raise:{p:['delts'],s:[]},
+  rear_delt_fly:{p:['rearDelts','midBack'],s:[]},
+  shrug:{p:['traps'],s:[]},
+  cable_crunch:{p:['abs'],s:[]},
+  leg_raise:{p:['abs'],s:[]},
+};
+const DAYS = [
+  {t:'💥 Chest & Triceps', ex:['bench_press','incline_press','chest_fly','tricep_pushdown','overhead_ext','skull_crusher'], names:['Bench Press','Incline Press','Chest Fly','Tricep Pushdown','Overhead Extension','Skull Crushers']},
+  {t:'🔙 Back & Biceps', ex:['deadlift','lat_pulldown','barbell_row','seated_row','barbell_curl','hammer_curl'], names:['Deadlift','Lat Pulldown','Barbell Row','Seated Cable Row','Barbell Curl','Hammer Curl']},
+  {t:'🦵 Legs', ex:['squat','leg_press','rdl','leg_curl','leg_ext','calf_raise'], names:['Barbell Squat','Leg Press','Romanian Deadlift','Leg Curl','Leg Extension','Calf Raise']},
+  {t:'🎯 Shoulders', ex:['overhead_press','lateral_raise','front_raise','rear_delt_fly','shrug'], names:['Overhead Press','Lateral Raise','Front Raise','Rear Delt Fly','Barbell Shrug']},
+  {t:'💪 Arms & Abs (new images)', ex:['cable_crunch','leg_raise'], names:['Cable Crunch','Hanging Leg Raise']},
+];
+const BASE='rgba(245,239,232,0.16)', PRIMARY='#FF6B00', SECONDARY='rgba(255,107,0,0.45)';
+const backMuscles=['triceps','traps','lats','midBack','rearDelts','glutes','hamstrings','calves'];
+const fill=(k,p,s)=>p.includes(k)?PRIMARY:(s.includes(k)?SECONDARY:BASE);
+const gl=(k,p)=>p.includes(k)?'mb-active':'';
+
+function front(p,s){return `<svg viewBox="0 0 120 200" width="100%" height="100%">
+ <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
+ <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
+ <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
+ <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/></g>
+ <ellipse cx="40" cy="46" rx="9" ry="7" fill="${fill('delts',p,s)}" class="${gl('delts',p)}"/>
+ <ellipse cx="80" cy="46" rx="9" ry="7" fill="${fill('delts',p,s)}" class="${gl('delts',p)}"/>
+ <path d="M46 50 h28 v18 q-14 8 -28 0 z" fill="${fill('chest',p,s)}" class="${gl('chest',p)}"/>
+ <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="${fill('biceps',p,s)}" class="${gl('biceps',p)}" transform="rotate(12 33 66)"/>
+ <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="${fill('biceps',p,s)}" class="${gl('biceps',p)}" transform="rotate(-12 87 66)"/>
+ <ellipse cx="26" cy="86" rx="4.5" ry="11" fill="${fill('forearms',p,s)}" class="${gl('forearms',p)}" transform="rotate(12 26 86)"/>
+ <ellipse cx="94" cy="86" rx="4.5" ry="11" fill="${fill('forearms',p,s)}" class="${gl('forearms',p)}" transform="rotate(-12 94 86)"/>
+ <rect x="51" y="74" width="18" height="30" rx="5" fill="${fill('abs',p,s)}" class="${gl('abs',p)}"/>
+ <path d="M47 112 h11 l-2 40 h-9 z" fill="${fill('quads',p,s)}" class="${gl('quads',p)}"/>
+ <path d="M73 112 h-11 l2 40 h9 z" fill="${fill('quads',p,s)}" class="${gl('quads',p)}"/></svg>`;}
+
+function back(p,s){return `<svg viewBox="0 0 120 200" width="100%" height="100%">
+ <g fill="rgba(245,239,232,0.05)" stroke="rgba(245,239,232,0.18)" stroke-width="1.2">
+ <circle cx="60" cy="20" r="12"/><path d="M44 34 h32 l6 10 v40 l-6 26 h-32 l-6 -26 v-40 z"/>
+ <path d="M40 44 l-12 6 -6 34 8 4 14 -30 z"/><path d="M80 44 l12 6 6 34 -8 4 -14 -30 z"/>
+ <path d="M46 110 h12 l-2 64 h-12 z"/><path d="M74 110 h-12 l2 64 h12 z"/></g>
+ <ellipse cx="40" cy="46" rx="9" ry="7" fill="${fill('rearDelts',p,s)}" class="${gl('rearDelts',p)}"/>
+ <ellipse cx="80" cy="46" rx="9" ry="7" fill="${fill('rearDelts',p,s)}" class="${gl('rearDelts',p)}"/>
+ <path d="M50 36 h20 l-4 14 h-12 z" fill="${fill('traps',p,s)}" class="${gl('traps',p)}"/>
+ <path d="M46 52 h28 l-4 26 q-10 6 -20 0 z" fill="${fill('lats',p,s)}" class="${gl('lats',p)}"/>
+ <rect x="52" y="54" width="16" height="20" rx="4" fill="${fill('midBack',p,s)}" class="${gl('midBack',p)}"/>
+ <ellipse cx="33" cy="66" rx="5.5" ry="12" fill="${fill('triceps',p,s)}" class="${gl('triceps',p)}" transform="rotate(12 33 66)"/>
+ <ellipse cx="87" cy="66" rx="5.5" ry="12" fill="${fill('triceps',p,s)}" class="${gl('triceps',p)}" transform="rotate(-12 87 66)"/>
+ <path d="M48 104 h24 v14 q-12 8 -24 0 z" fill="${fill('glutes',p,s)}" class="${gl('glutes',p)}"/>
+ <path d="M47 120 h11 l-2 34 h-9 z" fill="${fill('hamstrings',p,s)}" class="${gl('hamstrings',p)}"/>
+ <path d="M73 120 h-11 l2 34 h9 z" fill="${fill('hamstrings',p,s)}" class="${gl('hamstrings',p)}"/>
+ <ellipse cx="51" cy="166" rx="5" ry="11" fill="${fill('calves',p,s)}" class="${gl('calves',p)}"/>
+ <ellipse cx="69" cy="166" rx="5" ry="11" fill="${fill('calves',p,s)}" class="${gl('calves',p)}"/></svg>`;}
+
+const root = document.getElementById('root');
+let html = '';
+DAYS.forEach(day => {
+  html += `<div class="day">${day.t}</div><div class="grid">`;
+  day.ex.forEach((id,i) => {
+    const m = EX[id]; const p=m.p, s=m.s;
+    const view = p.some(x=>backMuscles.includes(x)) ? 'back':'front';
+    const svg = view==='back'?back(p,s):front(p,s);
+    const prim = p.map(x=>LABELS[x]).join(', ');
+    const sec = s.map(x=>LABELS[x]).join(', ');
+    html += `<div class="card"><div class="body">${svg}</div><div class="meta">
+      <div class="name">${day.names[i]}</div>
+      <div class="file">${id} · <span class="view">${view}</span></div>
+      <div class="tgt"><b>Primary:</b> ${prim}</div>
+      <div class="sec">${sec?'Secondary: '+sec:''}</div></div></div>`;
+  });
+  html += `</div>`;
+});
+root.innerHTML = html;
+</script>
+</body>
+</html>
