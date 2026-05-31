@@ -110,6 +110,12 @@ npm run build && npx cap sync ios     # or ./build_and_sync.command
 - **Single scoring source of truth (`src/lib/scoring.js`)**
 - **Bundle IDs unified**
 
+### 🏋️ Gym Training (added)
+- **5-day Bro Split** in `src/lib/workoutSplits.js` (Chest&Tri, Back&Bi, Legs, Shoulders, Arms&Abs) → `src/screens/SplitScreen.jsx`, opened via the "Training Split" card on the dashboard.
+- **Data-driven muscle maps** (`src/lib/muscles.js` + `src/components/MuscleMap.jsx`): each exercise declares target muscles; a body diagram glows EXACTLY those in brand orange. Anatomical correctness is guaranteed by data, never by an AI image. Auto-themes to violet in women's theme.
+- **Exercise images**: `src/components/ExerciseImage.jsx` shows `/public/exercises/<id>.(webp|png|jpg)` if present, else falls back to the correct MuscleMap. Art kit + 25 ready prompts in `public/exercises/PROMPTS.md`. Optimize drops with `optimize-exercise-images.command`.
+- **Walking counts**: `recordActiveDay` / `syncStepActivity` in `src/lib/gamification.js` — "Log a walk" button + auto step-goal (6000) feed the streak.
+
 ### 🔴 Pending
 - **Deploy** `form-check` function + `supabase secrets set ANTHROPIC_API_KEY` + apply `003_ai_usage.sql`. (Until deployed, form check returns an error.)
 - Remove now-unused `VITE_ANTHROPIC_API_KEY` from `.env.local` (no longer read by the app).
