@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import ExerciseAnimation from './ExerciseAnimation';
+import MuscleMap from './MuscleMap';
 import { exerciseImageCandidates } from '../lib/workoutSplits';
 
 /**
  * ExerciseImage — shows an illustrated exercise image when one exists at
- * /public/exercises/<img>.(webp|png|jpg); otherwise falls back to the animated
- * Muscle Blueprint character. This lets the gym split ship now and gain
- * illustrations later with zero code changes (just drop files into the folder).
+ * /public/exercises/<img>.(webp|png|jpg); otherwise falls back to the
+ * anatomically-correct MuscleMap (NOT a generic animation, which would show
+ * the wrong movement). So the gym split looks right immediately, and gains
+ * real illustrations later with zero code changes (just drop files in).
  *
  * Props:
- *   img          – image id (e.g. 'bench_press')
- *   exerciseName – name passed to the blueprint fallback animation
+ *   img          – image id (e.g. 'bench_press') — also keys the muscle map
+ *   exerciseName – alt text
  */
 const ExerciseImage = ({ img, exerciseName }) => {
   const candidates = exerciseImageCandidates(img);
@@ -18,7 +19,7 @@ const ExerciseImage = ({ img, exerciseName }) => {
   const [failed, setFailed] = useState(candidates.length === 0);
 
   if (failed) {
-    return <ExerciseAnimation exerciseName={exerciseName} />;
+    return <MuscleMap img={img} />;
   }
 
   return (

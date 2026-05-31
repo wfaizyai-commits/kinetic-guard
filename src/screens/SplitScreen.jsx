@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 import LanguageToggle from '../components/LanguageToggle';
 import ExerciseImage from '../components/ExerciseImage';
-import MuscleMap from '../components/MuscleMap';
 import { BRO_SPLIT } from '../lib/workoutSplits';
 import { applyInjuryMods, FLAG_INFO } from '../lib/injuryMods';
 import { musclesFor, MUSCLE_LABELS } from '../lib/muscles';
@@ -117,10 +116,6 @@ const SplitScreen = ({ onBack, onStartGym, riskFlags = [], readinessScore = 75 }
                       {isRTL ? 'العضلة المستهدفة: ' : 'Target: '}{targetNames}
                     </span>
                   )}
-                </div>
-                {/* Anatomically-correct muscle highlight (data-driven, always right) */}
-                <div className="split-ex-muscle-map">
-                  <MuscleMap img={ex.img} />
                 </div>
               </div>
             );

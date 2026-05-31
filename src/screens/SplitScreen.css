@@ -87,13 +87,15 @@
   border-radius: var(--radius-lg); padding: 12px; overflow: hidden;
 }
 .split-ex-thumb {
-  width: 84px; height: 84px; flex: 0 0 auto;
+  width: 78px; height: 96px; flex: 0 0 auto;
   border-radius: var(--radius-md); overflow: hidden;
   background: radial-gradient(circle at 50% 42%, #15110b, #0c0a08);
   border: 1px solid var(--border);
   display: grid; place-items: center;
+  padding: 6px;
 }
-.split-ex-thumb .ex-anim-wrap, .split-ex-thumb .ex-anim { width: 100%; height: 100%; }
+.split-ex-thumb .muscle-map { width: 100%; height: 100%; }
+.split-ex-thumb .exercise-image { width: 100%; height: 100%; object-fit: contain; }
 .split-ex-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
 .split-ex-name { font-weight: 700; font-size: 15px; color: var(--text-primary); }
 .split-ex-muscle { font-size: 12px; color: var(--orange-bright); }
@@ -103,11 +105,7 @@
 .split-ex-target__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 6px var(--orange); flex: 0 0 auto; }
 
 /* Data-driven muscle map — always anatomically correct */
-.split-ex-muscle-map {
-  width: 46px; height: 78px; flex: 0 0 auto;
-  opacity: 0.95;
-}
-.muscle-map { width: 100%; height: 100%; }
+.muscle-map { width: 100%; height: 100%; display: grid; place-items: center; }
 .muscle-map .mb-active { filter: drop-shadow(0 0 2px var(--orange)) drop-shadow(0 0 5px var(--orange-glow)); }
 
 /* CTA */
