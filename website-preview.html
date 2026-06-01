@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FitGuard — قريباً · Coming Soon</title>
+<meta name="description" content="FitGuard — first Arabic AI fitness safety coach. Train smart, stay safe. Launching in Saudi Arabia Q4 2026."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#0C0A08; --surface:#16120D; --surface-2:#1E1810;
+    --border:rgba(255,170,110,.10); --border-hi:rgba(255,107,0,.45);
+    --orange:#FF6B00; --orange-bright:#FF8C38; --ember:#FFC15E;
+    --ember-grad:linear-gradient(135deg,#FF6B00 0%,#FFA94D 60%,#FFC15E 100%);
+    --green:#2BD9A0; --red:#FF5A6E;
+    --text:#F5EFE8; --text-2:rgba(245,239,232,.66); --text-3:rgba(245,239,232,.4);
+    --num:'Rajdhani',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;line-height:1.8;overflow-x:hidden;
+    background-image:radial-gradient(ellipse 90% 50% at 80% -5%, rgba(255,138,61,.07), transparent 55%)}
+  body[dir="ltr"]{font-family:'Inter',sans-serif;line-height:1.7}
+  body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background-image:repeating-linear-gradient(135deg,rgba(255,138,61,.022) 0,rgba(255,138,61,.022) 1px,transparent 1px,transparent 26px)}
+  .wrap{max-width:1140px;margin:auto;padding:0 24px;position:relative;z-index:1}
+  a{color:inherit;text-decoration:none}
+  .num{font-family:var(--num)}
+
+  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(12,10,8,.7);border-bottom:1px solid var(--border)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:900;font-size:20px}
+  .logo .mark{width:30px;height:30px;border-radius:9px;background:var(--ember-grad);display:grid;place-items:center;font-size:15px;color:#1a0f04}
+  .logo b{color:var(--orange)}
+  .nav-r{display:flex;align-items:center;gap:14px}
+  .nav-cta{background:var(--ember-grad);color:#1a0f04;font-weight:700;font-size:14px;padding:9px 18px;border-radius:999px;cursor:pointer;border:none;font-family:inherit}
+  .lang-btn{font-family:var(--num);font-size:13px;color:var(--text-2);border:1px solid var(--border);padding:6px 14px;border-radius:999px;cursor:pointer;background:none}
+  .lang-btn:hover{border-color:var(--border-hi);color:var(--ember)}
+
+  .hero{padding:70px 0 40px}
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+  @media(max-width:860px){.hero-grid{grid-template-columns:1fr;text-align:center}}
+  .pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--ember);border:1px solid var(--border-hi);background:rgba(255,107,0,.08);padding:6px 16px;border-radius:999px;margin-bottom:22px}
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+  h1{font-size:clamp(34px,6vw,62px);font-weight:900;line-height:1.12;margin-bottom:18px}
+  h1 .hl{color:var(--orange)}
+  .hero-sub{font-size:17px;color:var(--text-2);font-weight:300;max-width:520px;margin-bottom:30px}
+  @media(max-width:860px){.hero-sub{margin-inline:auto}}
+
+  .wait{display:flex;gap:10px;max-width:480px;margin-bottom:14px}
+  @media(max-width:860px){.wait{margin-inline:auto}}
+  @media(max-width:480px){.wait{flex-direction:column}}
+  .wait input{flex:1;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:15px 18px;color:var(--text);font-family:inherit;font-size:15px;outline:none}
+  .wait input:focus{border-color:var(--border-hi)}
+  .wait button{background:var(--ember-grad);color:#1a0f04;border:none;border-radius:14px;padding:15px 26px;font-family:inherit;font-weight:700;font-size:15px;cursor:pointer;white-space:nowrap}
+  .wait button:disabled{opacity:.7;cursor:default}
+  .wait-note{font-size:13px;color:var(--text-3)}
+  .wait-note b{color:var(--ember);font-family:var(--num);font-size:15px}
+  .form-msg{font-size:13px;margin-top:4px;min-height:18px}
+  .form-msg.ok{color:var(--green)} .form-msg.err{color:var(--red)}
+
+  .phone-wrap{display:flex;justify-content:center}
+  .phone{width:280px;border-radius:34px;border:1px solid rgba(255,255,255,.1);overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 60px rgba(255,107,0,.08);background:var(--bg)}
+  .ph-status{height:30px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-3)}
+  .ph-b{padding:6px 16px 18px}
+  .ph-h{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .ph-h .m{width:22px;height:22px;border-radius:6px;background:var(--ember-grad);display:grid;place-items:center;font-size:11px;color:#1a0f04;font-weight:900}
+  .ph-h .t{font-weight:900;font-size:13px}
+  .ph-greet{font-size:11px;color:var(--text-2);margin-bottom:12px}
+  .ring-card{display:flex;gap:12px;align-items:center;background:linear-gradient(160deg,#1c140c,#16120d);border:1px solid var(--border-hi);border-radius:18px;padding:14px;margin-bottom:10px}
+  .ring{width:74px;height:74px;flex:0 0 auto;position:relative}
+  .ring .c{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+  .ring .c b{font-family:var(--num);font-size:25px;color:var(--ember);line-height:1}
+  .ring .c small{font-size:8px;color:var(--text-3)}
+  .ring-m h4{font-size:13px;margin-bottom:2px}
+  .ring-m p{font-size:10.5px;color:var(--text-2);line-height:1.45}
+  .pray{display:flex;gap:5px}
+  .pc{flex:1;text-align:center;background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:6px 2px}
+  .pc.on{background:rgba(255,107,0,.13);border-color:var(--border-hi)}
+  .pc .n{font-size:8px;color:var(--text-3)}
+  .pc.on .n{color:var(--ember)}
+  .pc .t{font-family:var(--num);font-size:11px;font-weight:700;margin-top:1px}
+
+  section{padding:64px 0}
+  .sec-tag{font-family:var(--num);letter-spacing:3px;font-size:12px;color:var(--orange);text-transform:uppercase;margin-bottom:10px;text-align:center}
+  .sec-title{font-size:clamp(24px,3.5vw,38px);font-weight:900;text-align:center;margin-bottom:12px;line-height:1.2}
+  .sec-sub{color:var(--text-2);text-align:center;max-width:600px;margin:0 auto 44px;font-weight:300}
+
+  .gap{background:var(--surface);border-block:1px solid var(--border)}
+  .gap-row{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+  .gap-card{flex:1;min-width:230px;background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:24px}
+  .gap-card .x{color:var(--red);font-weight:700;font-size:13px;margin-bottom:8px}
+  .gap-card .ok{color:var(--ember);font-weight:700;font-size:13px;margin-bottom:8px}
+  .gap-card p{font-size:14px;color:var(--text-2)}
+  .gap-highlight{margin-top:24px;text-align:center;font-size:18px;font-weight:700}
+  .gap-highlight .hl{color:var(--orange)}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:760px){.steps{grid-template-columns:1fr}}
+  .step{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px 22px}
+  .step .num{font-family:var(--num);font-size:54px;font-weight:700;color:rgba(255,107,0,.16);line-height:.8;margin-bottom:10px}
+  .step h3{font-size:18px;font-weight:700;margin-bottom:8px}
+  .step p{font-size:14px;color:var(--text-2)}
+
+  .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:760px){.feat{grid-template-columns:1fr}}
+  .fc{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;transition:.2s}
+  .fc:hover{border-color:var(--border-hi);transform:translateY(-3px)}
+  .fc .ic{font-size:28px;margin-bottom:12px}
+  .fc h3{font-size:16px;font-weight:700;margin-bottom:6px}
+  .fc p{font-size:13.5px;color:var(--text-2)}
+  .fc .tag{display:inline-block;margin-top:12px;font-size:11px;color:var(--ember);border:1px solid var(--border-hi);border-radius:999px;padding:3px 10px}
+
+  .vision{background:linear-gradient(135deg,#1a0f04,#0c0a08);border-block:1px solid var(--border);text-align:center}
+  .vision h2{font-size:clamp(22px,3vw,32px);font-weight:900;margin-bottom:12px}
+  .vision p{color:var(--text-2);max-width:560px;margin:0 auto;font-weight:300}
+  .vision .stat{font-family:var(--num);font-size:46px;font-weight:700;color:var(--orange);margin-top:18px}
+  .vision .stat-l{font-size:13px;color:var(--text-3)}
+
+  .final{text-align:center}
+  .final h2{font-size:clamp(26px,4vw,42px);font-weight:900;margin-bottom:14px}
+  .final p{color:var(--text-2);margin-bottom:28px;font-weight:300}
+
+  footer{background:#080705;border-top:1px solid var(--border);padding:36px 0;text-align:center}
+  footer .logo{justify-content:center;margin-bottom:12px}
+  footer p{font-size:12.5px;color:var(--text-3)}
+  footer a{color:var(--text-2)}
+  .fnote{margin-top:14px;font-size:11px;color:var(--text-3)}
+
+  .preview-banner{background:var(--orange);color:#1a0f04;text-align:center;font-weight:700;font-size:13px;padding:8px}
+</style>
+</head>
+<body dir="rtl">
+
+<div class="preview-banner" data-i="banner"></div>
+
+<nav><div class="wrap">
+  <div class="logo"><span class="mark">🛡</span><span>Fit<b>Guard</b></span></div>
+  <div class="nav-r">
+    <button class="lang-btn" id="langToggle">EN</button>
+    <button class="nav-cta" data-i="navCta" onclick="document.getElementById('join').scrollIntoView()"></button>
+  </div>
+</div></nav>
+
+<header class="hero"><div class="wrap hero-grid">
+  <div>
+    <span class="pill"><span class="dot"></span><span data-i="pill"></span></span>
+    <h1 data-i="h1"></h1>
+    <p class="hero-sub" data-i="heroSub"></p>
+    <form class="wait" data-wl>
+      <input type="email" data-i-ph="emailPh" required/>
+      <button type="submit" data-i="ctaBtn"></button>
+    </form>
+    <div class="form-msg" data-msg></div>
+    <p class="wait-note" data-i="note"></p>
+  </div>
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="ph-status">9:41</div>
+      <div class="ph-b">
+        <div class="ph-h"><span class="m">🛡</span><span class="t">Fit<span style="color:var(--orange)">Guard</span></span></div>
+        <div class="ph-greet" data-i="phGreet"></div>
+        <div class="ring-card">
+          <div class="ring">
+            <svg viewBox="0 0 74 74"><circle cx="37" cy="37" r="31" fill="none" stroke="#2a2017" stroke-width="6"/><circle cx="37" cy="37" r="31" fill="none" stroke="url(#g)" stroke-width="6" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="44" transform="rotate(-90 37 37)"/><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF6B00"/><stop offset="1" stop-color="#FFC15E"/></linearGradient></defs></svg>
+            <div class="c"><div><b>78</b><br/><small data-i="phReady"></small></div></div>
+          </div>
+          <div class="ring-m"><h4 data-i="phReadyT"></h4><p data-i="phReadyP"></p></div>
+        </div>
+        <div class="pray" data-pray></div>
+      </div>
+    </div>
+  </div>
+</div></header>
+
+<section class="gap"><div class="wrap">
+  <div class="sec-tag" data-i="gapTag"></div>
+  <div class="sec-title" data-i="gapTitle"></div>
+  <div class="sec-sub" data-i="gapSub"></div>
+  <div class="gap-row">
+    <div class="gap-card"><div class="x" data-i="gap1t"></div><p data-i="gap1p"></p></div>
+    <div class="gap-card"><div class="x" data-i="gap2t"></div><p data-i="gap2p"></p></div>
+    <div class="gap-card" style="border-color:var(--border-hi)"><div class="ok" data-i="gap3t"></div><p data-i="gap3p"></p></div>
+  </div>
+  <p class="gap-highlight" data-i="gapHl"></p>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-tag" data-i="howTag"></div>
+  <div class="sec-title" data-i="howTitle"></div>
+  <div class="sec-sub" data-i="howSub"></div>
+  <div class="steps">
+    <div class="step"><div class="num">01</div><h3 data-i="s1t"></h3><p data-i="s1p"></p></div>
+    <div class="step"><div class="num">02</div><h3 data-i="s2t"></h3><p data-i="s2p"></p></div>
+    <div class="step"><div class="num">03</div><h3 data-i="s3t"></h3><p data-i="s3p"></p></div>
+  </div>
+</div></section>
+
+<section style="background:var(--surface);border-block:1px solid var(--border)"><div class="wrap">
+  <div class="sec-tag" data-i="featTag"></div>
+  <div class="sec-title" data-i="featTitle"></div>
+  <div class="sec-sub" data-i="featSub"></div>
+  <div class="feat">
+    <div class="fc"><div class="ic">🕌</div><h3 data-i="f1t"></h3><p data-i="f1p"></p><span class="tag" data-i="excl"></span></div>
+    <div class="fc"><div class="ic">🌙</div><h3 data-i="f2t"></h3><p data-i="f2p"></p><span class="tag" data-i="excl"></span></div>
+    <div class="fc"><div class="ic">🌸</div><h3 data-i="f3t"></h3><p data-i="f3p"></p><span class="tag" data-i="excl"></span></div>
+    <div class="fc"><div class="ic">🦴</div><h3 data-i="f4t"></h3><p data-i="f4p"></p></div>
+    <div class="fc"><div class="ic">🔥</div><h3 data-i="f5t"></h3><p data-i="f5p"></p></div>
+    <div class="fc"><div class="ic">📊</div><h3 data-i="f6t"></h3><p data-i="f6p"></p></div>
+  </div>
+</div></section>
+
+<section class="vision"><div class="wrap">
+  <div class="sec-tag" style="color:var(--ember)" data-i="visTag"></div>
+  <h2 data-i="visTitle"></h2>
+  <p data-i="visP"></p>
+  <div class="stat">+29%</div>
+  <div class="stat-l" data-i="visStat"></div>
+</div></section>
+
+<section class="final" id="join"><div class="wrap">
+  <div class="sec-tag" data-i="joinTag"></div>
+  <h2 data-i="joinTitle"></h2>
+  <p data-i="joinP"></p>
+  <form class="wait" style="margin-inline:auto" data-wl>
+    <input type="email" data-i-ph="emailPh" required/>
+    <button type="submit" data-i="ctaBtn"></button>
+  </form>
+  <div class="form-msg" style="text-align:center" data-msg></div>
+  <p class="wait-note" style="text-align:center" data-i="joinNote"></p>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="logo"><span class="mark">🛡</span><span>Fit<b>Guard</b></span></div>
+  <p data-i="footTag"></p>
+  <p style="margin-top:10px"><a href="#" data-i="fPrivacy"></a> · <a href="#" data-i="fTerms"></a> · <a href="#" data-i="fContact"></a></p>
+  <p class="fnote">fitguardapp.com · © 2026 FitGuard / Laft Co.</p>
+</div></footer>
+
+<script>
+/* ─── i18n strings ─── */
+const T = {
+  ar: {
+    banner:"معاينة تصميم · نقدر نعدّل أي شي قبل النشر",
+    navCta:"انضم للقائمة", pill:"قريباً في السعودية · Q4 2026",
+    h1:'قبل ما ترفع — <span class="hl">خلّنا نشوف إذا جسمك جاهز</span>',
+    heroSub:"أول مدرب لياقة ذكي بالعربي يفحص جاهزيتك قبل كل تمرين، يتابع حركتك، ويصمّم برنامجك على حسب جسمك ويومك — وبأمان.",
+    emailPh:"بريدك الإلكتروني", ctaBtn:"احجز مكانك 🚀",
+    note:'انضم لأول <b>500</b> عضو واحصل على FitGuard Pro <b>مجاناً</b> ٣ أشهر.',
+    phGreet:"مساء الخير، وليد ✦ جاهزيتك اليوم", phReady:"جاهزية", phReadyT:"جاهز للتمرين 💪", phReadyP:"جسمك مستعد اليوم. ابدأ بإحماء ٨ دقايق.",
+    pray:[["الظهر","11:52",0],["العصر","3:22",1],["المغرب","6:42",0],["العشاء","8:12",0]],
+    gapTag:"الفرصة", gapTitle:"كل تطبيقات اللياقة مبنية لشخص غيرك",
+    gapSub:"تنزّل تطبيق أجنبي، إنجليزي، ما يعرف جدولك ولا صلاتك ولا إصاباتك. FitGuard أول واحد مبني لك أنت.",
+    gap1t:"✗ التطبيقات الحالية", gap1p:"إنجليزية، برنامج واحد للجميع، بدون فحص إصابات، وما تفهم ثقافتك.",
+    gap2t:"✗ المدرب الشخصي", gap2p:"غالي، مو متاح ٢٤ ساعة، ويختلف من شخص لشخص.",
+    gap3t:"✦ FitGuard", gap3p:"عربي ١٠٠٪، يفحص جاهزيتك وإصاباتك، يحترم وقتك وصلاتك، ويتكيّف معك.",
+    gapHl:'ما في تطبيق لياقة عربي يجمع <span class="hl">الأمان + الذكاء + الثقافة</span> في مكان واحد. إلى الآن.',
+    howTag:"كيف يشتغل", howTitle:"٣ خطوات تحميك من الإصابة", howSub:"FitGuard ما يعطيك تمارين عشوائية — يقرر معك متى تتمرن، كيف، وبأي شدة.",
+    s1t:"فحص السلامة", s1p:"٦ أسئلة ذكية تحدد مستواك، إصاباتك، ومرونتك — وتصمّم لك برنامج آمن.",
+    s2t:"جاهزية اليوم", s2p:"كل صباح: نوم، توتر، إجهاد العضلات → نقول لك إذا اليوم يومك أو لا.",
+    s3t:"برنامج يتكيّف", s3p:"تقسيم تمارين حقيقي للجيم، يتعدّل تلقائياً حسب جاهزيتك وإصاباتك.",
+    featTag:"مبني لك", featTitle:"أشياء ما بتلقاها في أي تطبيق ثاني", featSub:"هذي مو إضافات — هذي السبب اللي يخلّي FitGuard لك أنت.",
+    excl:"حصري",
+    f1t:"مدمج مع أوقات الصلاة", f1p:"يرتب تمرينك حول الصلاة تلقائياً، وينبّهك بالنافذة المناسبة.",
+    f2t:"وضع رمضان", f2p:"تمارين مكيّفة للصيام — توقيت بعد الإفطار، شدة أقل، ترطيب وتغذية.",
+    f3t:"برنامج نسائي + متتبّع الدورة", f3p:"تمارين مناسبة ثقافياً وتتكيّف مع المرحلة الشهرية.",
+    f4t:"تعديل الإصابات تلقائياً", f4p:"ألم بالركبة أو عملية سابقة؟ نبدّل التمارين الخطرة بآمنة فوراً.",
+    f5t:"خريطة العضلات", f5p:"تشوف بالضبط أي عضلة تشتغل في كل تمرين — بدقة علمية.",
+    f6t:"تتبّع تقدمك", f6p:"سلسلة يومية، أوسمة، ومشيك يُحتسب — كل حركة تعدّ.",
+    visTag:"رؤية ٢٠٣٠", visTitle:"نتماشى مع أجندة المملكة الرياضية",
+    visP:"هدف رفع ممارسة الرياضة من ١٣٪ إلى ٤٠٪ بحلول ٢٠٣٠ — FitGuard أداة تساعد على ذلك بأمان.",
+    visStat:"نمو سنوي لقطاع اللياقة في السعودية",
+    joinTag:"انضم الآن", joinTitle:"كن أول من يجرّب FitGuard",
+    joinP:"سجّل بريدك، وبنرسل لك دعوة TestFlight قبل الإطلاق الرسمي + ٣ أشهر Pro مجاناً.",
+    joinNote:"🔒 ما نرسل سبام. بريدك يُحفظ بأمان (متوافق مع PDPL).",
+    footTag:"تدرّب بذكاء. ابقَ محمياً. · Train Smart. Stay Safe.",
+    fPrivacy:"الخصوصية", fTerms:"الشروط", fContact:"تواصل معنا",
+    msgOk:"✓ تم تسجيلك! بنرسل لك الدعوة قريباً.", msgDup:"✓ أنت مسجّل بالفعل!", msgErr:"صار خطأ، حاول مرة ثانية."
+  },
+  en: {
+    banner:"Design preview · we can change anything before launch",
+    navCta:"Join the list", pill:"Coming to Saudi Arabia · Q4 2026",
+    h1:'Before you lift — <span class="hl">let\'s check if you\'re ready</span>',
+    heroSub:"The first Arabic AI fitness safety coach. It checks your readiness before every workout, watches your form, and adapts your program to your body and your day — safely.",
+    emailPh:"Your email", ctaBtn:"Reserve my spot 🚀",
+    note:'Join the first <b>500</b> and get FitGuard Pro <b>free</b> for 3 months.',
+    phGreet:"Good evening, Waleed ✦ today's readiness", phReady:"ready", phReadyT:"Ready to train 💪", phReadyP:"Your body's primed today. Start with an 8-min warm-up.",
+    pray:[["Dhuhr","11:52",0],["Asr","3:22",1],["Maghrib","6:42",0],["Isha","8:12",0]],
+    gapTag:"The gap", gapTitle:"Every fitness app is built for someone else",
+    gapSub:"You download a foreign, English-only app that doesn't know your schedule, your prayers, or your injuries. FitGuard is the first built for you.",
+    gap1t:"✗ Current apps", gap1p:"English, one-size-fits-all, no injury screening, blind to your culture.",
+    gap2t:"✗ A personal trainer", gap2p:"Expensive, not available 24/7, and quality varies wildly.",
+    gap3t:"✦ FitGuard", gap3p:"100% Arabic, screens your readiness & injuries, respects your time & prayers, adapts to you.",
+    gapHl:'No Arabic fitness app combines <span class="hl">safety + intelligence + culture</span> in one place. Until now.',
+    howTag:"How it works", howTitle:"3 steps that protect you from injury", howSub:"FitGuard doesn't hand you random workouts — it decides with you when to train, how, and how hard.",
+    s1t:"Safety Audit", s1p:"6 smart questions map your level, injuries, and mobility — then build you a safe program.",
+    s2t:"Daily Readiness", s2p:"Each morning: sleep, stress, soreness → we tell you if today's your day or not.",
+    s3t:"Adaptive program", s3p:"A real gym training split that adjusts automatically to your readiness and injuries.",
+    featTag:"Built for you", featTitle:"Things you won't find in any other app", featSub:"These aren't add-ons — they're the reason FitGuard is yours.",
+    excl:"Exclusive",
+    f1t:"Prayer-time aware", f1p:"Schedules your workout around prayer automatically and nudges you in the right window.",
+    f2t:"Ramadan mode", f2p:"Fasting-adapted training — post-Iftar timing, lower intensity, hydration & nutrition.",
+    f3t:"Women's program + cycle tracker", f3p:"Culturally appropriate workouts that adapt to your cycle phase.",
+    f4t:"Auto injury modification", f4p:"Knee pain or past surgery? We swap risky moves for safe ones instantly.",
+    f5t:"Muscle map", f5p:"See exactly which muscle each exercise works — with real anatomical accuracy.",
+    f6t:"Track your progress", f6p:"Daily streak, badges, and your walking counts too — every move matters.",
+    visTag:"Vision 2030", visTitle:"Aligned with the Kingdom's sports agenda",
+    visP:"The goal of raising physical activity from 13% to 40% by 2030 — FitGuard is a tool that helps, safely.",
+    visStat:"annual growth of Saudi Arabia's fitness sector",
+    joinTag:"Join now", joinTitle:"Be the first to try FitGuard",
+    joinP:"Drop your email and we'll send you a TestFlight invite before launch + 3 months of Pro, free.",
+    joinNote:"🔒 No spam. Your email is stored securely (PDPL-compliant).",
+    footTag:"Train Smart. Stay Safe. · تدرّب بذكاء. ابقَ محمياً.",
+    fPrivacy:"Privacy", fTerms:"Terms", fContact:"Contact",
+    msgOk:"✓ You're on the list! We'll send your invite soon.", msgDup:"✓ You're already signed up!", msgErr:"Something went wrong, please try again."
+  }
+};
+
+/* ─── Supabase config (fill before deploy) ─── */
+const SUPABASE_URL  = "https://pxhdptebzbudswrkgapf.supabase.co";
+const SUPABASE_ANON = "REPLACE_WITH_ANON_KEY"; // public anon key — safe to expose (RLS protected)
+
+let LANG = "ar";
+function applyLang(l){
+  LANG = l;
+  const d = T[l];
+  document.body.setAttribute("dir", l === "ar" ? "rtl" : "ltr");
+  document.documentElement.setAttribute("lang", l);
+  document.querySelectorAll("[data-i]").forEach(el=>{
+    const v = d[el.getAttribute("data-i")];
+    if(v!=null) el.innerHTML = v;
+  });
+  document.querySelectorAll("[data-i-ph]").forEach(el=>{
+    const v = d[el.getAttribute("data-i-ph")];
+    if(v!=null) el.placeholder = v;
+  });
+  // prayer cells
+  document.querySelectorAll("[data-pray]").forEach(box=>{
+    box.innerHTML = d.pray.map(p=>`<div class="pc${p[2]?' on':''}"><div class="n">${p[0]}</div><div class="t">${p[1]}</div></div>`).join("");
+  });
+  document.getElementById("langToggle").textContent = l === "ar" ? "EN" : "عربي";
+}
+document.getElementById("langToggle").onclick = ()=>applyLang(LANG==="ar"?"en":"ar");
+
+/* ─── Waitlist submit → Supabase ─── */
+async function submitEmail(email){
+  if(SUPABASE_ANON==="REPLACE_WITH_ANON_KEY"){
+    // preview mode (no backend yet)
+    return {ok:true, preview:true};
+  }
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`,{
+      method:"POST",
+      headers:{ "Content-Type":"application/json", apikey:SUPABASE_ANON,
+        Authorization:`Bearer ${SUPABASE_ANON}`, Prefer:"return=minimal" },
+      body:JSON.stringify({ email, lang:LANG, source:"landing" })
+    });
+    if(res.ok) return {ok:true};
+    if(res.status===409) return {ok:true, dup:true}; // duplicate email
+    return {ok:false};
+  }catch{ return {ok:false}; }
+}
+
+document.querySelectorAll("form[data-wl]").forEach(form=>{
+  form.addEventListener("submit", async e=>{
+    e.preventDefault();
+    const input = form.querySelector("input");
+    const btn = form.querySelector("button");
+    const msg = form.parentElement.querySelector("[data-msg]");
+    const d = T[LANG];
+    btn.disabled = true;
+    const r = await submitEmail(input.value.trim());
+    if(r.ok){
+      msg.textContent = r.dup ? d.msgDup : d.msgOk;
+      msg.className = "form-msg ok";
+      input.value = "";
+    }else{
+      msg.textContent = d.msgErr; msg.className = "form-msg err"; btn.disabled = false;
+    }
+  });
+});
+
+applyLang("ar");
+</script>
+</body>
+</html>
