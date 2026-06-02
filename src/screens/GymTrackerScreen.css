@@ -773,3 +773,32 @@
   flex-direction: column;
   gap: 8px;
 }
+
+/* ── AI Scan buttons ── */
+.gym-add-row { display: flex; gap: 10px; }
+.gym-add-row .gym-add-ex-btn { flex: 1; }
+.gym-scan-btn {
+  flex: 0 0 auto; display: flex; align-items: center; gap: 7px;
+  background: var(--orange-dim); border: 1px solid var(--border-active);
+  color: var(--orange-bright); border-radius: var(--radius-md);
+  padding: 14px 18px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer;
+}
+.gym-scan-btn:active { transform: scale(0.97); }
+
+.gym-scan-home-btn {
+  display: flex; align-items: center; gap: 14px; width: 100%;
+  background: linear-gradient(135deg, rgba(255,107,0,.14), rgba(255,138,61,.04));
+  border: 1px solid var(--border-active); border-radius: var(--radius-xl);
+  padding: 16px 18px; cursor: pointer; text-align: start; margin-top: 12px;
+  transition: var(--transition);
+}
+.gym-scan-home-btn:active { transform: scale(0.98); }
+.gym-scan-home-btn__icon { font-size: 26px; flex: 0 0 auto; }
+.gym-scan-home-btn__title { font-family: var(--font-heading); font-size: 15px; font-weight: 900; color: var(--text-primary); }
+[dir="rtl"] .gym-scan-home-btn__title { font-family: var(--font-arabic); }
+.gym-scan-home-btn__sub { font-size: 11.5px; color: var(--text-muted); }
+.gym-scan-home-btn__badge {
+  margin-inline-start: auto; flex: 0 0 auto;
+  font-family: var(--num, 'Rajdhani'); font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  color: #1a0f04; background: var(--ember-gradient); border-radius: 999px; padding: 3px 9px;
+}

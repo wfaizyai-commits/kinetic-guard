@@ -22,14 +22,23 @@ FitGuard (formerly KineticGuard) is a **bilingual Arabic/English iOS fitness saf
 - **The Supabase *anon* key is fine to be public** (protected by RLS). Only the
   Anthropic key must stay server-side.
 
-### Deploy the function
+### Deploy the functions
 ```bash
 supabase functions deploy form-check
-supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
+supabase functions deploy detect-exercise        # AI gym-machine/cardio scanner
+supabase secrets set ANTHROPIC_API_KEY=sk-ant-... # shared by both functions
 # SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are injected automatically.
-# Apply the new migration too:
-supabase db push   # (or run supabase/migrations/003_ai_usage.sql)
+# Apply migrations too:
+supabase db push   # 003_ai_usage.sql (rate limit), 004_waitlist.sql (landing page)
 ```
+
+### AI Exercise Scanner (detect-exercise)
+- `src/components/ScanExercise.jsx` + `src/lib/scanExercise.js` → Edge Function
+  `supabase/functions/detect-exercise/index.ts`. Point the camera at a machine,
+  a treadmill/bike console, or free weights → Claude vision returns
+  `{ type, nameEn, nameAr, muscleEn, muscleAr, cardio, confidence, note }`.
+  User confirms → logged into the Gym Tracker session. No body photos.
+  Same security as form-check; shares `ai_usage` (kind='detect_exercise', 60/24h).
 
 ## Project Structure
 ```

@@ -7,6 +7,7 @@ import {
   addCustomExercise, getExerciseHistory, PRESET_EXERCISES,
 } from '../lib/gymTracker';
 import { awardXP, recordWorkoutDay, calcWorkoutStreak } from '../lib/gamification';
+import ScanExercise from '../components/ScanExercise';
 import './GymTrackerScreen.css';
 
 // ── Timer hook ────────────────────────────────────────────────────────────────
@@ -124,6 +125,7 @@ const GymTrackerScreen = ({ onBack }) => {
   const [view, setView]         = useState('home'); // 'home' | 'active' | 'history' | 'finish'
   const [session, setSession]   = useState(null);
   const [showPicker, setShowPicker] = useState(false);
+  const [showScan, setShowScan]     = useState(false);
   const [finishData, setFinishData] = useState(null);
   const [expandedEx, setExpandedEx] = useState(null);
   const timer = useTimer(session?.startTime);
@@ -141,9 +143,18 @@ const GymTrackerScreen = ({ onBack }) => {
     // Pre-fill weight from last session if available
     let startWeight = '';
     if (last) startWeight = String(last.suggestion);
+    // Cardio scans pre-fill the read numbers (duration as "reps", distance/cal in note)
+    const firstSet = ex.cardio
+      ? {
+          weight: ex.cardio.distanceKm != null ? String(ex.cardio.distanceKm) : '',
+          reps: ex.cardio.durationMin != null ? String(ex.cardio.durationMin) : '',
+          done: true,
+          cardio: ex.cardio,
+        }
+      : { weight: startWeight, reps: '', done: false };
     const withDefault = {
       ...ex,
-      sets: [{ weight: startWeight, reps: '', done: false }],
+      sets: [firstSet],
       lastPerf: last,
     };
     setSession(prev => ({
@@ -151,7 +162,26 @@ const GymTrackerScreen = ({ onBack }) => {
       exercises: [...prev.exercises, { ...withDefault, sessionExId: Math.random().toString(36).slice(2) }],
     }));
     setShowPicker(false);
+    setShowScan(false);
     setExpandedEx(session?.exercises.length); // auto-expand new exercise
+  };
+
+  // Scan flow can start from the home screen too — create a session first if needed.
+  const handleScanAdd = (ex) => {
+    if (!session) {
+      const s = createSession();
+      const firstSet = ex.cardio
+        ? { weight: ex.cardio.distanceKm != null ? String(ex.cardio.distanceKm) : '',
+            reps: ex.cardio.durationMin != null ? String(ex.cardio.durationMin) : '', done: true, cardio: ex.cardio }
+        : { weight: '', reps: '', done: false };
+      s.exercises = [{ ...ex, sets: [firstSet], sessionExId: Math.random().toString(36).slice(2) }];
+      setSession(s);
+      setShowScan(false);
+      setView('active');
+      setExpandedEx(0);
+      return;
+    }
+    handleSelectExercise(ex);
   };
 
   const handleSetChange = (exIdx, setIdx, field, value) => {
@@ -377,11 +407,17 @@ const GymTrackerScreen = ({ onBack }) => {
             );
           })}
 
-          {/* Add exercise button */}
-          <button className="gym-add-ex-btn" onClick={() => setShowPicker(true)}>
-            <span>+</span>
-            <span>{isRTL ? 'إضافة تمرين' : 'Add Exercise'}</span>
-          </button>
+          {/* Add exercise buttons — manual + AI scan */}
+          <div className="gym-add-row">
+            <button className="gym-add-ex-btn" onClick={() => setShowPicker(true)}>
+              <span>+</span>
+              <span>{isRTL ? 'إضافة تمرين' : 'Add Exercise'}</span>
+            </button>
+            <button className="gym-scan-btn" onClick={() => setShowScan(true)}>
+              <span>📸</span>
+              <span>{isRTL ? 'مسح بالذكاء' : 'AI Scan'}</span>
+            </button>
+          </div>
 
           {/* Finish button */}
           {session.exercises.length > 0 && (
@@ -397,6 +433,9 @@ const GymTrackerScreen = ({ onBack }) => {
             onClose={() => setShowPicker(false)}
             isRTL={isRTL}
           />
+        )}
+        {showScan && (
+          <ScanExercise lang={lang} onAdd={handleScanAdd} onClose={() => setShowScan(false)} />
         )}
       </div>
     );
@@ -487,6 +526,16 @@ const GymTrackerScreen = ({ onBack }) => {
           <span className="gym-start-btn__arrow">{isRTL ? '←' : '→'}</span>
         </button>
 
+        {/* AI Scan shortcut from home */}
+        <button className="gym-scan-home-btn animate-fade-up" style={{ animationDelay: '0.12s' }} onClick={() => setShowScan(true)}>
+          <span className="gym-scan-home-btn__icon">📸</span>
+          <div>
+            <p className="gym-scan-home-btn__title">{isRTL ? 'مسح تمرين بالذكاء' : 'AI Scan an Exercise'}</p>
+            <p className="gym-scan-home-btn__sub">{isRTL ? 'صوّر الجهاز أو الشاشة — يتعرّف ويسجّل' : 'Snap a machine or screen — it detects & logs'}</p>
+          </div>
+          <span className="gym-scan-home-btn__badge">{isRTL ? 'جديد' : 'NEW'}</span>
+        </button>
+
         {/* Last session */}
         {stats.last && (
           <div className="gym-last-session animate-fade-up" style={{ animationDelay: '0.15s' }}>
@@ -512,6 +561,10 @@ const GymTrackerScreen = ({ onBack }) => {
         )}
 
       </div>
+
+      {showScan && (
+        <ScanExercise lang={lang} onAdd={handleScanAdd} onClose={() => setShowScan(false)} />
+      )}
     </div>
   );
 };
