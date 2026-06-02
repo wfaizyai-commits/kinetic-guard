@@ -38,15 +38,23 @@
   .lang-btn{font-family:var(--num);font-size:13px;color:var(--text-2);border:1px solid var(--border);padding:6px 14px;border-radius:999px;cursor:pointer;background:none}
   .lang-btn:hover{border-color:var(--border-hi);color:var(--ember)}
 
-  .hero{padding:70px 0 40px}
-  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+  .hero{padding:64px 0 48px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
   @media(max-width:860px){.hero-grid{grid-template-columns:1fr;text-align:center}}
-  .pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--ember);border:1px solid var(--border-hi);background:rgba(255,107,0,.08);padding:6px 16px;border-radius:999px;margin-bottom:22px}
+  .pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--ember);border:1px solid var(--border-hi);background:rgba(255,107,0,.08);padding:6px 16px;border-radius:999px;margin-bottom:24px}
   .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
-  h1{font-size:clamp(34px,6vw,62px);font-weight:900;line-height:1.12;margin-bottom:18px}
+  h1{font-size:clamp(38px,6.6vw,70px);font-weight:900;line-height:1.08;margin-bottom:20px;letter-spacing:-.5px}
   h1 .hl{color:var(--orange)}
-  .hero-sub{font-size:17px;color:var(--text-2);font-weight:300;max-width:520px;margin-bottom:30px}
+  .hero-sub{font-size:17.5px;color:var(--text-2);font-weight:300;max-width:520px;margin-bottom:28px;line-height:1.7}
   @media(max-width:860px){.hero-sub{margin-inline:auto}}
+
+  /* Hero trust stats under the form */
+  .hero-stats{display:flex;gap:26px;margin-top:22px}
+  @media(max-width:860px){.hero-stats{justify-content:center}}
+  .hstat{display:flex;flex-direction:column}
+  .hstat b{font-family:var(--num);font-size:24px;font-weight:700;color:var(--ember);line-height:1}
+  .hstat span{font-size:11.5px;color:var(--text-3);margin-top:3px}
+  .hstat-div{width:1px;background:var(--border)}
 
   .wait{display:flex;gap:10px;max-width:480px;margin-bottom:14px}
   @media(max-width:860px){.wait{margin-inline:auto}}
@@ -61,7 +69,7 @@
   .form-msg.ok{color:var(--green)} .form-msg.err{color:var(--red)}
 
   .phone-wrap{display:flex;justify-content:center}
-  .phone{width:280px;border-radius:34px;border:1px solid rgba(255,255,255,.1);overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 60px rgba(255,107,0,.08);background:var(--bg)}
+  .phone{width:300px;border-radius:38px;border:1px solid rgba(255,255,255,.1);overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 60px rgba(255,107,0,.08);background:var(--bg)}
   .ph-status{height:30px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-3)}
   .ph-b{padding:6px 16px 18px}
   .ph-h{display:flex;align-items:center;gap:8px;margin-bottom:14px}
@@ -129,10 +137,180 @@
   .fnote{margin-top:14px;font-size:11px;color:var(--text-3)}
 
   .preview-banner{background:var(--orange);color:#1a0f04;text-align:center;font-weight:700;font-size:13px;padding:8px}
+
+  /* ═══════════ DYNAMIC / MOTION LAYER ═══════════ */
+
+  /* Scroll reveal — elements rise + fade as they enter view */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
+  .reveal.d4{transition-delay:.32s}.reveal.d5{transition-delay:.40s}
+
+  /* Floating ambient ember orbs behind hero */
+  .orbs{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+  .orb{position:absolute;border-radius:50%;filter:blur(40px);opacity:.5;animation:orb-float 14s ease-in-out infinite}
+  .orb1{width:280px;height:280px;background:radial-gradient(circle,rgba(255,107,0,.22),transparent 70%);top:-60px;inset-inline-start:-40px}
+  .orb2{width:220px;height:220px;background:radial-gradient(circle,rgba(255,193,94,.16),transparent 70%);bottom:-40px;inset-inline-end:8%;animation-delay:-5s}
+  .orb3{width:160px;height:160px;background:radial-gradient(circle,rgba(43,217,160,.10),transparent 70%);top:40%;inset-inline-end:30%;animation-delay:-9s}
+  @keyframes orb-float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-26px) scale(1.08)}66%{transform:translate(-16px,18px) scale(.96)}}
+
+  /* Hero phone floats gently + glows */
+  .phone{animation:phone-float 5s ease-in-out infinite}
+  @keyframes phone-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+  /* Live readiness ring draws on load; number counts up */
+  .ring svg circle:last-of-type{stroke-dasharray:195;stroke-dashoffset:195;animation:ring-fill 1.6s cubic-bezier(.4,0,.2,1) .6s forwards}
+  @keyframes ring-fill{to{stroke-dashoffset:44}}
+
+  /* Next-prayer cell pulses softly */
+  .pc.on{animation:pc-pulse 2.4s ease-in-out infinite}
+  @keyframes pc-pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,0,0)}50%{box-shadow:0 0 0 4px rgba(255,107,0,.12)}}
+
+  /* Pill live dot already blinks; add a subtle ring breathe */
+  .pill .dot{animation:dot-blink 1.6s ease-in-out infinite}
+  @keyframes dot-blink{0%,100%{opacity:1}50%{opacity:.35}}
+
+  /* Buttons: shine sweep on hover */
+  .nav-cta,.wait button{position:relative;overflow:hidden}
+  .nav-cta::after,.wait button::after{content:'';position:absolute;top:0;inset-inline-start:-120%;width:60%;height:100%;
+    background:linear-gradient(120deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);transition:none}
+  .nav-cta:hover::after,.wait button:hover::after{animation:shine .7s ease}
+  @keyframes shine{to{inset-inline-start:160%}}
+
+  /* Feature cards: lift handled inline; add icon bob on hover */
+  .fc:hover .ic{animation:bob .6s ease}
+  @keyframes bob{0%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+
+  /* Step number subtle count-glow on reveal */
+  .step.in .num{animation:num-glow 1s ease}
+  @keyframes num-glow{0%{color:rgba(255,107,0,.16)}40%{color:rgba(255,107,0,.5)}100%{color:rgba(255,107,0,.16)}}
+
+  /* Animated gradient on the big highlight word */
+  .gap-highlight .hl,h1 .hl{background:linear-gradient(100deg,#FF6B00,#FFC15E,#FF6B00);background-size:200% auto;
+    -webkit-background-clip:text;background-clip:text;color:transparent;animation:hl-shift 4s linear infinite}
+  @keyframes hl-shift{to{background-position:200% center}}
+
+  /* Vision stat counts up (handled in JS), give it a glow pop on reveal */
+  .vision.in .stat{animation:stat-pop .8s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes stat-pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+
+  /* Scroll progress bar (top) */
+  .scroll-prog{position:fixed;top:0;inset-inline-start:0;height:3px;width:0;z-index:60;
+    background:var(--ember-grad);box-shadow:0 0 10px rgba(255,107,0,.6);transition:width .1s linear}
+
+  /* Hero headline animates word-by-word on load */
+  h1 .word-anim{display:inline-block;opacity:0;transform:translateY(24px) rotate(2deg);
+    animation:word-rise .7s cubic-bezier(.22,1,.36,1) forwards}
+  @keyframes word-rise{to{opacity:1;transform:none}}
+
+  /* Phone screen cross-fade carousel */
+  .ph-screens{position:relative}
+  .ph-screen{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;pointer-events:none}
+  .ph-screen.active{opacity:1;position:relative;pointer-events:auto}
+  .ph-dots{display:flex;gap:5px;justify-content:center;margin-top:10px}
+  .ph-dot{width:5px;height:5px;border-radius:50%;background:var(--text-3);transition:.3s}
+  .ph-dot.on{background:var(--orange);width:16px;border-radius:3px}
+
+  /* Mini muscle-blueprint screen */
+  .ph-ex{display:flex;gap:10px;align-items:center;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:10px;margin-bottom:8px}
+  .ph-ex svg{width:34px;height:46px;flex:0 0 auto}
+  .ph-ex .exn{font-size:11px;font-weight:700}
+  .ph-ex .exm{font-size:9px;color:var(--ember)}
+  .ph-ex .exs{font-size:9px;color:var(--text-3);margin-top:1px}
+  .mbx{filter:drop-shadow(0 0 2px var(--orange))}
+
+  /* Scanner screen */
+  .ph-scan{border:1px dashed var(--border-hi);border-radius:14px;padding:18px 12px;text-align:center;background:var(--surface-2)}
+  .ph-scan .big{font-size:30px}
+  .ph-scan .lbl{font-size:10px;color:var(--text-2);margin-top:6px}
+  .ph-scan .res{margin-top:10px;background:rgba(255,107,0,.1);border:1px solid var(--border-hi);border-radius:10px;padding:8px;font-size:10px}
+  .ph-scan .res b{color:var(--ember)}
+
+  /* Scarcity bar */
+  .scarcity{max-width:480px;margin:0 0 14px}
+  @media(max-width:860px){.scarcity{margin-inline:auto}}
+  .scar-row{display:flex;justify-content:space-between;font-size:12px;color:var(--text-2);margin-bottom:5px}
+  .scar-row b{color:var(--ember);font-family:var(--num)}
+  .scar-track{height:7px;border-radius:99px;background:var(--surface-2);overflow:hidden;border:1px solid var(--border)}
+  .scar-fill{height:100%;width:0;border-radius:99px;background:var(--ember-grad);box-shadow:0 0 10px rgba(255,107,0,.5);transition:width 1.6s cubic-bezier(.22,1,.36,1)}
+
+  /* Tilt cards */
+  .fc{transform-style:preserve-3d;will-change:transform}
+
+  /* Marquee trust strip */
+  .marquee{overflow:hidden;border-block:1px solid var(--border);background:var(--surface);padding:14px 0}
+  .marquee-track{display:flex;gap:48px;white-space:nowrap;animation:marq 22s linear infinite;width:max-content}
+  .marquee:hover .marquee-track{animation-play-state:paused}
+  .marq-item{font-size:13px;color:var(--text-2);font-weight:600;display:flex;align-items:center;gap:8px}
+  .marq-item span{color:var(--orange)}
+  @keyframes marq{to{transform:translateX(-50%)}}
+  [dir="rtl"] .marquee-track{animation-direction:reverse}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    .orb,.phone,.pc.on,.pill .dot,.gap-highlight .hl,h1 .hl,.marquee-track{animation:none}
+    .ring svg circle:last-of-type{animation:none;stroke-dashoffset:44}
+    h1 .word-anim{opacity:1;transform:none;animation:none}
+  }
+
+  /* ═══════════ BOLDER MOTION PASS ═══════════ */
+  /* punchier orbs */
+  .orb{opacity:.7}
+  .orb1{width:340px;height:340px}
+  .orb2{width:280px;height:280px}
+  /* snappier reveals — faster, tighter stagger */
+  .reveal{transform:translateY(34px) scale(.975);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
+  .reveal.in{transform:none}
+  .reveal.d1{transition-delay:.05s}.reveal.d2{transition-delay:.1s}.reveal.d3{transition-delay:.15s}
+  /* marquee faster + bigger */
+  .marquee-track{animation-duration:16s}
+  .marq-item{font-size:14px}
+  /* stronger button shine + lift */
+  .wait button:hover,.nav-cta:hover{box-shadow:0 8px 30px rgba(255,107,0,.45)}
+  /* phone glow pulse */
+  .phone{box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 60px rgba(255,107,0,.18);animation:phone-float 5s ease-in-out infinite,phone-glow 3s ease-in-out infinite}
+  @keyframes phone-glow{0%,100%{box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 50px rgba(255,107,0,.14)}50%{box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 80px rgba(255,107,0,.30)}}
+
+  /* Global interactive particle field (whole page, behind content) */
+  #globalParticles{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+  /* Health / injury / Vision 2030 stat band */
+  .statband{position:relative;background:linear-gradient(135deg,#150d04,#0c0a08);border-block:1px solid var(--border);overflow:hidden}
+  .statband .wrap{position:relative;z-index:1}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  @media(max-width:760px){.stat-grid{grid-template-columns:1fr 1fr}}
+
+  .statc{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;
+    padding:30px 18px 24px;text-align:center;overflow:hidden;cursor:default;
+    transition:transform .3s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .3s}
+  /* spotlight that follows the cursor (set via --mx/--my in JS) */
+  .statc::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none;
+    background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%),rgba(255,107,0,.16),transparent 60%)}
+  .statc:hover{transform:translateY(-6px);border-color:var(--border-hi);box-shadow:0 18px 44px rgba(0,0,0,.45),0 0 30px rgba(255,107,0,.12)}
+  .statc:hover::before{opacity:1}
+  /* animated underline bar */
+  .statc::after{content:'';position:absolute;left:50%;bottom:0;width:0;height:3px;border-radius:3px;
+    background:var(--ember-grad);transform:translateX(-50%);transition:width .35s cubic-bezier(.22,1,.36,1)}
+  .statc:hover::after{width:70%}
+
+  /* icon in a glowing ring */
+  .statc-ic{position:relative;z-index:1;width:54px;height:54px;margin:0 auto 14px;border-radius:50%;
+    display:grid;place-items:center;font-size:24px;
+    background:radial-gradient(circle,rgba(255,107,0,.16),rgba(255,107,0,.04));
+    border:1px solid var(--border-hi);transition:transform .3s}
+  .statc:hover .statc-ic{transform:scale(1.12) rotate(-6deg)}
+  .bignum{position:relative;z-index:1;font-family:var(--num);font-size:clamp(32px,4.4vw,48px);font-weight:700;
+    color:var(--orange);line-height:1;text-shadow:0 0 22px rgba(255,107,0,.25)}
+  .statc-l{position:relative;z-index:1;font-size:12.5px;color:var(--text-2);margin-top:10px;line-height:1.55}
+  .stat-src{text-align:center;font-size:11px;color:var(--text-3);margin-top:26px;font-weight:300}
+
+  @media (prefers-reduced-motion: reduce){ #globalParticles{display:none} }
 </style>
 </head>
 <body dir="rtl">
 
+<canvas id="globalParticles"></canvas>
+<div class="scroll-prog" id="scrollProg"></div>
 <div class="preview-banner" data-i="banner"></div>
 
 <nav><div class="wrap">
@@ -143,7 +321,9 @@
   </div>
 </div></nav>
 
-<header class="hero"><div class="wrap hero-grid">
+<header class="hero">
+  <div class="orbs"><span class="orb orb1"></span><span class="orb orb2"></span><span class="orb orb3"></span></div>
+  <div class="wrap hero-grid">
   <div>
     <span class="pill"><span class="dot"></span><span data-i="pill"></span></span>
     <h1 data-i="h1"></h1>
@@ -154,43 +334,109 @@
     </form>
     <div class="form-msg" data-msg></div>
     <p class="wait-note" data-i="note"></p>
+
+    <!-- Scarcity bar -->
+    <div class="scarcity reveal d3">
+      <div class="scar-row"><span data-i="scarLeft"></span><span><b id="scarN">0</b> <span data-i="scarSpots"></span></span></div>
+      <div class="scar-track"><div class="scar-fill" id="scarFill"></div></div>
+    </div>
+
+    <!-- Hero trust stats -->
+    <div class="hero-stats reveal d4">
+      <div class="hstat"><b>6</b><span data-i="hs1"></span></div>
+      <div class="hstat-div"></div>
+      <div class="hstat"><b data-i="hs2v"></b><span data-i="hs2"></span></div>
+      <div class="hstat-div"></div>
+      <div class="hstat"><b>100%</b><span data-i="hs3"></span></div>
+    </div>
   </div>
+
   <div class="phone-wrap">
     <div class="phone">
       <div class="ph-status">9:41</div>
       <div class="ph-b">
         <div class="ph-h"><span class="m">🛡</span><span class="t">Fit<span style="color:var(--orange)">Guard</span></span></div>
-        <div class="ph-greet" data-i="phGreet"></div>
-        <div class="ring-card">
-          <div class="ring">
-            <svg viewBox="0 0 74 74"><circle cx="37" cy="37" r="31" fill="none" stroke="#2a2017" stroke-width="6"/><circle cx="37" cy="37" r="31" fill="none" stroke="url(#g)" stroke-width="6" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="44" transform="rotate(-90 37 37)"/><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF6B00"/><stop offset="1" stop-color="#FFC15E"/></linearGradient></defs></svg>
-            <div class="c"><div><b>78</b><br/><small data-i="phReady"></small></div></div>
+
+        <div class="ph-screens">
+          <!-- SCREEN 1: Readiness -->
+          <div class="ph-screen active" data-screen="0">
+            <div class="ph-greet" data-i="phGreet"></div>
+            <div class="ring-card">
+              <div class="ring">
+                <svg viewBox="0 0 74 74"><circle cx="37" cy="37" r="31" fill="none" stroke="#2a2017" stroke-width="6"/><circle cx="37" cy="37" r="31" fill="none" stroke="url(#g)" stroke-width="6" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="44" transform="rotate(-90 37 37)"/><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF6B00"/><stop offset="1" stop-color="#FFC15E"/></linearGradient></defs></svg>
+                <div class="c"><div><b>78</b><br/><small data-i="phReady"></small></div></div>
+              </div>
+              <div class="ring-m"><h4 data-i="phReadyT"></h4><p data-i="phReadyP"></p></div>
+            </div>
+            <div class="pray" data-pray></div>
           </div>
-          <div class="ring-m"><h4 data-i="phReadyT"></h4><p data-i="phReadyP"></p></div>
+
+          <!-- SCREEN 2: Workout split + muscle blueprint -->
+          <div class="ph-screen" data-screen="1">
+            <div class="ph-greet" data-i="phDay"></div>
+            <div class="ph-ex">
+              <svg viewBox="0 0 40 54"><g fill="none" stroke="rgba(245,239,232,.85)" stroke-width="2.4" stroke-linecap="round"><circle cx="20" cy="9" r="5"/><path d="M20 14 v14"/><path d="M20 17 l-9 6 M20 17 l9 6"/></g><path d="M14 28 h12 v8 q-6 4 -12 0 z" fill="var(--orange)" class="mbx"/><path d="M16 28 l-2 16 M24 28 l2 16" stroke="rgba(245,239,232,.5)" stroke-width="2.4" stroke-linecap="round"/></svg>
+              <div><div class="exn" data-i="phEx1"></div><div class="exm" data-i="phEx1m"></div><div class="exs">3 × 10-12</div></div>
+            </div>
+            <div class="ph-ex">
+              <svg viewBox="0 0 40 54"><g fill="none" stroke="rgba(245,239,232,.85)" stroke-width="2.4" stroke-linecap="round"><circle cx="20" cy="9" r="5"/><path d="M20 14 v16"/><path d="M20 30 l-7 12 M20 30 l7 12"/></g><ellipse cx="13" cy="20" rx="3.5" ry="7" fill="var(--orange)" class="mbx" transform="rotate(20 13 20)"/><ellipse cx="27" cy="20" rx="3.5" ry="7" fill="var(--orange)" class="mbx" transform="rotate(-20 27 20)"/></svg>
+              <div><div class="exn" data-i="phEx2"></div><div class="exm" data-i="phEx2m"></div><div class="exs">3 × 12-15</div></div>
+            </div>
+          </div>
+
+          <!-- SCREEN 3: AI Scanner -->
+          <div class="ph-screen" data-screen="2">
+            <div class="ph-greet" data-i="phScanT"></div>
+            <div class="ph-scan">
+              <div class="big">📸</div>
+              <div class="lbl" data-i="phScanL"></div>
+              <div class="res">🤖 <b data-i="phScanR"></b> · <span data-i="phScanM"></span></div>
+            </div>
+          </div>
         </div>
-        <div class="pray" data-pray></div>
+
+        <div class="ph-dots"><span class="ph-dot on"></span><span class="ph-dot"></span><span class="ph-dot"></span></div>
       </div>
     </div>
   </div>
 </div></header>
 
+<!-- Trust marquee -->
+<div class="marquee"><div class="marquee-track" id="marqTrack"></div></div>
+
+<!-- HEALTH / INJURY / VISION 2030 STATS -->
+<section class="statband">
+  <div class="wrap">
+  <div class="sec-tag reveal" data-i="stbTag"></div>
+  <div class="sec-title reveal d1" data-i="stbTitle"></div>
+  <div class="sec-sub reveal d2" data-i="stbSub"></div>
+  <div class="stat-grid">
+    <div class="statc reveal d1"><div class="statc-ic">⚠️</div><div class="bignum" data-target="50" data-suffix="%">0</div><div class="statc-l" data-i="stb1"></div></div>
+    <div class="statc reveal d2"><div class="statc-ic">🩹</div><div class="bignum" data-target="2.3" data-suffix="M" data-dec="1">0</div><div class="statc-l" data-i="stb2"></div></div>
+    <div class="statc reveal d3"><div class="statc-ic">🏃</div><div class="bignum" data-prefix="13→" data-target="40" data-suffix="%">0</div><div class="statc-l" data-i="stb3"></div></div>
+    <div class="statc reveal d4"><div class="statc-ic">📈</div><div class="bignum" data-target="328" data-suffix="M$">0</div><div class="statc-l" data-i="stb4"></div></div>
+  </div>
+  <p class="stat-src reveal d4" data-i="stbSrc"></p>
+  </div>
+</section>
+
 <section class="gap"><div class="wrap">
-  <div class="sec-tag" data-i="gapTag"></div>
-  <div class="sec-title" data-i="gapTitle"></div>
-  <div class="sec-sub" data-i="gapSub"></div>
-  <div class="gap-row">
+  <div class="sec-tag reveal" data-i="gapTag"></div>
+  <div class="sec-title reveal d1" data-i="gapTitle"></div>
+  <div class="sec-sub reveal d2" data-i="gapSub"></div>
+  <div class="gap-row reveal d2">
     <div class="gap-card"><div class="x" data-i="gap1t"></div><p data-i="gap1p"></p></div>
     <div class="gap-card"><div class="x" data-i="gap2t"></div><p data-i="gap2p"></p></div>
     <div class="gap-card" style="border-color:var(--border-hi)"><div class="ok" data-i="gap3t"></div><p data-i="gap3p"></p></div>
   </div>
-  <p class="gap-highlight" data-i="gapHl"></p>
+  <p class="gap-highlight reveal d3" data-i="gapHl"></p>
 </div></section>
 
 <section><div class="wrap">
-  <div class="sec-tag" data-i="howTag"></div>
-  <div class="sec-title" data-i="howTitle"></div>
-  <div class="sec-sub" data-i="howSub"></div>
-  <div class="steps">
+  <div class="sec-tag reveal" data-i="howTag"></div>
+  <div class="sec-title reveal d1" data-i="howTitle"></div>
+  <div class="sec-sub reveal d2" data-i="howSub"></div>
+  <div class="steps reveal d2">
     <div class="step"><div class="num">01</div><h3 data-i="s1t"></h3><p data-i="s1p"></p></div>
     <div class="step"><div class="num">02</div><h3 data-i="s2t"></h3><p data-i="s2p"></p></div>
     <div class="step"><div class="num">03</div><h3 data-i="s3t"></h3><p data-i="s3p"></p></div>
@@ -198,10 +444,10 @@
 </div></section>
 
 <section style="background:var(--surface);border-block:1px solid var(--border)"><div class="wrap">
-  <div class="sec-tag" data-i="featTag"></div>
-  <div class="sec-title" data-i="featTitle"></div>
-  <div class="sec-sub" data-i="featSub"></div>
-  <div class="feat">
+  <div class="sec-tag reveal" data-i="featTag"></div>
+  <div class="sec-title reveal d1" data-i="featTitle"></div>
+  <div class="sec-sub reveal d2" data-i="featSub"></div>
+  <div class="feat reveal d2">
     <div class="fc"><div class="ic">🕌</div><h3 data-i="f1t"></h3><p data-i="f1p"></p><span class="tag" data-i="excl"></span></div>
     <div class="fc"><div class="ic">🌙</div><h3 data-i="f2t"></h3><p data-i="f2p"></p><span class="tag" data-i="excl"></span></div>
     <div class="fc"><div class="ic">🌸</div><h3 data-i="f3t"></h3><p data-i="f3p"></p><span class="tag" data-i="excl"></span></div>
@@ -212,7 +458,7 @@
 </div></section>
 
 <section class="vision"><div class="wrap">
-  <div class="sec-tag" style="color:var(--ember)" data-i="visTag"></div>
+  <div class="sec-tag reveal" style="color:var(--ember)" data-i="visTag"></div>
   <h2 data-i="visTitle"></h2>
   <p data-i="visP"></p>
   <div class="stat">+29%</div>
@@ -220,7 +466,7 @@
 </div></section>
 
 <section class="final" id="join"><div class="wrap">
-  <div class="sec-tag" data-i="joinTag"></div>
+  <div class="sec-tag reveal" data-i="joinTag"></div>
   <h2 data-i="joinTitle"></h2>
   <p data-i="joinP"></p>
   <form class="wait" style="margin-inline:auto" data-wl>
@@ -250,6 +496,21 @@ const T = {
     note:'انضم لأول <b>500</b> عضو واحصل على FitGuard Pro <b>مجاناً</b> ٣ أشهر.',
     phGreet:"مساء الخير، وليد ✦ جاهزيتك اليوم", phReady:"جاهزية", phReadyT:"جاهز للتمرين 💪", phReadyP:"جسمك مستعد اليوم. ابدأ بإحماء ٨ دقايق.",
     pray:[["الظهر","11:52",0],["العصر","3:22",1],["المغرب","6:42",0],["العشاء","8:12",0]],
+    phDay:"يوم ٣: الأرجل 🦵", phEx1:"قرفصاء", phEx1m:"فخذ + مؤخرة", phEx2:"تمديد الساق", phEx2m:"فخذ",
+    phScanT:"📸 مسح بالذكاء", phScanL:"صوّر الجهاز أو الشاشة", phScanR:"ضغط الأرجل", phScanM:"تم التعرّف والتسجيل",
+    scarLeft:"الأماكن المجانية تنفد بسرعة", scarSpots:"مكان متبقّي",
+    hs1:"ميزات حصرية", hs2v:"٥ أيام", hs2:"برنامج تقسيم", hs3:"عربي أصيل",
+    stbTag:"لماذا الآن", stbTitle:"السلامة مو رفاهية — ضرورة", stbSub:"الإصابات الرياضية في ارتفاع، ورؤية ٢٠٣٠ تدفع ملايين السعوديين للرياضة. FitGuard في قلب هذه اللحظة.",
+    stb1:"من رواد الجيم الجدد يتعرّضون لإصابة بسبب أداء خاطئ أو حِمل زائد",
+    stb2:"شخص في MENA يتعافى من إصابة رياضية سنوياً — جمهور يحتاج التمرين الآمن",
+    stb3:"هدف رؤية ٢٠٣٠: رفع ممارسة الرياضة من ١٣٪ إلى ٤٠٪ من السكان",
+    stb4:"حجم سوق تطبيقات اللياقة في السعودية بحلول ٢٠٣٣",
+    stbSrc:"* أرقام تقديرية من تقارير القطاع (Statista · الهيئة العامة للرياضة) — تُوثّق قبل الإطلاق الرسمي.",
+    showTitle:"مبني للحديد الحقيقي", showSub:"تمارين الجيم بالأوزان والسيتات والتقدّم — مو مجرد تطبيق منزلي.",
+    vizTag:"تتبّع ذكي", vizTitle:"شوف تقدّمك يكبر", vizSub:"رسوم بيانية حيّة لكل تمرين، حجم التدريب، والعضلات اللي اشتغلت.",
+    chartT:"نقاط السلامة عبر الوقت", chartS:"آخر ٨ أسابيع",
+    volT:"حجم التدريب الأسبوعي", volS:"كجم مرفوعة · يتزايد كل أسبوع",
+    figT:"خريطة تفعيل العضلات", figS:"كل تمرين يضيء العضلة الصحيحة — بدقة علمية",
     gapTag:"الفرصة", gapTitle:"كل تطبيقات اللياقة مبنية لشخص غيرك",
     gapSub:"تنزّل تطبيق أجنبي، إنجليزي، ما يعرف جدولك ولا صلاتك ولا إصاباتك. FitGuard أول واحد مبني لك أنت.",
     gap1t:"✗ التطبيقات الحالية", gap1p:"إنجليزية، برنامج واحد للجميع، بدون فحص إصابات، وما تفهم ثقافتك.",
@@ -287,6 +548,21 @@ const T = {
     note:'Join the first <b>500</b> and get FitGuard Pro <b>free</b> for 3 months.',
     phGreet:"Good evening, Waleed ✦ today's readiness", phReady:"ready", phReadyT:"Ready to train 💪", phReadyP:"Your body's primed today. Start with an 8-min warm-up.",
     pray:[["Dhuhr","11:52",0],["Asr","3:22",1],["Maghrib","6:42",0],["Isha","8:12",0]],
+    phDay:"Day 3: Legs 🦵", phEx1:"Squat", phEx1m:"Quads + Glutes", phEx2:"Leg Extension", phEx2m:"Quads",
+    phScanT:"📸 AI Scan", phScanL:"Snap the machine or screen", phScanR:"Leg Press", phScanM:"detected & logged",
+    scarLeft:"Free spots are filling fast", scarSpots:"spots left",
+    hs1:"exclusive features", hs2v:"5-day", hs2:"training split", hs3:"Arabic-native",
+    stbTag:"Why now", stbTitle:"Safety isn't a luxury — it's a need", stbSub:"Gym injuries are rising, and Vision 2030 is pushing millions of Saudis into fitness. FitGuard sits right at that moment.",
+    stb1:"of new gym-goers get injured from poor form or overloading",
+    stb2:"people in MENA recover from a sports injury each year — an audience that needs safe training",
+    stb3:"Vision 2030 goal: raise activity from 13% to 40% of the population",
+    stb4:"Saudi fitness-app market size by 2033",
+    stbSrc:"* Estimates from sector reports (Statista · General Sports Authority) — to be sourced before public launch.",
+    showTitle:"Built for real iron", showSub:"Gym training with weights, sets and progression — not just another home app.",
+    vizTag:"Smart tracking", vizTitle:"Watch your progress grow", vizSub:"Live charts for every lift, training volume, and the muscles you hit.",
+    chartT:"Safety score over time", chartS:"Last 8 weeks",
+    volT:"Weekly training volume", volS:"kg lifted · climbing every week",
+    figT:"Muscle activation map", figS:"Every exercise lights the right muscle — anatomically accurate",
     gapTag:"The gap", gapTitle:"Every fitness app is built for someone else",
     gapSub:"You download a foreign, English-only app that doesn't know your schedule, your prayers, or your injuries. FitGuard is the first built for you.",
     gap1t:"✗ Current apps", gap1p:"English, one-size-fits-all, no injury screening, blind to your culture.",
@@ -382,6 +658,179 @@ document.querySelectorAll("form[data-wl]").forEach(form=>{
 });
 
 applyLang("ar");
+
+/* ═══════════ DYNAMIC / MOTION ENGINE ═══════════ */
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if(!reduce){
+  /* 1. Scroll reveal */
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold:0.15, rootMargin:'0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal, .step, .vision').forEach(el=>io.observe(el));
+
+  /* 2. Count-up for numeric stats (runs once when visible) */
+  const countEl = (el)=>{
+    const raw = el.textContent.trim();
+    const m = raw.match(/([+\-]?)(\d[\d,\.]*)(.*)/s); if(!m) return;
+    const prefix=m[1], target=parseFloat(m[2].replace(/,/g,'')), suffix=m[3];
+    const dur=1100, t0=performance.now(); const dec=(m[2].includes('.'))?1:0;
+    const tick=(t)=>{ const p=Math.min(1,(t-t0)/dur); const v=(target*(1-Math.pow(1-p,3)));
+      el.textContent = prefix + (dec? v.toFixed(dec): Math.round(v).toLocaleString()) + suffix;
+      if(p<1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  };
+  const statIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ countEl(e.target); statIO.unobserve(e.target); } });
+  }, { threshold:0.6 });
+  document.querySelectorAll('.vision .stat').forEach(el=>statIO.observe(el));
+
+  /* Attribute-driven count-up for the health/Vision stat band */
+  const bigIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(!e.isIntersecting) return; const el=e.target;
+      const target=parseFloat(el.dataset.target), dec=parseInt(el.dataset.dec||'0',10);
+      const pre=el.dataset.prefix||'', suf=el.dataset.suffix||'';
+      const t0=performance.now(), dur=1400;
+      const tick=(t)=>{ const p=Math.min(1,(t-t0)/dur); const v=target*(1-Math.pow(1-p,3));
+        el.textContent=pre+(dec?v.toFixed(dec):Math.round(v))+suf; if(p<1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick); bigIO.unobserve(el);
+    });
+  }, { threshold:0.5 });
+  document.querySelectorAll('.bignum').forEach(el=>bigIO.observe(el));
+
+  /* 3. Scroll progress bar */
+  const prog=document.getElementById('scrollProg');
+  const onScroll=()=>{ const h=document.documentElement; const sc=h.scrollTop/(h.scrollHeight-h.clientHeight);
+    prog.style.width=(sc*100)+'%'; };
+  document.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  /* 4. Subtle parallax on hero orbs */
+  const orbs=document.querySelectorAll('.orb');
+  document.addEventListener('scroll', ()=>{ const y=window.scrollY;
+    orbs.forEach((o,i)=>{ o.style.transform=`translateY(${y*(0.04+i*0.02)}px)`; });
+  }, {passive:true});
+
+  /* 5. Phone screen carousel (readiness → split → scanner) */
+  let curScreen=0;
+  const screens=document.querySelectorAll('.ph-screen');
+  const dots=document.querySelectorAll('.ph-dot');
+  if(screens.length){
+    setInterval(()=>{
+      curScreen=(curScreen+1)%screens.length;
+      screens.forEach((s,i)=>s.classList.toggle('active', i===curScreen));
+      dots.forEach((d,i)=>d.classList.toggle('on', i===curScreen));
+    }, 2200);
+  }
+
+  /* 6. Card tilt on pointer move */
+  document.querySelectorAll('.fc').forEach(card=>{
+    card.addEventListener('pointermove',(e)=>{
+      const r=card.getBoundingClientRect();
+      const px=(e.clientX-r.left)/r.width-0.5, py=(e.clientY-r.top)/r.height-0.5;
+      card.style.transform=`perspective(600px) rotateY(${px*7}deg) rotateX(${-py*7}deg) translateY(-3px)`;
+    });
+    card.addEventListener('pointerleave',()=>{ card.style.transform=''; });
+  });
+
+  /* 7. Magnetic primary buttons */
+  document.querySelectorAll('.wait button, .nav-cta').forEach(btn=>{
+    btn.addEventListener('pointermove',(e)=>{
+      const r=btn.getBoundingClientRect();
+      btn.style.transform=`translate(${(e.clientX-r.left-r.width/2)*0.18}px, ${(e.clientY-r.top-r.height/2)*0.3}px)`;
+    });
+    btn.addEventListener('pointerleave',()=>{ btn.style.transform=''; });
+  });
+
+  /* 8b. Stat card spotlight follows cursor */
+  document.querySelectorAll('.statc').forEach(card=>{
+    card.addEventListener('pointermove',(e)=>{
+      const r=card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
+      card.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
+    });
+  });
+
+  /* 8c. GLOBAL interactive particle field (whole page, repels from cursor) */
+  const gcv=document.getElementById('globalParticles');
+  if(gcv){
+    const gctx=gcv.getContext('2d'); let GW,GH,gp; const m={x:-999,y:-999};
+    const sizeUp=()=>{ GW=gcv.width=innerWidth; GH=gcv.height=innerHeight;
+      const n=Math.min(64, Math.floor(GW/26));
+      gp=Array.from({length:n},()=>({x:Math.random()*GW,y:Math.random()*GH,
+        r:Math.random()*2.2+0.7, vy:-(Math.random()*0.28+0.05), vx:(Math.random()-0.5)*0.14,
+        a:Math.random()*0.45+0.18})); };
+    sizeUp(); addEventListener('resize',sizeUp,{passive:true});
+    // track cursor in viewport coords (canvas is fixed → viewport-aligned)
+    addEventListener('pointermove',e=>{ m.x=e.clientX; m.y=e.clientY; },{passive:true});
+    addEventListener('pointerleave',()=>{ m.x=-999; m.y=-999; });
+    (function gdraw(){ gctx.clearRect(0,0,GW,GH);
+      for(const p of gp){
+        const dx=p.x-m.x, dy=p.y-m.y, d2=dx*dx+dy*dy;
+        if(d2<34000){ const f=(34000-d2)/34000; const d=Math.sqrt(d2)||1; p.x+=dx/d*f*11; p.y+=dy/d*f*11; }
+        p.x+=p.vx; p.y+=p.vy;
+        if(p.y<-6){p.y=GH+6;p.x=Math.random()*GW;} if(p.x<-6)p.x=GW+6; if(p.x>GW+6)p.x=-6;
+        gctx.beginPath(); gctx.arc(p.x,p.y,p.r,0,7);
+        gctx.fillStyle=`rgba(255,150,60,${p.a})`; gctx.shadowBlur=8; gctx.shadowColor='rgba(255,107,0,.65)'; gctx.fill();
+      }
+      requestAnimationFrame(gdraw); })();
+  }
+}
+
+/* 8. Hero headline word-by-word (runs after each language render) */
+function animateHeadline(){
+  const h1=document.querySelector('h1'); if(!h1) return;
+  if(reduce) return;
+  // wrap each top-level word/segment that isn't already a span, plus the .hl span
+  h1.querySelectorAll('.hl').forEach(s=>s.classList.add('word-anim'));
+  // wrap plain text nodes into word spans
+  [...h1.childNodes].forEach(n=>{
+    if(n.nodeType===3 && n.textContent.trim()){
+      const frag=document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach(w=>{
+        if(/^\s+$/.test(w)){ frag.appendChild(document.createTextNode(w)); }
+        else if(w){ const sp=document.createElement('span'); sp.className='word-anim'; sp.textContent=w; frag.appendChild(sp); }
+      });
+      n.replaceWith(frag);
+    }
+  });
+  h1.querySelectorAll('.word-anim').forEach((s,i)=>{ s.style.animationDelay=(i*0.09)+'s'; });
+}
+
+/* 9. Scarcity bar fill + count (spots "left") */
+function fillScarcity(){
+  const fill=document.getElementById('scarFill'), n=document.getElementById('scarN');
+  if(!fill||!n) return;
+  const taken=347, total=500, left=total-taken; // demo numbers
+  setTimeout(()=>{ fill.style.width=(taken/total*100)+'%'; }, 400);
+  if(reduce){ n.textContent=left; return; }
+  const t0=performance.now(), dur=1400;
+  const tick=(t)=>{ const p=Math.min(1,(t-t0)/dur); n.textContent=Math.round(left*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(tick); };
+  requestAnimationFrame(tick);
+}
+
+/* 10. Trust marquee content (duplicated for seamless loop) */
+function buildMarquee(){
+  const track=document.getElementById('marqTrack'); if(!track) return;
+  const items = LANG==='ar'
+    ? ['🛡️ فحص السلامة','🕌 أوقات الصلاة','🌙 وضع رمضان','🌸 برنامج نسائي','🔥 خريطة العضلات','📸 مسح بالذكاء','🏆 رؤية ٢٠٣٠']
+    : ['🛡️ Safety Audit','🕌 Prayer Times','🌙 Ramadan Mode','🌸 Women\'s Track','🔥 Muscle Map','📸 AI Scan','🏆 Vision 2030'];
+  const html = items.map(i=>`<span class="marq-item">${i}</span>`).join('');
+  track.innerHTML = html + html; // duplicate for -50% loop
+}
+
+// Reduced-motion: show final stat values immediately
+if(reduce){
+  document.querySelectorAll('.bignum').forEach(el=>{
+    const dec=parseInt(el.dataset.dec||'0',10);
+    el.textContent=(el.dataset.prefix||'')+(dec?parseFloat(el.dataset.target).toFixed(dec):el.dataset.target)+(el.dataset.suffix||'');
+  });
+}
+
+// run dynamic bits after first render + on each language switch
+animateHeadline(); fillScarcity(); buildMarquee();
+const _origApply = applyLang;
+applyLang = function(l){ _origApply(l); animateHeadline(); buildMarquee(); };
+
 </script>
 </body>
 </html>
