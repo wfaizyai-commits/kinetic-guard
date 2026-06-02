@@ -305,6 +305,77 @@
   .stat-src{text-align:center;font-size:11px;color:var(--text-3);margin-top:26px;font-weight:300}
 
   @media (prefers-reduced-motion: reduce){ #globalParticles{display:none} }
+
+  /* ═══════════ AI LOGGING SECTION ═══════════ */
+  .ai-sec{background:var(--surface);border-block:1px solid var(--border)}
+  .ai-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:48px;align-items:center}
+  @media(max-width:860px){.ai-grid{grid-template-columns:1fr;gap:36px}}
+  /* phone showing a live scan */
+  .ai-phone{width:270px;margin:0 auto;border-radius:36px;border:1px solid rgba(255,255,255,.1);background:var(--bg);
+    box-shadow:0 30px 70px rgba(0,0,0,.55),0 0 50px rgba(255,107,0,.12);overflow:hidden}
+  .ai-phone .top{height:28px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-3)}
+  .ai-phone .body{padding:8px 16px 20px}
+  .ai-cam{border-radius:16px;height:150px;background:
+    repeating-linear-gradient(45deg,#15110b 0 10px,#1a140d 10px 20px);
+    border:1px solid var(--border);position:relative;overflow:hidden;display:grid;place-items:center}
+  .ai-cam .frame{position:absolute;inset:14px;border:2px solid var(--orange-bright);border-radius:10px;opacity:.7}
+  .ai-cam .corner{position:absolute;width:16px;height:16px;border:2px solid var(--orange)}
+  .ai-cam .machine{font-size:44px;filter:grayscale(.3)}
+  /* scan line sweeps down */
+  .ai-cam .scanline{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--orange),transparent);
+    box-shadow:0 0 10px var(--orange);animation:scanmove 2.4s ease-in-out infinite}
+  @keyframes scanmove{0%,100%{top:14px}50%{top:136px}}
+  .ai-result{margin-top:10px;background:rgba(255,107,0,.1);border:1px solid var(--border-hi);border-radius:12px;
+    padding:11px 12px;display:flex;align-items:center;gap:9px;animation:res-in 2.4s ease-in-out infinite}
+  @keyframes res-in{0%,40%{opacity:0;transform:translateY(6px)}55%,100%{opacity:1;transform:none}}
+  .ai-result .rb{font-size:18px}
+  .ai-result .rn{font-size:12px;font-weight:700}
+  .ai-result .rm{font-size:10px;color:var(--ember)}
+  .ai-result .rc{margin-inline-start:auto;font-family:var(--num);font-size:10px;color:var(--green);border:1px solid var(--green);border-radius:99px;padding:2px 8px}
+  /* AI feature list */
+  .ai-feats{display:flex;flex-direction:column;gap:14px;margin-top:24px}
+  .ai-feat{display:flex;gap:14px;align-items:flex-start}
+  .ai-feat .fi{width:42px;height:42px;flex:0 0 auto;border-radius:12px;display:grid;place-items:center;font-size:20px;
+    background:radial-gradient(circle,rgba(255,107,0,.16),rgba(255,107,0,.04));border:1px solid var(--border-hi)}
+  .ai-feat h4{font-size:15px;font-weight:700;margin-bottom:2px}
+  .ai-feat p{font-size:13px;color:var(--text-2);line-height:1.6}
+  .ai-badge-row{display:inline-flex;align-items:center;gap:8px;background:rgba(255,107,0,.1);border:1px solid var(--border-hi);
+    border-radius:999px;padding:6px 16px;font-size:13px;color:var(--ember);margin-bottom:18px}
+
+  /* AI capabilities grid (how the AI understands you) */
+  .aicap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:8px}
+  @media(max-width:860px){.aicap-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){.aicap-grid{grid-template-columns:1fr}}
+  .aicap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:22px 18px;transition:.25s;position:relative;overflow:hidden}
+  .aicap:hover{border-color:var(--border-hi);transform:translateY(-4px)}
+  .aicap::after{content:'';position:absolute;inset-inline-start:0;top:0;bottom:0;width:3px;background:var(--ember-grad);transform:scaleY(0);transform-origin:top;transition:transform .3s}
+  .aicap:hover::after{transform:scaleY(1)}
+  .aicap .ci{font-size:24px;margin-bottom:10px}
+  .aicap h4{font-size:14.5px;font-weight:700;margin-bottom:5px}
+  .aicap p{font-size:12.5px;color:var(--text-2);line-height:1.6}
+  .aicap .chip{display:inline-block;margin-top:10px;font-size:10px;color:var(--ember);border:1px solid var(--border-hi);border-radius:99px;padding:2px 9px}
+
+  /* ═══════════ REWARDS SECTION ═══════════ */
+  .rew-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:26px}
+  @media(max-width:760px){.rew-grid{grid-template-columns:1fr}}
+  .rewc{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:26px 22px;text-align:center;transition:.25s;position:relative;overflow:hidden}
+  .rewc:hover{transform:translateY(-5px);border-color:var(--border-hi);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+  .rewc .ri{font-size:34px;margin-bottom:12px;display:inline-block}
+  .rewc:hover .ri{animation:bob .6s ease}
+  .rewc h3{font-size:17px;font-weight:800;margin-bottom:6px}
+  .rewc p{font-size:13px;color:var(--text-2);line-height:1.6}
+  /* XP bar demo */
+  .xp-demo{max-width:520px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px}
+  .xp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .xp-lvl{font-family:var(--num);font-weight:700;color:var(--ember);font-size:15px}
+  .xp-streak{font-size:13px;color:var(--text-2)}
+  .xp-track{height:10px;border-radius:99px;background:var(--surface-2);overflow:hidden;border:1px solid var(--border)}
+  .xp-fill{height:100%;width:0;border-radius:99px;background:var(--ember-grad);box-shadow:0 0 12px rgba(255,107,0,.5);transition:width 1.6s cubic-bezier(.22,1,.36,1)}
+  .xp-demo.in .xp-fill{width:72%}
+  .medals{display:flex;justify-content:center;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .medal{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:20px;
+    background:var(--surface-2);border:1px solid var(--border);opacity:.4;transition:.4s}
+  .medal.on{opacity:1;border-color:var(--border-hi);box-shadow:0 0 14px rgba(255,107,0,.25)}
 </style>
 </head>
 <body dir="rtl">
@@ -443,7 +514,77 @@
   </div>
 </div></section>
 
+<!-- AI LOGGING -->
+<section class="ai-sec"><div class="wrap">
+  <div class="ai-grid">
+    <div class="reveal">
+      <div class="ai-phone">
+        <div class="top">9:41</div>
+        <div class="body">
+          <div class="ai-cam">
+            <span class="machine">🏋️</span>
+            <span class="frame"></span>
+            <span class="corner" style="top:8px;inset-inline-start:8px;border-inline-end:0;border-bottom:0"></span>
+            <span class="corner" style="top:8px;inset-inline-end:8px;border-inline-start:0;border-bottom:0"></span>
+            <span class="corner" style="bottom:8px;inset-inline-start:8px;border-inline-end:0;border-top:0"></span>
+            <span class="corner" style="bottom:8px;inset-inline-end:8px;border-inline-start:0;border-top:0"></span>
+            <span class="scanline"></span>
+          </div>
+          <div class="ai-result">
+            <span class="rb">🤖</span>
+            <div><div class="rn" data-i="aiResN"></div><div class="rm" data-i="aiResM"></div></div>
+            <span class="rc" data-i="aiResC"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <span class="ai-badge-row reveal">🤖 <span data-i="aiBadge"></span></span>
+      <div class="sec-title reveal d1" style="text-align:start" data-i="aiTitle"></div>
+      <div class="sec-sub reveal d2" style="text-align:start;margin:0 0 8px" data-i="aiSub"></div>
+      <div class="ai-feats">
+        <div class="ai-feat reveal d2"><span class="fi">📸</span><div><h4 data-i="aiF1t"></h4><p data-i="aiF1p"></p></div></div>
+        <div class="ai-feat reveal d3"><span class="fi">🏃</span><div><h4 data-i="aiF2t"></h4><p data-i="aiF2p"></p></div></div>
+        <div class="ai-feat reveal d4"><span class="fi">🦴</span><div><h4 data-i="aiF3t"></h4><p data-i="aiF3p"></p></div></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- AI CAPABILITIES -->
+<section><div class="wrap">
+  <div class="sec-tag reveal" data-i="capTag"></div>
+  <div class="sec-title reveal d1" data-i="capTitle"></div>
+  <div class="sec-sub reveal d2" data-i="capSub"></div>
+  <div class="aicap-grid">
+    <div class="aicap reveal d1"><div class="ci">🧠</div><h4 data-i="cap1t"></h4><p data-i="cap1p"></p></div>
+    <div class="aicap reveal d2"><div class="ci">💬</div><h4 data-i="cap2t"></h4><p data-i="cap2p"></p><span class="chip" data-i="capSoon"></span></div>
+    <div class="aicap reveal d3"><div class="ci">📊</div><h4 data-i="cap3t"></h4><p data-i="cap3p"></p></div>
+    <div class="aicap reveal d4"><div class="ci">🔒</div><h4 data-i="cap4t"></h4><p data-i="cap4p"></p></div>
+  </div>
+</div></section>
+
+<!-- REWARDS -->
 <section style="background:var(--surface);border-block:1px solid var(--border)"><div class="wrap">
+  <div class="sec-tag reveal" data-i="rewTag"></div>
+  <div class="sec-title reveal d1" data-i="rewTitle"></div>
+  <div class="sec-sub reveal d2" data-i="rewSub"></div>
+  <div class="rew-grid">
+    <div class="rewc reveal d1"><span class="ri">🔥</span><h3 data-i="rew1t"></h3><p data-i="rew1p"></p></div>
+    <div class="rewc reveal d2"><span class="ri">⚡</span><h3 data-i="rew2t"></h3><p data-i="rew2p"></p></div>
+    <div class="rewc reveal d3"><span class="ri">🏅</span><h3 data-i="rew3t"></h3><p data-i="rew3p"></p></div>
+  </div>
+  <div class="xp-demo reveal d2" id="xpDemo">
+    <div class="xp-top"><span class="xp-lvl" data-i="xpLvl"></span><span class="xp-streak" data-i="xpStreak"></span></div>
+    <div class="xp-track"><div class="xp-fill"></div></div>
+    <div class="medals">
+      <span class="medal on">🥉</span><span class="medal on">🔥</span><span class="medal on">💪</span>
+      <span class="medal">🏆</span><span class="medal">⭐</span><span class="medal">👑</span>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
   <div class="sec-tag reveal" data-i="featTag"></div>
   <div class="sec-title reveal d1" data-i="featTitle"></div>
   <div class="sec-sub reveal d2" data-i="featSub"></div>
@@ -506,6 +647,24 @@ const T = {
     stb3:"هدف رؤية ٢٠٣٠: رفع ممارسة الرياضة من ١٣٪ إلى ٤٠٪ من السكان",
     stb4:"حجم سوق تطبيقات اللياقة في السعودية بحلول ٢٠٣٣",
     stbSrc:"* أرقام تقديرية من تقارير القطاع (Statista · الهيئة العامة للرياضة) — تُوثّق قبل الإطلاق الرسمي.",
+    aiResN:"ضغط الأرجل", aiResM:"تم التعرّف والتسجيل ✓", aiResC:"ثقة عالية",
+    aiBadge:"مدعوم بالذكاء الاصطناعي", aiTitle:"سجّل تمارينك بصورة وحدة",
+    aiSub:"ما تحتاج تختار من قوائم طويلة — صوّر، والذكاء الاصطناعي يسوّي الباقي.",
+    aiF1t:"مسح الأجهزة بالكاميرا", aiF1p:"صوّر أي جهاز في الجيم، والذكاء يتعرّف على التمرين والعضلة ويضيفه فوراً.",
+    aiF2t:"قراءة شاشات الكارديو", aiF2p:"صوّر شاشة المشاية أو الدراجة، ويقرأ الوقت والمسافة والسعرات تلقائياً.",
+    aiF3t:"تعديل آمن للإصابات", aiF3p:"الذكاء يعرف إصاباتك ويبدّل التمارين الخطرة بآمنة — بدون ما تفكّر.",
+    rewTag:"الحافز", rewTitle:"كل تمرين يقرّبك خطوة", rewSub:"نظام مكافآت يخليك ترجع كل يوم — مبني على علم العادات.",
+    rew1t:"سلسلة يومية", rew1p:"حافظ على تمرينك (ومشيك يُحتسب!) وشوف السلسلة تكبر يوم بعد يوم 🔥",
+    rew2t:"نقاط الخبرة والمستويات", rew2p:"كل تمرين يعطيك XP، ترتقي بالمستويات وتفتح ألقاب جديدة.",
+    rew3t:"أوسمة وإنجازات", rew3p:"اجمع ميداليات على إنجازاتك — أول تمرين، ٧ أيام متتالية، وأكثر.",
+    xpLvl:"المستوى ٧ · محارب", xpStreak:"🔥 ١٢ يوم متتالي",
+    capTag:"الذكاء في القلب", capTitle:"الذكاء الاصطناعي يفهمك — مو بس يسجّل",
+    capSub:"من أول سؤال لين آخر تكرار، الذكاء الاصطناعي يتكيّف معك أنت.",
+    capSoon:"قريباً",
+    cap1t:"محرك التكيّف", cap1p:"يعدّل برنامجك تلقائياً حسب جاهزيتك، إصاباتك، وتقدّمك — كل يوم.",
+    cap2t:"كوتش ذكي يردّ عليك", cap2p:"اسأل عن أي تمرين أو ألم، ويعطيك جواب مبني على حالتك بالعربي.",
+    cap3t:"تحليل ذكي للتقدّم", cap3p:"يكتشف الأنماط: عضلة مهملة، حِمل زائد، أو وقت تحتاج فيه راحة.",
+    cap4t:"خصوصية أولاً", cap4p:"تحليل الصور آمن وما نحتفظ بها، ومتوافق مع نظام حماية البيانات PDPL.",
     showTitle:"مبني للحديد الحقيقي", showSub:"تمارين الجيم بالأوزان والسيتات والتقدّم — مو مجرد تطبيق منزلي.",
     vizTag:"تتبّع ذكي", vizTitle:"شوف تقدّمك يكبر", vizSub:"رسوم بيانية حيّة لكل تمرين، حجم التدريب، والعضلات اللي اشتغلت.",
     chartT:"نقاط السلامة عبر الوقت", chartS:"آخر ٨ أسابيع",
@@ -558,6 +717,24 @@ const T = {
     stb3:"Vision 2030 goal: raise activity from 13% to 40% of the population",
     stb4:"Saudi fitness-app market size by 2033",
     stbSrc:"* Estimates from sector reports (Statista · General Sports Authority) — to be sourced before public launch.",
+    aiResN:"Leg Press", aiResM:"detected & logged ✓", aiResC:"high confidence",
+    aiBadge:"Powered by AI", aiTitle:"Log a workout with one photo",
+    aiSub:"No scrolling through long lists — snap a photo and AI does the rest.",
+    aiF1t:"Scan gym machines", aiF1p:"Photograph any machine; AI identifies the exercise + muscle and logs it instantly.",
+    aiF2t:"Read cardio screens", aiF2p:"Snap the treadmill or bike console and it auto-reads time, distance and calories.",
+    aiF3t:"Safe injury swaps", aiF3p:"AI knows your injuries and swaps risky moves for safe ones — automatically.",
+    rewTag:"Motivation", rewTitle:"Every workout moves you forward", rewSub:"A rewards system that brings you back daily — built on habit science.",
+    rew1t:"Daily streak", rew1p:"Keep training (your walks count too!) and watch your streak grow day by day 🔥",
+    rew2t:"XP & levels", rew2p:"Every workout earns XP. Level up and unlock new titles as you go.",
+    rew3t:"Badges & achievements", rew3p:"Collect medals for milestones — first workout, 7-day streak, and more.",
+    xpLvl:"Level 7 · Warrior", xpStreak:"🔥 12-day streak",
+    capTag:"AI at the core", capTitle:"AI that understands you — not just logs",
+    capSub:"From the first question to your last rep, the AI adapts to you.",
+    capSoon:"soon",
+    cap1t:"Adaptive engine", cap1p:"Auto-adjusts your program to your readiness, injuries and progress — every day.",
+    cap2t:"AI coach that answers", cap2p:"Ask about any exercise or pain and get advice tailored to you, in Arabic.",
+    cap3t:"Smart progress analysis", cap3p:"Spots patterns: a lagging muscle, overtraining, or when you need rest.",
+    cap4t:"Privacy first", cap4p:"Photo analysis is secure, images aren't stored, and it's PDPL-compliant.",
     showTitle:"Built for real iron", showSub:"Gym training with weights, sets and progression — not just another home app.",
     vizTag:"Smart tracking", vizTitle:"Watch your progress grow", vizSub:"Live charts for every lift, training volume, and the muscles you hit.",
     chartT:"Safety score over time", chartS:"Last 8 weeks",
@@ -812,8 +989,8 @@ function fillScarcity(){
 function buildMarquee(){
   const track=document.getElementById('marqTrack'); if(!track) return;
   const items = LANG==='ar'
-    ? ['🛡️ فحص السلامة','🕌 أوقات الصلاة','🌙 وضع رمضان','🌸 برنامج نسائي','🔥 خريطة العضلات','📸 مسح بالذكاء','🏆 رؤية ٢٠٣٠']
-    : ['🛡️ Safety Audit','🕌 Prayer Times','🌙 Ramadan Mode','🌸 Women\'s Track','🔥 Muscle Map','📸 AI Scan','🏆 Vision 2030'];
+    ? ['🛡️ فحص السلامة','🕌 أوقات الصلاة','🌙 وضع رمضان','🌸 برنامج نسائي','🔥 خريطة العضلات','📸 مسح بالذكاء','🏅 أوسمة ومكافآت','⚡ نقاط ومستويات','🏆 رؤية ٢٠٣٠']
+    : ['🛡️ Safety Audit','🕌 Prayer Times','🌙 Ramadan Mode','🌸 Women\'s Track','🔥 Muscle Map','📸 AI Scan','🏅 Badges & Rewards','⚡ XP & Levels','🏆 Vision 2030'];
   const html = items.map(i=>`<span class="marq-item">${i}</span>`).join('');
   track.innerHTML = html + html; // duplicate for -50% loop
 }
