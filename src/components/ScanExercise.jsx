@@ -41,25 +41,30 @@ const ScanExercise = ({ lang = 'en', onAdd, onClose }) => {
     }
   };
 
-  const capture = async () => {
+  // source: 'camera' (live capture) | 'photos' (pick existing image)
+  const capture = async (source = 'camera') => {
     giveConsent();
     if (isNative) {
       try {
-        const perm = await requestCameraPermission();
-        if (perm === 'denied') {
-          setError(isAr ? 'تعذّر الوصول للكاميرا — تحقق من الإعدادات' : 'Camera denied — check app settings');
-          setStage('error');
-          return;
+        if (source === 'camera') {
+          const perm = await requestCameraPermission();
+          if (perm === 'denied') {
+            setError(isAr ? 'تعذّر الوصول للكاميرا — تحقق من الإعدادات' : 'Camera denied — check app settings');
+            setStage('error');
+            return;
+          }
         }
-        const dataUrl = await takeCameraPhoto();
+        const dataUrl = await takeCameraPhoto({ source });
         if (dataUrl) runScan(dataUrl);
       } catch {
-        setError(isAr ? 'تعذّر فتح الكاميرا' : 'Could not open camera');
+        setError(isAr
+          ? (source === 'photos' ? 'تعذّر فتح معرض الصور' : 'تعذّر فتح الكاميرا')
+          : (source === 'photos' ? 'Could not open photo library' : 'Could not open camera'));
         setStage('error');
       }
     } else {
-      // web: trigger hidden file input
-      document.getElementById('scan-file-input')?.click();
+      // web: camera → input with capture attr; upload → plain file picker
+      document.getElementById(source === 'photos' ? 'scan-file-input-lib' : 'scan-file-input')?.click();
     }
   };
 
@@ -95,7 +100,9 @@ const ScanExercise = ({ lang = 'en', onAdd, onClose }) => {
 
   return (
     <div className="scan-overlay" onClick={onClose}>
-      <input id="scan-file-input" key={fileKey} type="file" accept="image/*" capture="environment"
+      <input id="scan-file-input" key={`cam-${fileKey}`} type="file" accept="image/*" capture="environment"
+        style={{ display: 'none' }} onChange={onFile} />
+      <input id="scan-file-input-lib" key={`lib-${fileKey}`} type="file" accept="image/*"
         style={{ display: 'none' }} onChange={onFile} />
       <div className="scan-sheet" onClick={(e) => e.stopPropagation()} dir={isAr ? 'rtl' : 'ltr'}>
         <div className="scan-header">
@@ -119,8 +126,11 @@ const ScanExercise = ({ lang = 'en', onAdd, onClose }) => {
                   : '🔒 The photo is sent securely to our server for analysis only and is not stored.'}
               </p>
             )}
-            <button className="scan-cta" onClick={capture}>
+            <button className="scan-cta" onClick={() => capture('camera')}>
               {isAr ? '📷 افتح الكاميرا' : '📷 Open Camera'}
+            </button>
+            <button className="scan-cta scan-cta--ghost" onClick={() => capture('photos')}>
+              {isAr ? '🖼️ ارفع صورة من المعرض' : '🖼️ Upload from Library'}
             </button>
           </div>
         )}
@@ -166,7 +176,7 @@ const ScanExercise = ({ lang = 'en', onAdd, onClose }) => {
 
             <div className="scan-actions">
               <button className="scan-retry" onClick={() => setStage('intro')}>
-                {isAr ? '🔄 صورة ثانية' : '🔄 Retake'}
+                {isAr ? '🔄 صورة ثانية' : '🔄 New photo'}
               </button>
               <button className="scan-cta" onClick={confirmAdd}>
                 {isAr ? '✓ أضف للتمرين' : '✓ Add to workout'}

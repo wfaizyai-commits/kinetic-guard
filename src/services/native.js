@@ -43,11 +43,12 @@ export async function requestCameraPermission() {
   }
 }
 
-export async function takeCameraPhoto() {
+export async function takeCameraPhoto({ source = 'camera' } = {}) {
   try {
     const photo = await Camera.getPhoto({
       resultType: CameraResultType.DataUrl,
-      source: CameraSource.Camera,
+      // 'camera' = live capture · 'photos' = pick an existing image from the library
+      source: source === 'photos' ? CameraSource.Photos : CameraSource.Camera,
       quality: 80,
       allowEditing: false,
       saveToGallery: false,

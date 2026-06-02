@@ -79,3 +79,11 @@
 .scan-actions .scan-cta{ flex:1; }
 .scan-hint{ font-size:11.5px; color:var(--text-muted); margin-top:10px; }
 .scan-error{ font-size:14px; color:var(--danger,#FF5A6E); line-height:1.6; margin-bottom:18px; }
+
+/* Secondary (upload) action under the primary CTA */
+.scan-cta--ghost {
+  margin-top: 10px;
+  background: var(--surface-hover, #271F15);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
