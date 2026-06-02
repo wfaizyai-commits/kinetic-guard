@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FitGuard — Splash Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Cairo:wght@700;900&family=Rajdhani:wght@600;700&family=Inter:wght@500;600&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0c0a08;color:#F5EFE8;font-family:'Inter',sans-serif;padding:30px 16px 70px;
+    background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(255,107,0,.06),transparent 60%)}
+  h1{text-align:center;font-family:'Montserrat';font-weight:900;font-size:26px;margin-bottom:4px}
+  h1 b{color:#FF6B00}
+  .sub{text-align:center;color:#8c8c8c;font-size:13px;margin-bottom:8px}
+  .fix{text-align:center;color:#2BD9A0;font-size:12.5px;margin-bottom:30px}
+  .grid{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;max-width:1100px;margin:auto}
+  .card{width:300px}
+  .head{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+  .num{font-family:'Rajdhani';font-weight:700;font-size:13px;color:#FF6B00;border:1px solid rgba(255,107,0,.4);border-radius:6px;padding:1px 8px}
+  .name{font-weight:700;font-size:17px}
+  .desc{font-size:12.5px;color:#9a9a9a;min-height:52px;margin-bottom:10px;line-height:1.6}
+  .stage{aspect-ratio:9/16;border-radius:26px;border:1px solid rgba(255,255,255,.1);overflow:hidden;position:relative;background:#0A0818;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  .replay{margin-top:10px;width:100%;background:#16120d;border:1px solid rgba(255,170,110,.18);color:#FF8C38;
+    border-radius:10px;padding:9px;font-family:'Inter';font-weight:600;font-size:13px;cursor:pointer}
+  .replay:hover{border-color:rgba(255,107,0,.5)}
+  /* shared splash bits */
+  .sp{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+  .word{display:flex;gap:1px}
+  .word span{font-family:'Montserrat';font-weight:900;font-size:24px;letter-spacing:2px;color:#fff;display:inline-block}
+  .tag{font-size:9px;letter-spacing:4px;color:rgba(255,107,0,.75);text-transform:uppercase;font-weight:600}
+
+  /* ============ CONCEPT 1 — PULSE SHIELD (calm, premium) ============ */
+  .c1 .shield{width:96px;height:110px;position:relative}
+  .c1 svg{width:100%;height:100%;overflow:visible}
+  .c1 .sh-path{fill:none;stroke:#FF6B00;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;
+    stroke-dasharray:360;stroke-dashoffset:360;filter:drop-shadow(0 0 6px rgba(255,107,0,.5))}
+  .c1.run .sh-path{animation:c1draw 1s cubic-bezier(.4,0,.2,1) .2s forwards}
+  @keyframes c1draw{to{stroke-dashoffset:0}}
+  .c1 .sh-fill{opacity:0;transform-origin:center}
+  .c1.run .sh-fill{animation:c1fill 1.4s ease 1.1s forwards}
+  @keyframes c1fill{0%{opacity:0;transform:scale(.6)}60%{opacity:1;transform:scale(1.08)}100%{opacity:.9;transform:scale(1)}}
+  .c1 .pulse{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(255,107,0,.4);opacity:0}
+  .c1.run .pulse{animation:c1pulse 1.6s ease 1.4s 2}
+  @keyframes c1pulse{0%{opacity:.6;transform:scale(.5)}100%{opacity:0;transform:scale(2.4)}}
+  .c1 .word span{opacity:0;transform:translateY(-14px)}
+  .c1.run .word span{animation:c1drop .4s cubic-bezier(.34,1.56,.64,1) forwards}
+  .c1 .tag{opacity:0}.c1.run .tag{animation:c1fade .6s ease 2.2s forwards}
+  @keyframes c1drop{to{opacity:1;transform:translateY(0)}}
+  @keyframes c1fade{to{opacity:1}}
+
+  /* ============ CONCEPT 2 — HEARTBEAT / READINESS (signature: safety) ============ */
+  .c2 .ecg{width:200px;height:70px}
+  .c2 .ecg path{fill:none;stroke:#FF6B00;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;
+    stroke-dasharray:600;stroke-dashoffset:600;filter:drop-shadow(0 0 5px rgba(255,107,0,.6))}
+  .c2.run .ecg path{animation:c2beat 1.4s cubic-bezier(.6,0,.2,1) .3s forwards}
+  @keyframes c2beat{to{stroke-dashoffset:0}}
+  .c2 .ring{width:120px;height:120px;position:absolute;border-radius:50%;border:3px solid rgba(255,107,0,.18)}
+  .c2 .ring2{width:120px;height:120px;position:absolute}
+  .c2 .ring2 circle{fill:none;stroke:#FF6B00;stroke-width:3;stroke-linecap:round;stroke-dasharray:377;stroke-dashoffset:377;transform:rotate(-90deg);transform-origin:center}
+  .c2.run .ring2 circle{animation:c2ring 1.1s cubic-bezier(.4,0,.2,1) 1.5s forwards}
+  @keyframes c2ring{to{stroke-dashoffset:94}}
+  .c2 .pct{position:absolute;font-family:'Rajdhani';font-weight:700;font-size:30px;color:#FFC15E;opacity:0}
+  .c2.run .pct{animation:c2num .8s ease 1.7s forwards}
+  @keyframes c2num{to{opacity:1}}
+  .c2 .word{margin-top:8px}
+  .c2 .word span{opacity:0}.c2.run .word span{animation:c2fade .4s ease forwards}
+  .c2 .tag{opacity:0}.c2.run .tag{animation:c2fade .5s ease 2.6s forwards}
+  @keyframes c2fade{to{opacity:1}}
+
+  /* ============ CONCEPT 3 — EMBER FORGE (bold, energetic) ============ */
+  .c3{overflow:hidden}
+  .c3 .core{width:90px;height:90px;border-radius:50%;position:relative;
+    background:radial-gradient(circle,#FFC15E,#FF6B00 55%,transparent 72%);opacity:0;transform:scale(.3)}
+  .c3.run .core{animation:c3core 1s cubic-bezier(.34,1.4,.64,1) .2s forwards}
+  @keyframes c3core{to{opacity:1;transform:scale(1)}}
+  .c3 .spark{position:absolute;width:5px;height:5px;border-radius:50%;background:#FFC15E;
+    top:50%;left:50%;opacity:0;box-shadow:0 0 8px #FF6B00}
+  .c3.run .spark{animation:c3spark 1s ease-out .8s forwards}
+  @keyframes c3spark{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0)}}
+  .c3 .fmark{position:absolute;font-family:'Montserrat';font-weight:900;font-size:46px;color:#1a0f04;opacity:0}
+  .c3.run .fmark{animation:c3f .5s cubic-bezier(.34,1.56,.64,1) .9s forwards}
+  @keyframes c3f{to{opacity:1}}
+  .c3 .word{margin-top:18px}
+  .c3 .word span{opacity:0;transform:scale(1.6);filter:blur(4px)}
+  .c3.run .word span{animation:c3word .45s ease forwards}
+  @keyframes c3word{to{opacity:1;transform:scale(1);filter:blur(0)}}
+  .c3 .tag{opacity:0}.c3.run .tag{animation:c3t .5s ease 2.4s forwards}
+  @keyframes c3t{to{opacity:1}}
+</style>
+</head>
+<body>
+<h1>Fit<b>Guard</b> — Splash Concepts</h1>
+<div class="sub">3 animated directions · tap Replay to watch each</div>
+<div class="fix">✓ Fixed: the double-splash (static + animated) is now ONE animated screen</div>
+
+<div class="grid">
+
+  <!-- CONCEPT 1 -->
+  <div class="card">
+    <div class="head"><span class="num">A</span><span class="name">Pulse Shield</span></div>
+    <div class="desc">Shield draws itself, fills, emits a protective pulse. Calm, premium, "safety" — closest to your current style but cleaner.</div>
+    <div class="stage"><div class="sp c1 run" id="c1">
+      <div class="shield">
+        <svg viewBox="0 0 100 115">
+          <path class="sh-path" d="M50 6 L90 22 V58 C90 86 70 104 50 110 C30 104 10 86 10 58 V22 Z"/>
+          <path class="sh-fill" d="M50 20 L78 31 V58 C78 78 64 91 50 96 C36 91 22 78 22 58 V31 Z" fill="rgba(255,107,0,.18)"/>
+          <text x="50" y="68" text-anchor="middle" font-family="Montserrat" font-weight="900" font-size="34" fill="#FF6B00">F</text>
+        </svg>
+        <div class="pulse"></div>
+      </div>
+      <div class="word"><span>F</span><span>I</span><span>T</span><span>G</span><span>U</span><span>A</span><span>R</span><span>D</span></div>
+      <div class="tag">Train Smart · Stay Safe</div>
+    </div></div>
+    <button class="replay" onclick="rerun('c1')">↻ Replay</button>
+  </div>
+
+  <!-- CONCEPT 2 -->
+  <div class="card">
+    <div class="head"><span class="num">B</span><span class="name">Readiness Beat</span></div>
+    <div class="desc">A heartbeat line races across, a readiness ring fills to a number. Signals your unique "are you ready?" core — most ownable.</div>
+    <div class="stage"><div class="sp c2 run" id="c2">
+      <div style="position:relative;display:flex;align-items:center;justify-content:center;width:140px;height:140px">
+        <div class="ring"></div>
+        <svg class="ring2" viewBox="0 0 130 130"><circle cx="65" cy="65" r="60"/></svg>
+        <div class="pct">78</div>
+      </div>
+      <svg class="ecg" viewBox="0 0 200 70"><path d="M2 35 H70 l8 -22 l10 44 l9 -34 l7 12 H200"/></svg>
+      <div class="word"><span>F</span><span>I</span><span>T</span><span>G</span><span>U</span><span>A</span><span>R</span><span>D</span></div>
+      <div class="tag">Before you lift</div>
+    </div></div>
+    <button class="replay" onclick="rerun('c2')">↻ Replay</button>
+  </div>
+
+  <!-- CONCEPT 3 -->
+  <div class="card">
+    <div class="head"><span class="num">C</span><span class="name">Ember Forge</span></div>
+    <div class="desc">An ember ignites, sparks burst, the F forms, wordmark snaps into focus. Bold, energetic, gym-hype — most "pump".</div>
+    <div class="stage"><div class="sp c3 run" id="c3">
+      <div style="position:relative;display:flex;align-items:center;justify-content:center">
+        <div class="core"></div>
+        <div class="fmark">F</div>
+        <span class="spark" style="--dx:-46px;--dy:-30px"></span>
+        <span class="spark" style="--dx:50px;--dy:-26px"></span>
+        <span class="spark" style="--dx:-38px;--dy:38px"></span>
+        <span class="spark" style="--dx:44px;--dy:40px"></span>
+        <span class="spark" style="--dx:0;--dy:-56px"></span>
+      </div>
+      <div class="word"><span>F</span><span>I</span><span>T</span><span>G</span><span>U</span><span>A</span><span>R</span><span>D</span></div>
+      <div class="tag">Ignite your training</div>
+    </div></div>
+    <button class="replay" onclick="rerun('c3')">↻ Replay</button>
+  </div>
+
+</div>
+
+<script>
+  // stagger wordmark letters for each concept
+  function stagger(id){
+    document.querySelectorAll('#'+id+' .word span').forEach((s,i)=>{
+      s.style.animationDelay = (id==='c1'?1.4: id==='c2'?2.2:1.3) + i*0.05 + 's';
+    });
+  }
+  ['c1','c2','c3'].forEach(stagger);
+  function rerun(id){
+    const el=document.getElementById(id);
+    el.classList.remove('run'); void el.offsetWidth; el.classList.add('run');
+  }
+  // auto-loop all every 4s
+  setInterval(()=>['c1','c2','c3'].forEach(rerun), 4200);
+</script>
+</body>
+</html>

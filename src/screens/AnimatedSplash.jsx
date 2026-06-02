@@ -1,90 +1,57 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './AnimatedSplash.css';
 
+/**
+ * AnimatedSplash — "Pulse Shield" concept.
+ * Shield outline draws itself → fills → emits a protective pulse → the F lands,
+ * then the FITGUARD wordmark + tagline fade in. One screen (native splash hands
+ * off to this instantly; see main.jsx / capacitor.config.ts).
+ */
 const AnimatedSplash = ({ onComplete }) => {
-  const [phase, setPhase] = useState('enter'); // enter → text → exit
+  const [exit, setExit] = useState(false);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('text'),  800);
-    const t2 = setTimeout(() => setPhase('exit'),  2400);
-    const t3 = setTimeout(() => onComplete?.(),    3000);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    const tExit = setTimeout(() => setExit(true), 2600);
+    const tDone = setTimeout(() => onComplete?.(), 3150);
+    return () => { clearTimeout(tExit); clearTimeout(tDone); };
   }, []);
 
-  const RING_R      = 120;
-  const CIRCUMFERENCE = 2 * Math.PI * RING_R;
-  const N_DASHES    = 36;
-  const DASH_LEN    = CIRCUMFERENCE / N_DASHES * 0.55;
-  const GAP_LEN     = CIRCUMFERENCE / N_DASHES * 0.45;
-
   return (
-    <div className={`asplash ${phase === 'exit' ? 'asplash--exit' : ''}`}>
-
-      {/* Radial background pulse */}
+    <div className={`asplash ${exit ? 'asplash--exit' : ''}`}>
       <div className="asplash-bg-pulse" />
 
-      {/* Ring + F */}
-      <div className={`asplash-ring-wrap ${phase !== 'enter' ? 'asplash-ring-wrap--visible' : ''}`}>
-        <svg
-          className="asplash-ring-svg"
-          viewBox="0 0 300 300"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Outer glow ring (non-dashed, faint) */}
-          <circle
-            cx="150" cy="150" r={RING_R + 8}
-            fill="none"
-            stroke="rgba(255,107,0,0.15)"
-            strokeWidth="20"
-          />
+      <div className="asplash-shield-wrap">
+        {/* expanding protective pulse rings */}
+        <span className="asplash-pulse asplash-pulse--1" />
+        <span className="asplash-pulse asplash-pulse--2" />
 
-          {/* Animated dashed ring */}
-          <circle
-            className="asplash-dash-ring"
-            cx="150" cy="150" r={RING_R}
-            fill="none"
-            stroke="#FF6B00"
-            strokeWidth="4"
-            strokeLinecap="round"
-            strokeDasharray={`${DASH_LEN} ${GAP_LEN}`}
-            transform="rotate(-90 150 150)"
+        <svg className="asplash-shield" viewBox="0 0 100 115" xmlns="http://www.w3.org/2000/svg">
+          {/* soft fill that scales in after the outline draws */}
+          <path
+            className="asplash-shield-fill"
+            d="M50 20 L78 31 V58 C78 78 64 91 50 96 C36 91 22 78 22 58 V31 Z"
+            fill="rgba(255,107,0,0.16)"
           />
-
-          {/* Inner thin ring */}
-          <circle
-            className="asplash-inner-ring"
-            cx="150" cy="150" r="88"
-            fill="none"
-            stroke="rgba(255,107,0,0.25)"
-            strokeWidth="1.5"
+          {/* outline that draws itself */}
+          <path
+            className="asplash-shield-path"
+            d="M50 6 L90 22 V58 C90 86 70 104 50 110 C30 104 10 86 10 58 V22 Z"
+            fill="none" stroke="#FF6B00" strokeWidth="3"
+            strokeLinecap="round" strokeLinejoin="round"
           />
+          {/* F lettermark */}
+          <text className="asplash-shield-f" x="50" y="70" textAnchor="middle"
+            fontFamily="Montserrat, sans-serif" fontWeight="900" fontSize="40" fill="#fff">F</text>
         </svg>
-
-        {/* F lettermark */}
-        <div className="asplash-letter-wrap">
-          <span className="asplash-letter">F</span>
-          <span className="asplash-dot" />
-        </div>
       </div>
 
-      {/* FITGUARD wordmark */}
-      <div className={`asplash-wordmark ${phase === 'text' || phase === 'exit' ? 'asplash-wordmark--visible' : ''}`}>
+      <div className="asplash-wordmark">
         {'FITGUARD'.split('').map((ch, i) => (
-          <span
-            key={i}
-            className="asplash-letter-char"
-            style={{ animationDelay: `${i * 0.055}s` }}
-          >
-            {ch}
-          </span>
+          <span key={i} className="asplash-char" style={{ animationDelay: `${1.3 + i * 0.05}s` }}>{ch}</span>
         ))}
       </div>
 
-      {/* Tagline */}
-      <div className={`asplash-tagline ${phase === 'text' || phase === 'exit' ? 'asplash-tagline--visible' : ''}`}>
-        YOUR FITNESS SAFETY APP
-      </div>
-
+      <div className="asplash-tagline">YOUR FITNESS SAFETY APP</div>
     </div>
   );
 };

@@ -9,8 +9,11 @@ const config: CapacitorConfig = {
   },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 2500,
-      launchAutoHide: true,
+      // Native splash hands off to the in-app AnimatedSplash with no second screen.
+      // launchAutoHide:false → we hide it manually the instant React has rendered,
+      // so the user only ever sees ONE splash (the animated one).
+      launchShowDuration: 0,
+      launchAutoHide: false,
       backgroundColor: '#0A0818',
       androidSplashResourceName: 'splash',
       androidScaleType: 'CENTER_CROP',

@@ -13,8 +13,9 @@ async function bootstrap() {
     </StrictMode>,
   );
 
-  // Hide splash after first render
-  setTimeout(hideSplash, 200);
+  // Hide the NATIVE splash the moment the web view has painted, so the user
+  // only ever sees the in-app AnimatedSplash (no static→animated double flash).
+  requestAnimationFrame(() => requestAnimationFrame(hideSplash));
 }
 
 bootstrap();
