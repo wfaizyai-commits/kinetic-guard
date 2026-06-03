@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>FitGuard — قريباً · Coming Soon</title>
 <meta name="description" content="FitGuard — first Arabic AI fitness safety coach. Train smart, stay safe. Launching in Saudi Arabia Q4 2026."/>
+<!-- Analytics: Plausible (cookieless, privacy-friendly, no consent banner needed). -->
+<script defer data-domain="fitguardapp.com" src="https://plausible.io/js/script.js"></script>
+<script>window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
 <style>
@@ -400,7 +403,8 @@
     <h1 data-i="h1"></h1>
     <p class="hero-sub" data-i="heroSub"></p>
     <form class="wait" data-wl>
-      <input type="email" data-i-ph="emailPh" required/>
+      <input type="email" data-i-ph="emailPh" required aria-label="email"/>
+      <input type="text" class="js-hp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0"/>
       <button type="submit" data-i="ctaBtn"></button>
     </form>
     <div class="form-msg" data-msg></div>
@@ -611,7 +615,8 @@
   <h2 data-i="joinTitle"></h2>
   <p data-i="joinP"></p>
   <form class="wait" style="margin-inline:auto" data-wl>
-    <input type="email" data-i-ph="emailPh" required/>
+    <input type="email" data-i-ph="emailPh" required aria-label="email"/>
+    <input type="text" class="js-hp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0"/>
     <button type="submit" data-i="ctaBtn"></button>
   </form>
   <div class="form-msg" style="text-align:center" data-msg></div>
@@ -621,8 +626,9 @@
 <footer><div class="wrap">
   <div class="logo"><span class="mark">🛡</span><span>Fit<b>Guard</b></span></div>
   <p data-i="footTag"></p>
-  <p style="margin-top:10px"><a href="#" data-i="fPrivacy"></a> · <a href="#" data-i="fTerms"></a> · <a href="#" data-i="fContact"></a></p>
-  <p class="fnote">fitguardapp.com · © 2026 FitGuard / Laft Co.</p>
+  <p style="margin-top:10px"><a href="privacy.html" data-i="fPrivacy"></a> · <a href="terms.html" data-i="fTerms"></a> · <a href="mailto:hello@fitguardapp.com" data-i="fContact"></a></p>
+  <p class="fnote" data-i="medical" style="max-width:640px;margin:16px auto 0;line-height:1.6"></p>
+  <p class="fnote" style="margin-top:10px">fitguardapp.com · © 2026 FitGuard / Laft Co.</p>
 </div></footer>
 
 <script>
@@ -696,7 +702,8 @@ const T = {
     joinNote:"🔒 ما نرسل سبام. بريدك يُحفظ بأمان (متوافق مع PDPL).",
     footTag:"تدرّب بذكاء. ابقَ محمياً. · Train Smart. Stay Safe.",
     fPrivacy:"الخصوصية", fTerms:"الشروط", fContact:"تواصل معنا",
-    msgOk:"✓ تم تسجيلك! بنرسل لك الدعوة قريباً.", msgDup:"✓ أنت مسجّل بالفعل!", msgErr:"صار خطأ، حاول مرة ثانية."
+    medical:"⚕️ تنبيه طبي: محتوى FitGuard لأغراض اللياقة والمعلومات فقط وليس استشارة طبية. استشر مختصاً قبل بدء أي برنامج رياضي، خاصة مع وجود إصابة أو حالة صحية. ميزات الجاهزية والإصابات إرشادية ولا تُغني عن رأي الطبيب.",
+    msgOk:"✓ تم تسجيلك! بنرسل لك الدعوة قريباً.", msgDup:"✓ أنت مسجّل بالفعل!", msgErr:"صار خطأ، حاول مرة ثانية.", msgInvalid:"تأكد من صيغة البريد الإلكتروني.", msgSending:"جارٍ الإرسال…", msgDone:"✓ تم"
   },
   en: {
     banner:"Design preview · we can change anything before launch",
@@ -766,13 +773,30 @@ const T = {
     joinNote:"🔒 No spam. Your email is stored securely (PDPL-compliant).",
     footTag:"Train Smart. Stay Safe. · تدرّب بذكاء. ابقَ محمياً.",
     fPrivacy:"Privacy", fTerms:"Terms", fContact:"Contact",
-    msgOk:"✓ You're on the list! We'll send your invite soon.", msgDup:"✓ You're already signed up!", msgErr:"Something went wrong, please try again."
+    medical:"⚕️ Medical notice: FitGuard content is for fitness and information only and is not medical advice. Consult a professional before starting any exercise program, especially with an injury or health condition. Readiness and injury features are guidance and do not replace a doctor's opinion.",
+    msgOk:"✓ You're on the list! We'll send your invite soon.", msgDup:"✓ You're already signed up!", msgErr:"Something went wrong, please try again.", msgInvalid:"Please check your email format.", msgSending:"Sending…", msgDone:"✓ Done"
   }
 };
 
-/* ─── Supabase config (fill before deploy) ─── */
+/* ─── Supabase config ───────────────────────────────────────────────────────
+   SUPABASE_ANON is the PUBLIC publishable/anon key — it is designed to live in
+   the front-end and is protected by Row Level Security. It is NOT a secret.
+   NEVER put the service_role key here. ───────────────────────────────────── */
 const SUPABASE_URL  = "https://pxhdptebzbudswrkgapf.supabase.co";
-const SUPABASE_ANON = "REPLACE_WITH_ANON_KEY"; // public anon key — safe to expose (RLS protected)
+const SUPABASE_ANON = "sb_publishable_T8V39HVugJIhJfeXqubSqg_6HQ8Oqj5";
+
+const isValidEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+/* Capture traffic source: UTM campaign if present, else the referrer host, else 'direct'. */
+function trafficSource(){
+  try{
+    const q = new URLSearchParams(location.search);
+    const utm = q.get('utm_source');
+    if(utm) return (q.get('utm_campaign') ? `${utm}/${q.get('utm_campaign')}` : utm).slice(0,120);
+    if(document.referrer){ try{ return new URL(document.referrer).hostname.slice(0,120); }catch{ return 'referral'; } }
+    return 'direct';
+  }catch{ return 'direct'; }
+}
 
 let LANG = "ar";
 function applyLang(l){
@@ -798,19 +822,15 @@ document.getElementById("langToggle").onclick = ()=>applyLang(LANG==="ar"?"en":"
 
 /* ─── Waitlist submit → Supabase ─── */
 async function submitEmail(email){
-  if(SUPABASE_ANON==="REPLACE_WITH_ANON_KEY"){
-    // preview mode (no backend yet)
-    return {ok:true, preview:true};
-  }
   try{
     const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`,{
       method:"POST",
       headers:{ "Content-Type":"application/json", apikey:SUPABASE_ANON,
         Authorization:`Bearer ${SUPABASE_ANON}`, Prefer:"return=minimal" },
-      body:JSON.stringify({ email, lang:LANG, source:"landing" })
+      body:JSON.stringify({ email, lang:LANG, referrer: trafficSource() })
     });
-    if(res.ok) return {ok:true};
-    if(res.status===409) return {ok:true, dup:true}; // duplicate email
+    if(res.status===201 || res.ok) return {ok:true};
+    if(res.status===409) return {ok:true, dup:true}; // duplicate email (unique constraint)
     return {ok:false};
   }catch{ return {ok:false}; }
 }
@@ -818,18 +838,30 @@ async function submitEmail(email){
 document.querySelectorAll("form[data-wl]").forEach(form=>{
   form.addEventListener("submit", async e=>{
     e.preventDefault();
-    const input = form.querySelector("input");
+    const input = form.querySelector('input[type="email"]');
+    const hp = form.querySelector('.js-hp');
     const btn = form.querySelector("button");
     const msg = form.parentElement.querySelector("[data-msg]");
     const d = T[LANG];
+
+    // honeypot: if a bot filled the hidden field, drop silently (fake success)
+    if(hp && hp.value){ msg.textContent = d.msgOk; msg.className = "form-msg ok"; input.value = ""; return; }
+
+    const email = input.value.trim();
+    if(!isValidEmail(email)){ msg.textContent = d.msgInvalid; msg.className = "form-msg err"; return; }
+
     btn.disabled = true;
-    const r = await submitEmail(input.value.trim());
+    const prevBtn = btn.textContent; btn.textContent = d.msgSending;
+    const r = await submitEmail(email);
     if(r.ok){
       msg.textContent = r.dup ? d.msgDup : d.msgOk;
       msg.className = "form-msg ok";
       input.value = "";
+      btn.textContent = d.msgDone;
+      if(!r.dup && window.plausible) plausible('waitlist_signup'); // analytics (TASK 2)
     }else{
-      msg.textContent = d.msgErr; msg.className = "form-msg err"; btn.disabled = false;
+      msg.textContent = d.msgErr; msg.className = "form-msg err";
+      btn.disabled = false; btn.textContent = prevBtn;
     }
   });
 });
