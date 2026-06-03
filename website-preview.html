@@ -321,6 +321,10 @@
   .statc:hover .statc-ic{transform:scale(1.12) rotate(-6deg)}
   .bignum{position:relative;z-index:1;font-family:var(--num);font-size:clamp(32px,4.4vw,48px);font-weight:700;
     color:var(--orange);line-height:1;text-shadow:0 0 22px rgba(255,107,0,.25)}
+  /* qualitative headline (word instead of an unverified number) */
+  .bignum-txt{position:relative;z-index:1;font-family:'Cairo',var(--num);font-weight:900;white-space:pre-line;
+    font-size:clamp(20px,2.6vw,28px);color:var(--orange);line-height:1.15;text-shadow:0 0 22px rgba(255,107,0,.22);min-height:64px;display:flex;align-items:center;justify-content:center}
+  body[dir=ltr] .bignum-txt{font-family:'Inter',var(--num)}
   .statc-l{position:relative;z-index:1;font-size:12.5px;color:var(--text-2);margin-top:10px;line-height:1.55}
   .stat-src{text-align:center;font-size:11px;color:var(--text-3);margin-top:26px;font-weight:300}
 
@@ -503,10 +507,13 @@
   <div class="sec-title reveal d1" data-i="stbTitle"></div>
   <div class="sec-sub reveal d2" data-i="stbSub"></div>
   <div class="stat-grid">
-    <div class="statc reveal d1"><div class="statc-ic">⚠️</div><div class="bignum" data-target="50" data-suffix="%">0</div><div class="statc-l" data-i="stb1"></div></div>
-    <div class="statc reveal d2"><div class="statc-ic">🩹</div><div class="bignum" data-target="2.3" data-suffix="M" data-dec="1">0</div><div class="statc-l" data-i="stb2"></div></div>
+    <!-- Qualitative (no hard number claimed) — avoids unverifiable stats -->
+    <div class="statc reveal d1"><div class="statc-ic">⚠️</div><div class="bignum-txt" data-i="stb1n"></div><div class="statc-l" data-i="stb1"></div></div>
+    <div class="statc reveal d2"><div class="statc-ic">🩹</div><div class="bignum-txt" data-i="stb2n"></div><div class="statc-l" data-i="stb2"></div></div>
+    <!-- Vision 2030: officially announced government target (verifiable) -->
     <div class="statc reveal d3"><div class="statc-ic">🏃</div><div class="bignum" data-prefix="13→" data-target="40" data-suffix="%">0</div><div class="statc-l" data-i="stb3"></div></div>
-    <div class="statc reveal d4"><div class="statc-ic">📈</div><div class="bignum" data-target="328" data-suffix="M$">0</div><div class="statc-l" data-i="stb4"></div></div>
+    <!-- Market growth: directional, mark before launch --><!-- SOURCE NEEDED -->
+    <div class="statc reveal d4"><div class="statc-ic">📈</div><div class="bignum-txt" data-i="stb4n"></div><div class="statc-l" data-i="stb4"></div></div>
   </div>
   <p class="stat-src reveal d4" data-i="stbSrc"></p>
   </div>
@@ -665,11 +672,11 @@ const T = {
     scarLeft:"الأماكن المجانية تنفد بسرعة", scarSpots:"مكان متبقّي",
     hs1:"ميزات حصرية", hs2v:"٥ أيام", hs2:"برنامج تقسيم", hs3:"عربي أصيل",
     stbTag:"لماذا الآن", stbTitle:"السلامة مو رفاهية — ضرورة", stbSub:"الإصابات الرياضية في ارتفاع، ورؤية ٢٠٣٠ تدفع ملايين السعوديين للرياضة. FitGuard في قلب هذه اللحظة.",
-    stb1:"من رواد الجيم الجدد يتعرّضون لإصابة بسبب أداء خاطئ أو حِمل زائد",
-    stb2:"شخص في MENA يتعافى من إصابة رياضية سنوياً — جمهور يحتاج التمرين الآمن",
+    stb1n:"إصابات\nيمكن تفاديها", stb1:"كثير من إصابات الجيم سببها أداء خاطئ أو حِمل زائد — والوقاية ممكنة",
+    stb2n:"تعافٍ\nآمن", stb2:"الكثير في MENA يتعافون من إصابات رياضية ويحتاجون تمريناً آمناً",
     stb3:"هدف رؤية ٢٠٣٠: رفع ممارسة الرياضة من ١٣٪ إلى ٤٠٪ من السكان",
-    stb4:"حجم سوق تطبيقات اللياقة في السعودية بحلول ٢٠٣٣",
-    stbSrc:"* أرقام تقديرية من تقارير القطاع (Statista · الهيئة العامة للرياضة) — تُوثّق قبل الإطلاق الرسمي.",
+    stb4n:"سوق\nمتنامٍ", stb4:"قطاع اللياقة في السعودية من الأسرع نمواً ضمن رؤية ٢٠٣٠",
+    stbSrc:"* هدف رؤية ٢٠٣٠ مصدره الهيئة العامة للرياضة. باقي النقاط توجّهات عامة للقطاع تُدعم بمصادر موثّقة قبل أي عرض رسمي.",
     aiResN:"ضغط الأرجل", aiResM:"تم التعرّف والتسجيل ✓", aiResC:"ثقة عالية",
     aiBadge:"مدعوم بالذكاء الاصطناعي", aiTitle:"سجّل تمارينك بصورة وحدة",
     aiSub:"ما تحتاج تختار من قوائم طويلة — صوّر، والذكاء الاصطناعي يسوّي الباقي.",
@@ -736,11 +743,11 @@ const T = {
     scarLeft:"Free spots are filling fast", scarSpots:"spots left",
     hs1:"exclusive features", hs2v:"5-day", hs2:"training split", hs3:"Arabic-native",
     stbTag:"Why now", stbTitle:"Safety isn't a luxury — it's a need", stbSub:"Gym injuries are rising, and Vision 2030 is pushing millions of Saudis into fitness. FitGuard sits right at that moment.",
-    stb1:"of new gym-goers get injured from poor form or overloading",
-    stb2:"people in MENA recover from a sports injury each year — an audience that needs safe training",
+    stb1n:"Preventable\ninjuries", stb1:"Many gym injuries come from poor form or overloading — and they're preventable",
+    stb2n:"Safe\nrecovery", stb2:"Many in MENA recover from sports injuries and need safe training",
     stb3:"Vision 2030 goal: raise activity from 13% to 40% of the population",
-    stb4:"Saudi fitness-app market size by 2033",
-    stbSrc:"* Estimates from sector reports (Statista · General Sports Authority) — to be sourced before public launch.",
+    stb4n:"Growing\nmarket", stb4:"Saudi fitness is one of the fastest-growing sectors under Vision 2030",
+    stbSrc:"* The Vision 2030 target is from the General Sports Authority. Other points are directional sector trends, to be backed by verified sources before any formal presentation.",
     aiResN:"Leg Press", aiResM:"detected & logged ✓", aiResC:"high confidence",
     aiBadge:"Powered by AI", aiTitle:"Log a workout with one photo",
     aiSub:"No scrolling through long lists — snap a photo and AI does the rest.",
