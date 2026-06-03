@@ -47,6 +47,14 @@
   .wrap{max-width:1140px;margin:auto;padding:0 24px;position:relative;z-index:1}
   a{color:inherit;text-decoration:none}
   .num{font-family:var(--num)}
+  /* Visible keyboard focus (a11y) */
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline:3px solid var(--ember); outline-offset:2px; border-radius:6px;
+  }
+  /* Skip link */
+  .skip{position:absolute;inset-inline-start:-9999px;top:8px;z-index:200;background:var(--ember);color:#1a0f04;
+    padding:10px 16px;border-radius:8px;font-weight:700;font-family:inherit}
+  .skip:focus{inset-inline-start:12px}
 
   nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(12,10,8,.7);border-bottom:1px solid var(--border)}
   nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px}
@@ -408,14 +416,16 @@
 <div class="scroll-prog" id="scrollProg"></div>
 <div class="preview-banner" data-i="banner"></div>
 
-<nav><div class="wrap">
-  <div class="logo"><span class="mark">🛡</span><span>Fit<b>Guard</b></span></div>
+<a class="skip" href="#main" data-i="skip">تخطّ إلى المحتوى</a>
+<nav aria-label="FitGuard"><div class="wrap">
+  <div class="logo"><span class="mark" aria-hidden="true">🛡</span><span>Fit<b>Guard</b></span></div>
   <div class="nav-r">
-    <button class="lang-btn" id="langToggle">EN</button>
+    <button class="lang-btn" id="langToggle" aria-label="Switch language / تبديل اللغة">EN</button>
     <button class="nav-cta" data-i="navCta" onclick="document.getElementById('join').scrollIntoView()"></button>
   </div>
 </div></nav>
 
+<main id="main">
 <header class="hero">
   <div class="orbs"><span class="orb orb1"></span><span class="orb orb2"></span><span class="orb orb3"></span></div>
   <div class="wrap hero-grid">
@@ -424,7 +434,7 @@
     <h1 data-i="h1"></h1>
     <p class="hero-sub" data-i="heroSub"></p>
     <form class="wait" data-wl>
-      <input type="email" data-i-ph="emailPh" required aria-label="email"/>
+      <input type="email" data-i-ph="emailPh" data-i-al="emailAria" required/>
       <input type="text" class="js-hp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0"/>
       <button type="submit" data-i="ctaBtn"></button>
     </form>
@@ -639,16 +649,17 @@
   <h2 data-i="joinTitle"></h2>
   <p data-i="joinP"></p>
   <form class="wait" style="margin-inline:auto" data-wl>
-    <input type="email" data-i-ph="emailPh" required aria-label="email"/>
+    <input type="email" data-i-ph="emailPh" data-i-al="emailAria" required/>
     <input type="text" class="js-hp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0"/>
     <button type="submit" data-i="ctaBtn"></button>
   </form>
   <div class="form-msg" style="text-align:center" data-msg></div>
   <p class="wait-note" style="text-align:center" data-i="joinNote"></p>
 </div></section>
+</main>
 
 <footer><div class="wrap">
-  <div class="logo"><span class="mark">🛡</span><span>Fit<b>Guard</b></span></div>
+  <div class="logo"><span class="mark" aria-hidden="true">🛡</span><span>Fit<b>Guard</b></span></div>
   <p data-i="footTag"></p>
   <p style="margin-top:10px"><a href="privacy.html" data-i="fPrivacy"></a> · <a href="terms.html" data-i="fTerms"></a> · <a href="mailto:hello@fitguardapp.com" data-i="fContact"></a></p>
   <p class="fnote" data-i="medical" style="max-width:640px;margin:16px auto 0;line-height:1.6"></p>
@@ -660,7 +671,7 @@
 const T = {
   ar: {
     banner:"معاينة تصميم · نقدر نعدّل أي شي قبل النشر",
-    navCta:"انضم للقائمة", pill:"قريباً في السعودية · Q4 2026",
+    navCta:"انضم للقائمة", skip:"تخطّ إلى المحتوى", emailAria:"بريدك الإلكتروني للانضمام لقائمة الانتظار", pill:"قريباً في السعودية · Q4 2026",
     h1:'قبل التمرين — <span class="hl">نتأكد إن جسمك جاهز</span>',
     heroSub:"أول مدرب لياقة ذكي بالعربي يفحص جاهزيتك قبل كل تمرين، يتابع حركتك، ويصمّم برنامجك على حسب جسمك ويومك — وبأمان.",
     emailPh:"بريدك الإلكتروني", ctaBtn:"احجز مكانك 🚀",
@@ -731,7 +742,7 @@ const T = {
   },
   en: {
     banner:"Design preview · we can change anything before launch",
-    navCta:"Join the list", pill:"Coming to Saudi Arabia · Q4 2026",
+    navCta:"Join the list", skip:"Skip to content", emailAria:"Your email to join the waitlist", pill:"Coming to Saudi Arabia · Q4 2026",
     h1:'Before you train — <span class="hl">we make sure your body\'s ready</span>',
     heroSub:"The first Arabic AI fitness safety coach. It checks your readiness before every workout, watches your form, and adapts your program to your body and your day — safely.",
     emailPh:"Your email", ctaBtn:"Reserve my spot 🚀",
@@ -835,6 +846,10 @@ function applyLang(l){
   document.querySelectorAll("[data-i-ph]").forEach(el=>{
     const v = d[el.getAttribute("data-i-ph")];
     if(v!=null) el.placeholder = v;
+  });
+  document.querySelectorAll("[data-i-al]").forEach(el=>{
+    const v = d[el.getAttribute("data-i-al")];
+    if(v!=null) el.setAttribute("aria-label", v);
   });
   // prayer cells
   document.querySelectorAll("[data-pray]").forEach(box=>{
