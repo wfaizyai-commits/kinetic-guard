@@ -883,6 +883,7 @@ document.querySelectorAll("form[data-wl]").forEach(form=>{
       input.value = "";
       btn.textContent = d.msgDone;
       if(!r.dup && window.plausible) plausible('waitlist_signup'); // analytics (TASK 2)
+      if(!r.dup) fillScarcity(); // refresh the live spots counter (TASK 6)
     }else{
       msg.textContent = d.msgErr; msg.className = "form-msg err";
       btn.disabled = false; btn.textContent = prevBtn;
@@ -1030,12 +1031,32 @@ function animateHeadline(){
 }
 
 /* 9. Scarcity bar fill + count (spots "left") */
-function fillScarcity(){
+const TOTAL_SPOTS = 500;
+
+/* Fetch real signup count from Supabase RPC; fall back gracefully if unavailable. */
+async function fetchTaken(){
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/waitlist_count`,{
+      method:"POST",
+      headers:{ "Content-Type":"application/json", apikey:SUPABASE_ANON, Authorization:`Bearer ${SUPABASE_ANON}` },
+      body:"{}"
+    });
+    if(res.ok){ const v = await res.json(); const num = parseInt(v,10); if(!isNaN(num)) return num; }
+  }catch{ /* ignore */ }
+  return null; // unknown (table/RPC not ready)
+}
+
+async function fillScarcity(){
   const fill=document.getElementById('scarFill'), n=document.getElementById('scarN');
   if(!fill||!n) return;
-  const taken=347, total=500, left=total-taken; // demo numbers
-  setTimeout(()=>{ fill.style.width=(taken/total*100)+'%'; }, 400);
-  if(reduce){ n.textContent=left; return; }
+  const taken = await fetchTaken();
+  // Until the backend is live, show a modest seed so the bar reads naturally.
+  const realTaken = (taken==null) ? 120 : taken;
+  const left = Math.max(0, TOTAL_SPOTS - realTaken);
+  const pct  = Math.min(100, realTaken / TOTAL_SPOTS * 100);
+  setTimeout(()=>{ fill.style.width = pct + '%'; }, 400);
+  n.textContent = left;            // set final value first (robust if rAF is throttled)
+  if(reduce) return;
   const t0=performance.now(), dur=1400;
   const tick=(t)=>{ const p=Math.min(1,(t-t0)/dur); n.textContent=Math.round(left*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(tick); };
   requestAnimationFrame(tick);
