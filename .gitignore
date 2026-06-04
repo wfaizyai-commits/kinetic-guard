@@ -31,3 +31,6 @@ android/.gradle/
 android/app/build/
 android/build/
 android/local.properties
+*.zip
+files/
+FitGuard-Analysis-Report.html
