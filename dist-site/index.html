@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FitGuard — قريباً · Coming Soon</title>
+<meta name="description" content="FitGuard — first Arabic AI fitness safety coach. Train smart, stay safe. Launching in Saudi Arabia Q4 2026."/>
+<!-- ── SEO / Open Graph / Twitter ── -->
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="FitGuard"/>
+<meta property="og:title" content="FitGuard — مدرب اللياقة الذكي بالعربي"/>
+<meta property="og:description" content="أول مدرب لياقة ذكي بالعربي يفحص جاهزيتك ويحميك من الإصابة. قريباً في السعودية."/>
+<meta property="og:image" content="https://fitguardapp.com/og-image.png"/>
+<meta property="og:url" content="https://fitguardapp.com/"/>
+<meta property="og:locale" content="ar_SA"/>
+<meta property="og:locale:alternate" content="en_US"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="FitGuard — مدرب اللياقة الذكي بالعربي"/>
+<meta name="twitter:description" content="تدرّب بذكاء. ابقَ محمياً."/>
+<meta name="twitter:image" content="https://fitguardapp.com/og-image.png"/>
+<link rel="canonical" href="https://fitguardapp.com/"/>
+<meta name="theme-color" content="#0C0A08"/>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+<link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+<!-- Analytics: Plausible (cookieless, privacy-friendly, no consent banner needed). -->
+<script defer data-domain="fitguardapp.com" src="https://plausible.io/js/script.js"></script>
+<script>window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#0C0A08; --surface:#16120D; --surface-2:#1E1810;
+    --border:rgba(255,170,110,.10); --border-hi:rgba(255,107,0,.45);
+    --orange:#FF6B00; --orange-bright:#FF8C38; --ember:#FFC15E;
+    --ember-grad:linear-gradient(135deg,#FF6B00 0%,#FFA94D 60%,#FFC15E 100%);
+    --green:#2BD9A0; --red:#FF5A6E;
+    --text:#F5EFE8; --text-2:rgba(245,239,232,.66); --text-3:rgba(245,239,232,.4);
+    --num:'Rajdhani',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;line-height:1.8;overflow-x:hidden;
+    background-image:radial-gradient(ellipse 90% 50% at 80% -5%, rgba(255,138,61,.07), transparent 55%)}
+  body[dir="ltr"]{font-family:'Inter',sans-serif;line-height:1.7}
+  body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background-image:repeating-linear-gradient(135deg,rgba(255,138,61,.022) 0,rgba(255,138,61,.022) 1px,transparent 1px,transparent 26px)}
+  .wrap{max-width:1140px;margin:auto;padding:0 24px;position:relative;z-index:1}
+  a{color:inherit;text-decoration:none}
+  .num{font-family:var(--num)}
+  /* Visible keyboard focus (a11y) */
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline:3px solid var(--ember); outline-offset:2px; border-radius:6px;
+  }
+  /* Skip link */
+  .skip{position:absolute;inset-inline-start:-9999px;top:8px;z-index:200;background:var(--ember);color:#1a0f04;
+    padding:10px 16px;border-radius:8px;font-weight:700;font-family:inherit}
+  .skip:focus{inset-inline-start:12px}
+
+  /* Thank-you panel (after signup) */
+  .thanks{max-width:480px;background:linear-gradient(160deg,#1c140c,#16120d);border:1px solid var(--border-hi);
+    border-radius:18px;padding:24px 22px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+  @media(max-width:860px){.thanks{margin-inline:auto}}
+  .thanks-check{width:54px;height:54px;border-radius:50%;background:var(--ember-grad);color:#1a0f04;
+    display:grid;place-items:center;font-size:30px;font-weight:900;margin-bottom:6px;box-shadow:0 0 24px rgba(255,107,0,.4)}
+  .thanks-title{font-family:'Cairo',sans-serif;font-weight:900;font-size:20px;color:var(--text)}
+  body[dir=ltr] .thanks-title{font-family:'Inter',sans-serif}
+  .thanks-sub{font-size:14px;color:var(--text-2);line-height:1.6}
+  .animate-pop{animation:ty-pop .5s cubic-bezier(.34,1.56,.64,1) both}
+  @keyframes ty-pop{from{opacity:0;transform:scale(.9) translateY(8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){ .animate-pop{animation:none} }
+
+  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(12,10,8,.7);border-bottom:1px solid var(--border)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:900;font-size:20px}
+  .logo .mark{width:30px;height:30px;border-radius:9px;background:var(--ember-grad);display:grid;place-items:center;font-size:15px;color:#1a0f04}
+  .logo b{color:var(--orange)}
+  .nav-r{display:flex;align-items:center;gap:14px}
+  .nav-cta{background:var(--ember-grad);color:#1a0f04;font-weight:700;font-size:14px;padding:9px 18px;border-radius:999px;cursor:pointer;border:none;font-family:inherit}
+  .lang-btn{font-family:var(--num);font-size:13px;color:var(--text-2);border:1px solid var(--border);padding:6px 14px;border-radius:999px;cursor:pointer;background:none}
+  .lang-btn:hover{border-color:var(--border-hi);color:var(--ember)}
+
+  .hero{padding:64px 0 48px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  @media(max-width:860px){.hero-grid{grid-template-columns:1fr;text-align:center}}
+  .pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--ember);border:1px solid var(--border-hi);background:rgba(255,107,0,.08);padding:6px 16px;border-radius:999px;margin-bottom:24px}
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+  h1{font-size:clamp(38px,6.6vw,70px);font-weight:900;line-height:1.08;margin-bottom:20px;letter-spacing:-.5px}
+  h1 .hl{color:var(--orange)}
+  .hero-sub{font-size:17.5px;color:var(--text-2);font-weight:300;max-width:520px;margin-bottom:28px;line-height:1.7}
+  @media(max-width:860px){.hero-sub{margin-inline:auto}}
+
+  /* Hero trust stats under the form */
+  .hero-stats{display:flex;gap:26px;margin-top:22px}
+  @media(max-width:860px){.hero-stats{justify-content:center}}
+  .hstat{display:flex;flex-direction:column}
+  .hstat b{font-family:var(--num);font-size:24px;font-weight:700;color:var(--ember);line-height:1}
+  .hstat span{font-size:11.5px;color:var(--text-3);margin-top:3px}
+  .hstat-div{width:1px;background:var(--border)}
+
+  .wait{display:flex;gap:10px;max-width:480px;margin-bottom:14px}
+  @media(max-width:860px){.wait{margin-inline:auto}}
+  @media(max-width:480px){.wait{flex-direction:column}}
+  .wait input{flex:1;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:15px 18px;color:var(--text);font-family:inherit;font-size:15px;outline:none}
+  .wait input:focus{border-color:var(--border-hi)}
+  .wait button{background:var(--ember-grad);color:#1a0f04;border:none;border-radius:14px;padding:15px 26px;font-family:inherit;font-weight:700;font-size:15px;cursor:pointer;white-space:nowrap}
+  .wait button:disabled{opacity:.7;cursor:default}
+  .wait-note{font-size:13px;color:var(--text-3)}
+  .wait-note b{color:var(--ember);font-family:var(--num);font-size:15px}
+  .form-msg{font-size:13px;margin-top:4px;min-height:18px}
+  .form-msg.ok{color:var(--green)} .form-msg.err{color:var(--red)}
+
+  .phone-wrap{display:flex;justify-content:center}
+  .phone{width:300px;border-radius:38px;border:1px solid rgba(255,255,255,.1);overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 60px rgba(255,107,0,.08);background:var(--bg)}
+  .ph-status{height:30px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-3)}
+  .ph-b{padding:6px 16px 18px}
+  .ph-h{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .ph-h .m{width:22px;height:22px;border-radius:6px;background:var(--ember-grad);display:grid;place-items:center;font-size:11px;color:#1a0f04;font-weight:900}
+  .ph-h .t{font-weight:900;font-size:13px}
+  .ph-greet{font-size:11px;color:var(--text-2);margin-bottom:12px}
+  .ring-card{display:flex;gap:12px;align-items:center;background:linear-gradient(160deg,#1c140c,#16120d);border:1px solid var(--border-hi);border-radius:18px;padding:14px;margin-bottom:10px}
+  .ring{width:74px;height:74px;flex:0 0 auto;position:relative}
+  .ring .c{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+  .ring .c b{font-family:var(--num);font-size:25px;color:var(--ember);line-height:1}
+  .ring .c small{font-size:8px;color:var(--text-3)}
+  .ring-m h4{font-size:13px;margin-bottom:2px}
+  .ring-m p{font-size:10.5px;color:var(--text-2);line-height:1.45}
+  .pray{display:flex;gap:5px}
+  .pc{flex:1;text-align:center;background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:6px 2px}
+  .pc.on{background:rgba(255,107,0,.13);border-color:var(--border-hi)}
+  .pc .n{font-size:8px;color:var(--text-3)}
+  .pc.on .n{color:var(--ember)}
+  .pc .t{font-family:var(--num);font-size:11px;font-weight:700;margin-top:1px}
+
+  section{padding:64px 0}
+  .sec-tag{font-family:var(--num);letter-spacing:3px;font-size:12px;color:var(--orange);text-transform:uppercase;margin-bottom:10px;text-align:center}
+  .sec-title{font-size:clamp(24px,3.5vw,38px);font-weight:900;text-align:center;margin-bottom:12px;line-height:1.2}
+  .sec-sub{color:var(--text-2);text-align:center;max-width:600px;margin:0 auto 44px;font-weight:300}
+
+  .gap{background:var(--surface);border-block:1px solid var(--border)}
+  .gap-row{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+  .gap-card{flex:1;min-width:230px;background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:24px}
+  .gap-card .x{color:var(--red);font-weight:700;font-size:13px;margin-bottom:8px}
+  .gap-card .ok{color:var(--ember);font-weight:700;font-size:13px;margin-bottom:8px}
+  .gap-card p{font-size:14px;color:var(--text-2)}
+  .gap-highlight{margin-top:24px;text-align:center;font-size:18px;font-weight:700}
+  .gap-highlight .hl{color:var(--orange)}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:760px){.steps{grid-template-columns:1fr}}
+  .step{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px 22px}
+  .step .num{font-family:var(--num);font-size:54px;font-weight:700;color:rgba(255,107,0,.16);line-height:.8;margin-bottom:10px}
+  .step h3{font-size:18px;font-weight:700;margin-bottom:8px}
+  .step p{font-size:14px;color:var(--text-2)}
+
+  .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:760px){.feat{grid-template-columns:1fr}}
+  .fc{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;transition:.2s}
+  .fc:hover{border-color:var(--border-hi);transform:translateY(-3px)}
+  .fc .ic{font-size:28px;margin-bottom:12px}
+  .fc h3{font-size:16px;font-weight:700;margin-bottom:6px}
+  .fc p{font-size:13.5px;color:var(--text-2)}
+  .fc .tag{display:inline-block;margin-top:12px;font-size:11px;color:var(--ember);border:1px solid var(--border-hi);border-radius:999px;padding:3px 10px}
+
+  .vision{background:linear-gradient(135deg,#1a0f04,#0c0a08);border-block:1px solid var(--border);text-align:center}
+  .vision h2{font-size:clamp(22px,3vw,32px);font-weight:900;margin-bottom:12px}
+  .vision p{color:var(--text-2);max-width:560px;margin:0 auto;font-weight:300}
+  .vision .stat{font-family:var(--num);font-size:46px;font-weight:700;color:var(--orange);margin-top:18px}
+  .vision .stat-l{font-size:13px;color:var(--text-3)}
+
+  .final{text-align:center}
+  .final h2{font-size:clamp(26px,4vw,42px);font-weight:900;margin-bottom:14px}
+  .final p{color:var(--text-2);margin-bottom:28px;font-weight:300}
+
+  footer{background:#080705;border-top:1px solid var(--border);padding:36px 0;text-align:center}
+  footer .logo{justify-content:center;margin-bottom:12px}
+  footer p{font-size:12.5px;color:var(--text-3)}
+  footer a{color:var(--text-2)}
+  .fnote{margin-top:14px;font-size:11px;color:var(--text-3)}
+
+  .preview-banner{background:var(--orange);color:#1a0f04;text-align:center;font-weight:700;font-size:13px;padding:8px}
+
+  /* ═══════════ DYNAMIC / MOTION LAYER ═══════════ */
+
+  /* Scroll reveal — elements rise + fade as they enter view */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
+  .reveal.d4{transition-delay:.32s}.reveal.d5{transition-delay:.40s}
+
+  /* Floating ambient ember orbs behind hero */
+  .orbs{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+  .orb{position:absolute;border-radius:50%;filter:blur(40px);opacity:.5;animation:orb-float 14s ease-in-out infinite}
+  .orb1{width:280px;height:280px;background:radial-gradient(circle,rgba(255,107,0,.22),transparent 70%);top:-60px;inset-inline-start:-40px}
+  .orb2{width:220px;height:220px;background:radial-gradient(circle,rgba(255,193,94,.16),transparent 70%);bottom:-40px;inset-inline-end:8%;animation-delay:-5s}
+  .orb3{width:160px;height:160px;background:radial-gradient(circle,rgba(43,217,160,.10),transparent 70%);top:40%;inset-inline-end:30%;animation-delay:-9s}
+  @keyframes orb-float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-26px) scale(1.08)}66%{transform:translate(-16px,18px) scale(.96)}}
+
+  /* Hero phone floats gently + glows */
+  .phone{animation:phone-float 5s ease-in-out infinite}
+  @keyframes phone-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+  /* Live readiness ring draws on load; number counts up */
+  .ring svg circle:last-of-type{stroke-dasharray:195;stroke-dashoffset:195;animation:ring-fill 1.6s cubic-bezier(.4,0,.2,1) .6s forwards}
+  @keyframes ring-fill{to{stroke-dashoffset:44}}
+
+  /* Next-prayer cell pulses softly */
+  .pc.on{animation:pc-pulse 2.4s ease-in-out infinite}
+  @keyframes pc-pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,0,0)}50%{box-shadow:0 0 0 4px rgba(255,107,0,.12)}}
+
+  /* Pill live dot already blinks; add a subtle ring breathe */
+  .pill .dot{animation:dot-blink 1.6s ease-in-out infinite}
+  @keyframes dot-blink{0%,100%{opacity:1}50%{opacity:.35}}
+
+  /* Buttons: shine sweep on hover */
+  .nav-cta,.wait button{position:relative;overflow:hidden}
+  .nav-cta::after,.wait button::after{content:'';position:absolute;top:0;inset-inline-start:-120%;width:60%;height:100%;
+    background:linear-gradient(120deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);transition:none}
+  .nav-cta:hover::after,.wait button:hover::after{animation:shine .7s ease}
+  @keyframes shine{to{inset-inline-start:160%}}
+
+  /* Feature cards: lift handled inline; add icon bob on hover */
+  .fc:hover .ic{animation:bob .6s ease}
+  @keyframes bob{0%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+
+  /* Step number subtle count-glow on reveal */
+  .step.in .num{animation:num-glow 1s ease}
+  @keyframes num-glow{0%{color:rgba(255,107,0,.16)}40%{color:rgba(255,107,0,.5)}100%{color:rgba(255,107,0,.16)}}
+
+  /* Animated gradient on the big highlight word */
+  .gap-highlight .hl,h1 .hl{background:linear-gradient(100deg,#FF6B00,#FFC15E,#FF6B00);background-size:200% auto;
+    -webkit-background-clip:text;background-clip:text;color:transparent;animation:hl-shift 4s linear infinite}
+  @keyframes hl-shift{to{background-position:200% center}}
+
+  /* Vision stat counts up (handled in JS), give it a glow pop on reveal */
+  .vision.in .stat{animation:stat-pop .8s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes stat-pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+
+  /* Scroll progress bar (top) */
+  .scroll-prog{position:fixed;top:0;inset-inline-start:0;height:3px;width:0;z-index:60;
+    background:var(--ember-grad);box-shadow:0 0 10px rgba(255,107,0,.6);transition:width .1s linear}
+
+  /* Hero headline animates word-by-word on load */
+  h1 .word-anim{display:inline-block;opacity:0;transform:translateY(24px) rotate(2deg);
+    animation:word-rise .7s cubic-bezier(.22,1,.36,1) forwards}
+  @keyframes word-rise{to{opacity:1;transform:none}}
+
+  /* Phone screen cross-fade carousel */
+  .ph-screens{position:relative}
+  .ph-screen{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;pointer-events:none}
+  .ph-screen.active{opacity:1;position:relative;pointer-events:auto}
+  .ph-dots{display:flex;gap:5px;justify-content:center;margin-top:10px}
+  .ph-dot{width:5px;height:5px;border-radius:50%;background:var(--text-3);transition:.3s}
+  .ph-dot.on{background:var(--orange);width:16px;border-radius:3px}
+
+  /* Mini muscle-blueprint screen */
+  .ph-ex{display:flex;gap:10px;align-items:center;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:10px;margin-bottom:8px}
+  .ph-ex svg{width:34px;height:46px;flex:0 0 auto}
+  .ph-ex .exn{font-size:11px;font-weight:700}
+  .ph-ex .exm{font-size:9px;color:var(--ember)}
+  .ph-ex .exs{font-size:9px;color:var(--text-3);margin-top:1px}
+  .mbx{filter:drop-shadow(0 0 2px var(--orange))}
+
+  /* Scanner screen */
+  .ph-scan{border:1px dashed var(--border-hi);border-radius:14px;padding:18px 12px;text-align:center;background:var(--surface-2)}
+  .ph-scan .big{font-size:30px}
+  .ph-scan .lbl{font-size:10px;color:var(--text-2);margin-top:6px}
+  .ph-scan .res{margin-top:10px;background:rgba(255,107,0,.1);border:1px solid var(--border-hi);border-radius:10px;padding:8px;font-size:10px}
+  .ph-scan .res b{color:var(--ember)}
+
+  /* Scarcity bar */
+  .scarcity{max-width:480px;margin:0 0 14px}
+  @media(max-width:860px){.scarcity{margin-inline:auto}}
+  .scar-row{display:flex;justify-content:space-between;font-size:12px;color:var(--text-2);margin-bottom:5px}
+  .scar-row b{color:var(--ember);font-family:var(--num)}
+  .scar-track{height:7px;border-radius:99px;background:var(--surface-2);overflow:hidden;border:1px solid var(--border)}
+  .scar-fill{height:100%;width:0;border-radius:99px;background:var(--ember-grad);box-shadow:0 0 10px rgba(255,107,0,.5);transition:width 1.6s cubic-bezier(.22,1,.36,1)}
+
+  /* Tilt cards */
+  .fc{transform-style:preserve-3d;will-change:transform}
+
+  /* Marquee trust strip */
+  .marquee{overflow:hidden;border-block:1px solid var(--border);background:var(--surface);padding:14px 0}
+  .marquee-track{display:flex;gap:48px;white-space:nowrap;animation:marq 22s linear infinite;width:max-content}
+  .marquee:hover .marquee-track{animation-play-state:paused}
+  .marq-item{font-size:13px;color:var(--text-2);font-weight:600;display:flex;align-items:center;gap:8px}
+  .marq-item span{color:var(--orange)}
+  @keyframes marq{to{transform:translateX(-50%)}}
+  [dir="rtl"] .marquee-track{animation-direction:reverse}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    .orb,.phone,.pc.on,.pill .dot,.gap-highlight .hl,h1 .hl,.marquee-track{animation:none}
+    .ring svg circle:last-of-type{animation:none;stroke-dashoffset:44}
+    h1 .word-anim{opacity:1;transform:none;animation:none}
+  }
+
+  /* ═══════════ BOLDER MOTION PASS ═══════════ */
+  /* punchier orbs */
+  .orb{opacity:.7}
+  .orb1{width:340px;height:340px}
+  .orb2{width:280px;height:280px}
+  /* snappier reveals — faster, tighter stagger */
+  .reveal{transform:translateY(34px) scale(.975);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
+  .reveal.in{transform:none}
+  .reveal.d1{transition-delay:.05s}.reveal.d2{transition-delay:.1s}.reveal.d3{transition-delay:.15s}
+  /* marquee faster + bigger */
+  .marquee-track{animation-duration:16s}
+  .marq-item{font-size:14px}
+  /* stronger button shine + lift */
+  .wait button:hover,.nav-cta:hover{box-shadow:0 8px 30px rgba(255,107,0,.45)}
+  /* phone glow pulse */
+  .phone{box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 60px rgba(255,107,0,.18);animation:phone-float 5s ease-in-out infinite,phone-glow 3s ease-in-out infinite}
+  @keyframes phone-glow{0%,100%{box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 50px rgba(255,107,0,.14)}50%{box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 80px rgba(255,107,0,.30)}}
+
+  /* Global interactive particle field (whole page, behind content) */
+  #globalParticles{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+  /* Health / injury / Vision 2030 stat band */
+  .statband{position:relative;background:linear-gradient(135deg,#150d04,#0c0a08);border-block:1px solid var(--border);overflow:hidden}
+  .statband .wrap{position:relative;z-index:1}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  @media(max-width:760px){.stat-grid{grid-template-columns:1fr 1fr}}
+
+  .statc{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;
+    padding:30px 18px 24px;text-align:center;overflow:hidden;cursor:default;
+    transition:transform .3s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .3s}
+  /* spotlight that follows the cursor (set via --mx/--my in JS) */
+  .statc::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none;
+    background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%),rgba(255,107,0,.16),transparent 60%)}
+  .statc:hover{transform:translateY(-6px);border-color:var(--border-hi);box-shadow:0 18px 44px rgba(0,0,0,.45),0 0 30px rgba(255,107,0,.12)}
+  .statc:hover::before{opacity:1}
+  /* animated underline bar */
+  .statc::after{content:'';position:absolute;left:50%;bottom:0;width:0;height:3px;border-radius:3px;
+    background:var(--ember-grad);transform:translateX(-50%);transition:width .35s cubic-bezier(.22,1,.36,1)}
+  .statc:hover::after{width:70%}
+
+  /* icon in a glowing ring */
+  .statc-ic{position:relative;z-index:1;width:54px;height:54px;margin:0 auto 14px;border-radius:50%;
+    display:grid;place-items:center;font-size:24px;
+    background:radial-gradient(circle,rgba(255,107,0,.16),rgba(255,107,0,.04));
+    border:1px solid var(--border-hi);transition:transform .3s}
+  .statc:hover .statc-ic{transform:scale(1.12) rotate(-6deg)}
+  .bignum{position:relative;z-index:1;font-family:var(--num);font-size:clamp(32px,4.4vw,48px);font-weight:700;
+    color:var(--orange);line-height:1;text-shadow:0 0 22px rgba(255,107,0,.25)}
+  /* qualitative headline (word instead of an unverified number) */
+  .bignum-txt{position:relative;z-index:1;font-family:'Cairo',var(--num);font-weight:900;white-space:pre-line;
+    font-size:clamp(20px,2.6vw,28px);color:var(--orange);line-height:1.15;text-shadow:0 0 22px rgba(255,107,0,.22);min-height:64px;display:flex;align-items:center;justify-content:center}
+  body[dir=ltr] .bignum-txt{font-family:'Inter',var(--num)}
+  .statc-l{position:relative;z-index:1;font-size:12.5px;color:var(--text-2);margin-top:10px;line-height:1.55}
+  .stat-src{text-align:center;font-size:11px;color:var(--text-3);margin-top:26px;font-weight:300}
+
+  @media (prefers-reduced-motion: reduce){ #globalParticles{display:none} }
+
+  /* ═══════════ AI LOGGING SECTION ═══════════ */
+  .ai-sec{background:var(--surface);border-block:1px solid var(--border)}
+  .ai-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:48px;align-items:center}
+  @media(max-width:860px){.ai-grid{grid-template-columns:1fr;gap:36px}}
+  /* phone showing a live scan */
+  .ai-phone{width:270px;margin:0 auto;border-radius:36px;border:1px solid rgba(255,255,255,.1);background:var(--bg);
+    box-shadow:0 30px 70px rgba(0,0,0,.55),0 0 50px rgba(255,107,0,.12);overflow:hidden}
+  .ai-phone .top{height:28px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-3)}
+  .ai-phone .body{padding:8px 16px 20px}
+  .ai-cam{border-radius:16px;height:150px;background:
+    repeating-linear-gradient(45deg,#15110b 0 10px,#1a140d 10px 20px);
+    border:1px solid var(--border);position:relative;overflow:hidden;display:grid;place-items:center}
+  .ai-cam .frame{position:absolute;inset:14px;border:2px solid var(--orange-bright);border-radius:10px;opacity:.7}
+  .ai-cam .corner{position:absolute;width:16px;height:16px;border:2px solid var(--orange)}
+  .ai-cam .machine{font-size:44px;filter:grayscale(.3)}
+  /* scan line sweeps down */
+  .ai-cam .scanline{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--orange),transparent);
+    box-shadow:0 0 10px var(--orange);animation:scanmove 2.4s ease-in-out infinite}
+  @keyframes scanmove{0%,100%{top:14px}50%{top:136px}}
+  .ai-result{margin-top:10px;background:rgba(255,107,0,.1);border:1px solid var(--border-hi);border-radius:12px;
+    padding:11px 12px;display:flex;align-items:center;gap:9px;animation:res-in 2.4s ease-in-out infinite}
+  @keyframes res-in{0%,40%{opacity:0;transform:translateY(6px)}55%,100%{opacity:1;transform:none}}
+  .ai-result .rb{font-size:18px}
+  .ai-result .rn{font-size:12px;font-weight:700}
+  .ai-result .rm{font-size:10px;color:var(--ember)}
+  .ai-result .rc{margin-inline-start:auto;font-family:var(--num);font-size:10px;color:var(--green);border:1px solid var(--green);border-radius:99px;padding:2px 8px}
+  /* AI feature list */
+  .ai-feats{display:flex;flex-direction:column;gap:14px;margin-top:24px}
+  .ai-feat{display:flex;gap:14px;align-items:flex-start}
+  .ai-feat .fi{width:42px;height:42px;flex:0 0 auto;border-radius:12px;display:grid;place-items:center;font-size:20px;
+    background:radial-gradient(circle,rgba(255,107,0,.16),rgba(255,107,0,.04));border:1px solid var(--border-hi)}
+  .ai-feat h4{font-size:15px;font-weight:700;margin-bottom:2px}
+  .ai-feat p{font-size:13px;color:var(--text-2);line-height:1.6}
+  .ai-badge-row{display:inline-flex;align-items:center;gap:8px;background:rgba(255,107,0,.1);border:1px solid var(--border-hi);
+    border-radius:999px;padding:6px 16px;font-size:13px;color:var(--ember);margin-bottom:18px}
+
+  /* AI capabilities grid (how the AI understands you) */
+  .aicap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:8px}
+  @media(max-width:860px){.aicap-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){.aicap-grid{grid-template-columns:1fr}}
+  .aicap{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:22px 18px;transition:.25s;position:relative;overflow:hidden}
+  .aicap:hover{border-color:var(--border-hi);transform:translateY(-4px)}
+  .aicap::after{content:'';position:absolute;inset-inline-start:0;top:0;bottom:0;width:3px;background:var(--ember-grad);transform:scaleY(0);transform-origin:top;transition:transform .3s}
+  .aicap:hover::after{transform:scaleY(1)}
+  .aicap .ci{font-size:24px;margin-bottom:10px}
+  .aicap h4{font-size:14.5px;font-weight:700;margin-bottom:5px}
+  .aicap p{font-size:12.5px;color:var(--text-2);line-height:1.6}
+  .aicap .chip{display:inline-block;margin-top:10px;font-size:10px;color:var(--ember);border:1px solid var(--border-hi);border-radius:99px;padding:2px 9px}
+
+  /* ═══════════ REWARDS SECTION ═══════════ */
+  .rew-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:26px}
+  @media(max-width:760px){.rew-grid{grid-template-columns:1fr}}
+  .rewc{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:26px 22px;text-align:center;transition:.25s;position:relative;overflow:hidden}
+  .rewc:hover{transform:translateY(-5px);border-color:var(--border-hi);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+  .rewc .ri{font-size:34px;margin-bottom:12px;display:inline-block}
+  .rewc:hover .ri{animation:bob .6s ease}
+  .rewc h3{font-size:17px;font-weight:800;margin-bottom:6px}
+  .rewc p{font-size:13px;color:var(--text-2);line-height:1.6}
+  /* XP bar demo */
+  .xp-demo{max-width:520px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px}
+  .xp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .xp-lvl{font-family:var(--num);font-weight:700;color:var(--ember);font-size:15px}
+  .xp-streak{font-size:13px;color:var(--text-2)}
+  .xp-track{height:10px;border-radius:99px;background:var(--surface-2);overflow:hidden;border:1px solid var(--border)}
+  .xp-fill{height:100%;width:0;border-radius:99px;background:var(--ember-grad);box-shadow:0 0 12px rgba(255,107,0,.5);transition:width 1.6s cubic-bezier(.22,1,.36,1)}
+  .xp-demo.in .xp-fill{width:72%}
+  .medals{display:flex;justify-content:center;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .medal{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:20px;
+    background:var(--surface-2);border:1px solid var(--border);opacity:.4;transition:.4s}
+  .medal.on{opacity:1;border-color:var(--border-hi);box-shadow:0 0 14px rgba(255,107,0,.25)}
+</style>
+</head>
+<body dir="rtl">
+
+<canvas id="globalParticles"></canvas>
+<div class="scroll-prog" id="scrollProg"></div>
+<div class="preview-banner" data-i="banner"></div>
+
+<a class="skip" href="#main" data-i="skip">تخطّ إلى المحتوى</a>
+<nav aria-label="FitGuard"><div class="wrap">
+  <div class="logo"><span class="mark" aria-hidden="true">🛡</span><span>Fit<b>Guard</b></span></div>
+  <div class="nav-r">
+    <button class="lang-btn" id="langToggle" aria-label="Switch language / تبديل اللغة">EN</button>
+    <button class="nav-cta" data-i="navCta" onclick="document.getElementById('join').scrollIntoView()"></button>
+  </div>
+</div></nav>
+
+<main id="main">
+<header class="hero">
+  <div class="orbs"><span class="orb orb1"></span><span class="orb orb2"></span><span class="orb orb3"></span></div>
+  <div class="wrap hero-grid">
+  <div>
+    <span class="pill"><span class="dot"></span><span data-i="pill"></span></span>
+    <h1 data-i="h1"></h1>
+    <p class="hero-sub" data-i="heroSub"></p>
+    <form class="wait" data-wl>
+      <input type="email" data-i-ph="emailPh" data-i-al="emailAria" required/>
+      <input type="text" class="js-hp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0"/>
+      <button type="submit" data-i="ctaBtn"></button>
+    </form>
+    <div class="form-msg" data-msg></div>
+    <p class="wait-note" data-i="note"></p>
+
+    <!-- Scarcity bar -->
+    <div class="scarcity reveal d3">
+      <div class="scar-row"><span data-i="scarLeft"></span><span><b id="scarN">0</b> <span data-i="scarSpots"></span></span></div>
+      <div class="scar-track"><div class="scar-fill" id="scarFill"></div></div>
+    </div>
+
+    <!-- Hero trust stats -->
+    <div class="hero-stats reveal d4">
+      <div class="hstat"><b>6</b><span data-i="hs1"></span></div>
+      <div class="hstat-div"></div>
+      <div class="hstat"><b data-i="hs2v"></b><span data-i="hs2"></span></div>
+      <div class="hstat-div"></div>
+      <div class="hstat"><b>100%</b><span data-i="hs3"></span></div>
+    </div>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="ph-status">9:41</div>
+      <div class="ph-b">
+        <div class="ph-h"><span class="m">🛡</span><span class="t">Fit<span style="color:var(--orange)">Guard</span></span></div>
+
+        <div class="ph-screens">
+          <!-- SCREEN 1: Readiness -->
+          <div class="ph-screen active" data-screen="0">
+            <div class="ph-greet" data-i="phGreet"></div>
+            <div class="ring-card">
+              <div class="ring">
+                <svg viewBox="0 0 74 74"><circle cx="37" cy="37" r="31" fill="none" stroke="#2a2017" stroke-width="6"/><circle cx="37" cy="37" r="31" fill="none" stroke="url(#g)" stroke-width="6" stroke-linecap="round" stroke-dasharray="195" stroke-dashoffset="44" transform="rotate(-90 37 37)"/><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF6B00"/><stop offset="1" stop-color="#FFC15E"/></linearGradient></defs></svg>
+                <div class="c"><div><b>78</b><br/><small data-i="phReady"></small></div></div>
+              </div>
+              <div class="ring-m"><h4 data-i="phReadyT"></h4><p data-i="phReadyP"></p></div>
+            </div>
+            <div class="pray" data-pray></div>
+          </div>
+
+          <!-- SCREEN 2: Workout split + muscle blueprint -->
+          <div class="ph-screen" data-screen="1">
+            <div class="ph-greet" data-i="phDay"></div>
+            <div class="ph-ex">
+              <svg viewBox="0 0 40 54"><g fill="none" stroke="rgba(245,239,232,.85)" stroke-width="2.4" stroke-linecap="round"><circle cx="20" cy="9" r="5"/><path d="M20 14 v14"/><path d="M20 17 l-9 6 M20 17 l9 6"/></g><path d="M14 28 h12 v8 q-6 4 -12 0 z" fill="var(--orange)" class="mbx"/><path d="M16 28 l-2 16 M24 28 l2 16" stroke="rgba(245,239,232,.5)" stroke-width="2.4" stroke-linecap="round"/></svg>
+              <div><div class="exn" data-i="phEx1"></div><div class="exm" data-i="phEx1m"></div><div class="exs">3 × 10-12</div></div>
+            </div>
+            <div class="ph-ex">
+              <svg viewBox="0 0 40 54"><g fill="none" stroke="rgba(245,239,232,.85)" stroke-width="2.4" stroke-linecap="round"><circle cx="20" cy="9" r="5"/><path d="M20 14 v16"/><path d="M20 30 l-7 12 M20 30 l7 12"/></g><ellipse cx="13" cy="20" rx="3.5" ry="7" fill="var(--orange)" class="mbx" transform="rotate(20 13 20)"/><ellipse cx="27" cy="20" rx="3.5" ry="7" fill="var(--orange)" class="mbx" transform="rotate(-20 27 20)"/></svg>
+              <div><div class="exn" data-i="phEx2"></div><div class="exm" data-i="phEx2m"></div><div class="exs">3 × 12-15</div></div>
+            </div>
+          </div>
+
+          <!-- SCREEN 3: AI Scanner -->
+          <div class="ph-screen" data-screen="2">
+            <div class="ph-greet" data-i="phScanT"></div>
+            <div class="ph-scan">
+              <div class="big">📸</div>
+              <div class="lbl" data-i="phScanL"></div>
+              <div class="res">🤖 <b data-i="phScanR"></b> · <span data-i="phScanM"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ph-dots"><span class="ph-dot on"></span><span class="ph-dot"></span><span class="ph-dot"></span></div>
+      </div>
+    </div>
+  </div>
+</div></header>
+
+<!-- Trust marquee -->
+<div class="marquee"><div class="marquee-track" id="marqTrack"></div></div>
+
+<!-- HEALTH / INJURY / VISION 2030 STATS -->
+<section class="statband">
+  <div class="wrap">
+  <div class="sec-tag reveal" data-i="stbTag"></div>
+  <div class="sec-title reveal d1" data-i="stbTitle"></div>
+  <div class="sec-sub reveal d2" data-i="stbSub"></div>
+  <div class="stat-grid">
+    <!-- Qualitative (no hard number claimed) — avoids unverifiable stats -->
+    <div class="statc reveal d1"><div class="statc-ic">⚠️</div><div class="bignum-txt" data-i="stb1n"></div><div class="statc-l" data-i="stb1"></div></div>
+    <div class="statc reveal d2"><div class="statc-ic">🩹</div><div class="bignum-txt" data-i="stb2n"></div><div class="statc-l" data-i="stb2"></div></div>
+    <!-- Vision 2030: officially announced government target (verifiable) -->
+    <div class="statc reveal d3"><div class="statc-ic">🏃</div><div class="bignum" data-prefix="13→" data-target="40" data-suffix="%">0</div><div class="statc-l" data-i="stb3"></div></div>
+    <!-- Market growth: directional, mark before launch --><!-- SOURCE NEEDED -->
+    <div class="statc reveal d4"><div class="statc-ic">📈</div><div class="bignum-txt" data-i="stb4n"></div><div class="statc-l" data-i="stb4"></div></div>
+  </div>
+  <p class="stat-src reveal d4" data-i="stbSrc"></p>
+  </div>
+</section>
+
+<section class="gap"><div class="wrap">
+  <div class="sec-tag reveal" data-i="gapTag"></div>
+  <div class="sec-title reveal d1" data-i="gapTitle"></div>
+  <div class="sec-sub reveal d2" data-i="gapSub"></div>
+  <div class="gap-row reveal d2">
+    <div class="gap-card"><div class="x" data-i="gap1t"></div><p data-i="gap1p"></p></div>
+    <div class="gap-card"><div class="x" data-i="gap2t"></div><p data-i="gap2p"></p></div>
+    <div class="gap-card" style="border-color:var(--border-hi)"><div class="ok" data-i="gap3t"></div><p data-i="gap3p"></p></div>
+  </div>
+  <p class="gap-highlight reveal d3" data-i="gapHl"></p>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-tag reveal" data-i="howTag"></div>
+  <div class="sec-title reveal d1" data-i="howTitle"></div>
+  <div class="sec-sub reveal d2" data-i="howSub"></div>
+  <div class="steps reveal d2">
+    <div class="step"><div class="num">01</div><h3 data-i="s1t"></h3><p data-i="s1p"></p></div>
+    <div class="step"><div class="num">02</div><h3 data-i="s2t"></h3><p data-i="s2p"></p></div>
+    <div class="step"><div class="num">03</div><h3 data-i="s3t"></h3><p data-i="s3p"></p></div>
+  </div>
+</div></section>
+
+<!-- AI LOGGING -->
+<section class="ai-sec"><div class="wrap">
+  <div class="ai-grid">
+    <div class="reveal">
+      <div class="ai-phone">
+        <div class="top">9:41</div>
+        <div class="body">
+          <div class="ai-cam">
+            <span class="machine">🏋️</span>
+            <span class="frame"></span>
+            <span class="corner" style="top:8px;inset-inline-start:8px;border-inline-end:0;border-bottom:0"></span>
+            <span class="corner" style="top:8px;inset-inline-end:8px;border-inline-start:0;border-bottom:0"></span>
+            <span class="corner" style="bottom:8px;inset-inline-start:8px;border-inline-end:0;border-top:0"></span>
+            <span class="corner" style="bottom:8px;inset-inline-end:8px;border-inline-start:0;border-top:0"></span>
+            <span class="scanline"></span>
+          </div>
+          <div class="ai-result">
+            <span class="rb">🤖</span>
+            <div><div class="rn" data-i="aiResN"></div><div class="rm" data-i="aiResM"></div></div>
+            <span class="rc" data-i="aiResC"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <span class="ai-badge-row reveal">🤖 <span data-i="aiBadge"></span></span>
+      <div class="sec-title reveal d1" style="text-align:start" data-i="aiTitle"></div>
+      <div class="sec-sub reveal d2" style="text-align:start;margin:0 0 8px" data-i="aiSub"></div>
+      <div class="ai-feats">
+        <div class="ai-feat reveal d2"><span class="fi">📸</span><div><h4 data-i="aiF1t"></h4><p data-i="aiF1p"></p></div></div>
+        <div class="ai-feat reveal d3"><span class="fi">🏃</span><div><h4 data-i="aiF2t"></h4><p data-i="aiF2p"></p></div></div>
+        <div class="ai-feat reveal d4"><span class="fi">🦴</span><div><h4 data-i="aiF3t"></h4><p data-i="aiF3p"></p></div></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- AI CAPABILITIES -->
+<section><div class="wrap">
+  <div class="sec-tag reveal" data-i="capTag"></div>
+  <div class="sec-title reveal d1" data-i="capTitle"></div>
+  <div class="sec-sub reveal d2" data-i="capSub"></div>
+  <div class="aicap-grid">
+    <div class="aicap reveal d1"><div class="ci">🧠</div><h4 data-i="cap1t"></h4><p data-i="cap1p"></p></div>
+    <div class="aicap reveal d2"><div class="ci">💬</div><h4 data-i="cap2t"></h4><p data-i="cap2p"></p><span class="chip" data-i="capSoon"></span></div>
+    <div class="aicap reveal d3"><div class="ci">📊</div><h4 data-i="cap3t"></h4><p data-i="cap3p"></p></div>
+    <div class="aicap reveal d4"><div class="ci">🔒</div><h4 data-i="cap4t"></h4><p data-i="cap4p"></p></div>
+  </div>
+</div></section>
+
+<!-- REWARDS -->
+<section style="background:var(--surface);border-block:1px solid var(--border)"><div class="wrap">
+  <div class="sec-tag reveal" data-i="rewTag"></div>
+  <div class="sec-title reveal d1" data-i="rewTitle"></div>
+  <div class="sec-sub reveal d2" data-i="rewSub"></div>
+  <div class="rew-grid">
+    <div class="rewc reveal d1"><span class="ri">🔥</span><h3 data-i="rew1t"></h3><p data-i="rew1p"></p></div>
+    <div class="rewc reveal d2"><span class="ri">⚡</span><h3 data-i="rew2t"></h3><p data-i="rew2p"></p></div>
+    <div class="rewc reveal d3"><span class="ri">🏅</span><h3 data-i="rew3t"></h3><p data-i="rew3p"></p></div>
+  </div>
+  <div class="xp-demo reveal d2" id="xpDemo">
+    <div class="xp-top"><span class="xp-lvl" data-i="xpLvl"></span><span class="xp-streak" data-i="xpStreak"></span></div>
+    <div class="xp-track"><div class="xp-fill"></div></div>
+    <div class="medals">
+      <span class="medal on">🥉</span><span class="medal on">🔥</span><span class="medal on">💪</span>
+      <span class="medal">🏆</span><span class="medal">⭐</span><span class="medal">👑</span>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-tag reveal" data-i="featTag"></div>
+  <div class="sec-title reveal d1" data-i="featTitle"></div>
+  <div class="sec-sub reveal d2" data-i="featSub"></div>
+  <div class="feat reveal d2">
+    <div class="fc"><div class="ic">🕌</div><h3 data-i="f1t"></h3><p data-i="f1p"></p><span class="tag" data-i="excl"></span></div>
+    <div class="fc"><div class="ic">🌙</div><h3 data-i="f2t"></h3><p data-i="f2p"></p><span class="tag" data-i="excl"></span></div>
+    <div class="fc"><div class="ic">🌸</div><h3 data-i="f3t"></h3><p data-i="f3p"></p><span class="tag" data-i="excl"></span></div>
+    <div class="fc"><div class="ic">🦴</div><h3 data-i="f4t"></h3><p data-i="f4p"></p></div>
+    <div class="fc"><div class="ic">🔥</div><h3 data-i="f5t"></h3><p data-i="f5p"></p></div>
+    <div class="fc"><div class="ic">📊</div><h3 data-i="f6t"></h3><p data-i="f6p"></p></div>
+  </div>
+</div></section>
+
+<section class="vision"><div class="wrap">
+  <div class="sec-tag reveal" style="color:var(--ember)" data-i="visTag"></div>
+  <h2 data-i="visTitle"></h2>
+  <p data-i="visP"></p>
+  <div class="stat">+29%</div>
+  <div class="stat-l" data-i="visStat"></div>
+</div></section>
+
+<section class="final" id="join"><div class="wrap">
+  <div class="sec-tag reveal" data-i="joinTag"></div>
+  <h2 data-i="joinTitle"></h2>
+  <p data-i="joinP"></p>
+  <form class="wait" style="margin-inline:auto" data-wl>
+    <input type="email" data-i-ph="emailPh" data-i-al="emailAria" required/>
+    <input type="text" class="js-hp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0"/>
+    <button type="submit" data-i="ctaBtn"></button>
+  </form>
+  <div class="form-msg" style="text-align:center" data-msg></div>
+  <p class="wait-note" style="text-align:center" data-i="joinNote"></p>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="logo"><span class="mark" aria-hidden="true">🛡</span><span>Fit<b>Guard</b></span></div>
+  <p data-i="footTag"></p>
+  <p style="margin-top:10px"><a href="privacy.html" data-i="fPrivacy"></a> · <a href="terms.html" data-i="fTerms"></a> · <a href="mailto:hello@fitguardapp.com" data-i="fContact"></a></p>
+  <p class="fnote" data-i="medical" style="max-width:640px;margin:16px auto 0;line-height:1.6"></p>
+  <p class="fnote" style="margin-top:10px">fitguardapp.com · © 2026 FitGuard / Laft Co.</p>
+</div></footer>
+
+<script>
+/* ─── i18n strings ─── */
+const T = {
+  ar: {
+    banner:"معاينة تصميم · نقدر نعدّل أي شي قبل النشر",
+    navCta:"انضم للقائمة", skip:"تخطّ إلى المحتوى", emailAria:"بريدك الإلكتروني للانضمام لقائمة الانتظار", pill:"قريباً في السعودية · Q4 2026",
+    h1:'قبل التمرين — <span class="hl">نتأكد إن جسمك جاهز</span>',
+    heroSub:"أول مدرب لياقة ذكي بالعربي يفحص جاهزيتك قبل كل تمرين، يتابع حركتك، ويصمّم برنامجك على حسب جسمك ويومك — وبأمان.",
+    emailPh:"بريدك الإلكتروني", ctaBtn:"احجز مكانك 🚀",
+    note:'انضم لأول <b>500</b> عضو واحصل على FitGuard Pro <b>مجاناً</b> ٣ أشهر.',
+    phGreet:"مساء الخير، وليد ✦ جاهزيتك اليوم", phReady:"جاهزية", phReadyT:"جاهز للتمرين 💪", phReadyP:"جسمك مستعد اليوم. ابدأ بإحماء ٨ دقايق.",
+    pray:[["الظهر","11:52",0],["العصر","3:22",1],["المغرب","6:42",0],["العشاء","8:12",0]],
+    phDay:"يوم ٣: الأرجل 🦵", phEx1:"قرفصاء", phEx1m:"فخذ + مؤخرة", phEx2:"تمديد الساق", phEx2m:"فخذ",
+    phScanT:"📸 مسح بالذكاء", phScanL:"صوّر الجهاز أو الشاشة", phScanR:"ضغط الأرجل", phScanM:"تم التعرّف والتسجيل",
+    scarLeft:"الأماكن المجانية تنفد بسرعة", scarSpots:"مكان متبقّي",
+    hs1:"ميزات حصرية", hs2v:"٥ أيام", hs2:"برنامج تقسيم", hs3:"عربي أصيل",
+    stbTag:"لماذا الآن", stbTitle:"السلامة مو رفاهية — ضرورة", stbSub:"الإصابات الرياضية في ارتفاع، ورؤية ٢٠٣٠ تدفع ملايين السعوديين للرياضة. FitGuard في قلب هذه اللحظة.",
+    stb1n:"إصابات\nيمكن تفاديها", stb1:"كثير من إصابات الجيم سببها أداء خاطئ أو حِمل زائد — والوقاية ممكنة",
+    stb2n:"تعافٍ\nآمن", stb2:"الكثير في MENA يتعافون من إصابات رياضية ويحتاجون تمريناً آمناً",
+    stb3:"هدف رؤية ٢٠٣٠: رفع ممارسة الرياضة من ١٣٪ إلى ٤٠٪ من السكان",
+    stb4n:"سوق\nمتنامٍ", stb4:"قطاع اللياقة في السعودية من الأسرع نمواً ضمن رؤية ٢٠٣٠",
+    stbSrc:"* هدف رؤية ٢٠٣٠ مصدره الهيئة العامة للرياضة. باقي النقاط توجّهات عامة للقطاع تُدعم بمصادر موثّقة قبل أي عرض رسمي.",
+    aiResN:"ضغط الأرجل", aiResM:"تم التعرّف والتسجيل ✓", aiResC:"ثقة عالية",
+    aiBadge:"مدعوم بالذكاء الاصطناعي", aiTitle:"سجّل تمارينك بصورة وحدة",
+    aiSub:"ما تحتاج تختار من قوائم طويلة — صوّر، والذكاء الاصطناعي يسوّي الباقي.",
+    aiF1t:"مسح الأجهزة بالكاميرا", aiF1p:"صوّر أي جهاز في الجيم، والذكاء يتعرّف على التمرين والعضلة ويضيفه فوراً.",
+    aiF2t:"قراءة شاشات الكارديو", aiF2p:"صوّر شاشة المشاية أو الدراجة، ويقرأ الوقت والمسافة والسعرات تلقائياً.",
+    aiF3t:"تعديل آمن للإصابات", aiF3p:"الذكاء يعرف إصاباتك ويبدّل التمارين الخطرة بآمنة — بدون ما تفكّر.",
+    rewTag:"الحافز", rewTitle:"كل تمرين يقرّبك خطوة", rewSub:"نظام مكافآت يخليك ترجع كل يوم — مبني على علم العادات.",
+    rew1t:"سلسلة يومية", rew1p:"حافظ على تمرينك (ومشيك يُحتسب!) وشوف السلسلة تكبر يوم بعد يوم 🔥",
+    rew2t:"نقاط الخبرة والمستويات", rew2p:"كل تمرين يعطيك XP، ترتقي بالمستويات وتفتح ألقاب جديدة.",
+    rew3t:"أوسمة وإنجازات", rew3p:"اجمع ميداليات على إنجازاتك — أول تمرين، ٧ أيام متتالية، وأكثر.",
+    xpLvl:"المستوى ٧ · محارب", xpStreak:"🔥 ١٢ يوم متتالي",
+    capTag:"الذكاء في القلب", capTitle:"الذكاء الاصطناعي يفهمك — مو بس يسجّل",
+    capSub:"من أول سؤال لين آخر تكرار، الذكاء الاصطناعي يتكيّف معك أنت.",
+    capSoon:"قريباً",
+    cap1t:"محرك التكيّف", cap1p:"يعدّل برنامجك تلقائياً حسب جاهزيتك، إصاباتك، وتقدّمك — كل يوم.",
+    cap2t:"كوتش ذكي يردّ عليك", cap2p:"اسأل عن أي تمرين أو ألم، ويعطيك جواب مبني على حالتك بالعربي.",
+    cap3t:"تحليل ذكي للتقدّم", cap3p:"يكتشف الأنماط: عضلة مهملة، حِمل زائد، أو وقت تحتاج فيه راحة.",
+    cap4t:"خصوصية أولاً", cap4p:"تحليل الصور آمن وما نحتفظ بها، ومتوافق مع نظام حماية البيانات PDPL.",
+    showTitle:"مبني للحديد الحقيقي", showSub:"تمارين الجيم بالأوزان والسيتات والتقدّم — مو مجرد تطبيق منزلي.",
+    vizTag:"تتبّع ذكي", vizTitle:"شوف تقدّمك يكبر", vizSub:"رسوم بيانية حيّة لكل تمرين، حجم التدريب، والعضلات اللي اشتغلت.",
+    chartT:"نقاط السلامة عبر الوقت", chartS:"آخر ٨ أسابيع",
+    volT:"حجم التدريب الأسبوعي", volS:"كجم مرفوعة · يتزايد كل أسبوع",
+    figT:"خريطة تفعيل العضلات", figS:"كل تمرين يضيء العضلة الصحيحة — بدقة علمية",
+    gapTag:"الفرصة", gapTitle:"كل تطبيقات اللياقة مبنية لشخص غيرك",
+    gapSub:"تنزّل تطبيق أجنبي، إنجليزي، ما يعرف جدولك ولا صلاتك ولا إصاباتك. FitGuard أول واحد مبني لك أنت.",
+    gap1t:"✗ التطبيقات الحالية", gap1p:"إنجليزية، برنامج واحد للجميع، بدون فحص إصابات، وما تفهم ثقافتك.",
+    gap2t:"✗ المدرب الشخصي", gap2p:"غالي، مو متاح ٢٤ ساعة، ويختلف من شخص لشخص.",
+    gap3t:"✦ FitGuard", gap3p:"عربي ١٠٠٪، يفحص جاهزيتك وإصاباتك، يحترم وقتك وصلاتك، ويتكيّف معك.",
+    gapHl:'ما في تطبيق لياقة عربي يجمع <span class="hl">الأمان + الذكاء + الثقافة</span> في مكان واحد. إلى الآن.',
+    howTag:"كيف يشتغل", howTitle:"٣ خطوات تحميك من الإصابة", howSub:"FitGuard ما يعطيك تمارين عشوائية — يقرر معك متى تتمرن، كيف، وبأي شدة.",
+    s1t:"فحص السلامة", s1p:"٦ أسئلة ذكية تحدد مستواك، إصاباتك، ومرونتك — وتصمّم لك برنامج آمن.",
+    s2t:"جاهزية اليوم", s2p:"كل صباح: نوم، توتر، إجهاد العضلات → نقول لك إذا اليوم يومك أو لا.",
+    s3t:"برنامج يتكيّف", s3p:"تقسيم تمارين حقيقي للجيم، يتعدّل تلقائياً حسب جاهزيتك وإصاباتك.",
+    featTag:"مبني لك", featTitle:"أشياء ما بتلقاها في أي تطبيق ثاني", featSub:"هذي مو إضافات — هذي السبب اللي يخلّي FitGuard لك أنت.",
+    excl:"حصري",
+    f1t:"مدمج مع أوقات الصلاة", f1p:"يرتب تمرينك حول الصلاة تلقائياً، وينبّهك بالنافذة المناسبة.",
+    f2t:"وضع رمضان", f2p:"تمارين مكيّفة للصيام — توقيت بعد الإفطار، شدة أقل، ترطيب وتغذية.",
+    f3t:"برنامج نسائي + متتبّع الدورة", f3p:"تمارين مناسبة ثقافياً وتتكيّف مع المرحلة الشهرية.",
+    f4t:"تعديل الإصابات تلقائياً", f4p:"ألم بالركبة أو عملية سابقة؟ نبدّل التمارين الخطرة بآمنة فوراً.",
+    f5t:"خريطة العضلات", f5p:"تشوف بالضبط أي عضلة تشتغل في كل تمرين — بدقة علمية.",
+    f6t:"تتبّع تقدمك", f6p:"سلسلة يومية، أوسمة، ومشيك يُحتسب — كل حركة تعدّ.",
+    visTag:"رؤية ٢٠٣٠", visTitle:"نتماشى مع أجندة المملكة الرياضية",
+    visP:"هدف رفع ممارسة الرياضة من ١٣٪ إلى ٤٠٪ بحلول ٢٠٣٠ — FitGuard أداة تساعد على ذلك بأمان.",
+    visStat:"نمو سنوي لقطاع اللياقة في السعودية",
+    joinTag:"انضم الآن", joinTitle:"كن أول من يجرّب FitGuard",
+    joinP:"سجّل بريدك، وبنرسل لك دعوة TestFlight قبل الإطلاق الرسمي + ٣ أشهر Pro مجاناً.",
+    joinNote:"🔒 ما نرسل سبام. بريدك يُحفظ بأمان (متوافق مع PDPL).",
+    footTag:"تدرّب بذكاء. ابقَ محمياً. · Train Smart. Stay Safe.",
+    fPrivacy:"الخصوصية", fTerms:"الشروط", fContact:"تواصل معنا",
+    medical:"⚕️ تنبيه طبي: محتوى FitGuard لأغراض اللياقة والمعلومات فقط وليس استشارة طبية. استشر مختصاً قبل بدء أي برنامج رياضي، خاصة مع وجود إصابة أو حالة صحية. ميزات الجاهزية والإصابات إرشادية ولا تُغني عن رأي الطبيب.",
+    msgOk:"✓ تم تسجيلك! بنرسل لك الدعوة قريباً.", msgDup:"✓ أنت مسجّل بالفعل!", msgErr:"صار خطأ، حاول مرة ثانية.", msgInvalid:"تأكد من صيغة البريد الإلكتروني.", msgSending:"جارٍ الإرسال…", msgDone:"✓ تم",
+    tyTitle:"تم! أنت على القائمة 🎉", tySub:"بنرسل لك دعوة TestFlight قبل الإطلاق + ٣ أشهر Pro مجاناً. خلّ عينك على بريدك.",
+    tyDupTitle:"أنت مسجّل بالفعل ✓", tyDupSub:"بريدك موجود عندنا — بنرسل لك الدعوة فور توفّرها."
+  },
+  en: {
+    banner:"Design preview · we can change anything before launch",
+    navCta:"Join the list", skip:"Skip to content", emailAria:"Your email to join the waitlist", pill:"Coming to Saudi Arabia · Q4 2026",
+    h1:'Before you train — <span class="hl">we make sure your body\'s ready</span>',
+    heroSub:"The first Arabic AI fitness safety coach. It checks your readiness before every workout, watches your form, and adapts your program to your body and your day — safely.",
+    emailPh:"Your email", ctaBtn:"Reserve my spot 🚀",
+    note:'Join the first <b>500</b> and get FitGuard Pro <b>free</b> for 3 months.',
+    phGreet:"Good evening, Waleed ✦ today's readiness", phReady:"ready", phReadyT:"Ready to train 💪", phReadyP:"Your body's primed today. Start with an 8-min warm-up.",
+    pray:[["Dhuhr","11:52",0],["Asr","3:22",1],["Maghrib","6:42",0],["Isha","8:12",0]],
+    phDay:"Day 3: Legs 🦵", phEx1:"Squat", phEx1m:"Quads + Glutes", phEx2:"Leg Extension", phEx2m:"Quads",
+    phScanT:"📸 AI Scan", phScanL:"Snap the machine or screen", phScanR:"Leg Press", phScanM:"detected & logged",
+    scarLeft:"Free spots are filling fast", scarSpots:"spots left",
+    hs1:"exclusive features", hs2v:"5-day", hs2:"training split", hs3:"Arabic-native",
+    stbTag:"Why now", stbTitle:"Safety isn't a luxury — it's a need", stbSub:"Gym injuries are rising, and Vision 2030 is pushing millions of Saudis into fitness. FitGuard sits right at that moment.",
+    stb1n:"Preventable\ninjuries", stb1:"Many gym injuries come from poor form or overloading — and they're preventable",
+    stb2n:"Safe\nrecovery", stb2:"Many in MENA recover from sports injuries and need safe training",
+    stb3:"Vision 2030 goal: raise activity from 13% to 40% of the population",
+    stb4n:"Growing\nmarket", stb4:"Saudi fitness is one of the fastest-growing sectors under Vision 2030",
+    stbSrc:"* The Vision 2030 target is from the General Sports Authority. Other points are directional sector trends, to be backed by verified sources before any formal presentation.",
+    aiResN:"Leg Press", aiResM:"detected & logged ✓", aiResC:"high confidence",
+    aiBadge:"Powered by AI", aiTitle:"Log a workout with one photo",
+    aiSub:"No scrolling through long lists — snap a photo and AI does the rest.",
+    aiF1t:"Scan gym machines", aiF1p:"Photograph any machine; AI identifies the exercise + muscle and logs it instantly.",
+    aiF2t:"Read cardio screens", aiF2p:"Snap the treadmill or bike console and it auto-reads time, distance and calories.",
+    aiF3t:"Safe injury swaps", aiF3p:"AI knows your injuries and swaps risky moves for safe ones — automatically.",
+    rewTag:"Motivation", rewTitle:"Every workout moves you forward", rewSub:"A rewards system that brings you back daily — built on habit science.",
+    rew1t:"Daily streak", rew1p:"Keep training (your walks count too!) and watch your streak grow day by day 🔥",
+    rew2t:"XP & levels", rew2p:"Every workout earns XP. Level up and unlock new titles as you go.",
+    rew3t:"Badges & achievements", rew3p:"Collect medals for milestones — first workout, 7-day streak, and more.",
+    xpLvl:"Level 7 · Warrior", xpStreak:"🔥 12-day streak",
+    capTag:"AI at the core", capTitle:"AI that understands you — not just logs",
+    capSub:"From the first question to your last rep, the AI adapts to you.",
+    capSoon:"soon",
+    cap1t:"Adaptive engine", cap1p:"Auto-adjusts your program to your readiness, injuries and progress — every day.",
+    cap2t:"AI coach that answers", cap2p:"Ask about any exercise or pain and get advice tailored to you, in Arabic.",
+    cap3t:"Smart progress analysis", cap3p:"Spots patterns: a lagging muscle, overtraining, or when you need rest.",
+    cap4t:"Privacy first", cap4p:"Photo analysis is secure, images aren't stored, and it's PDPL-compliant.",
+    showTitle:"Built for real iron", showSub:"Gym training with weights, sets and progression — not just another home app.",
+    vizTag:"Smart tracking", vizTitle:"Watch your progress grow", vizSub:"Live charts for every lift, training volume, and the muscles you hit.",
+    chartT:"Safety score over time", chartS:"Last 8 weeks",
+    volT:"Weekly training volume", volS:"kg lifted · climbing every week",
+    figT:"Muscle activation map", figS:"Every exercise lights the right muscle — anatomically accurate",
+    gapTag:"The gap", gapTitle:"Every fitness app is built for someone else",
+    gapSub:"You download a foreign, English-only app that doesn't know your schedule, your prayers, or your injuries. FitGuard is the first built for you.",
+    gap1t:"✗ Current apps", gap1p:"English, one-size-fits-all, no injury screening, blind to your culture.",
+    gap2t:"✗ A personal trainer", gap2p:"Expensive, not available 24/7, and quality varies wildly.",
+    gap3t:"✦ FitGuard", gap3p:"100% Arabic, screens your readiness & injuries, respects your time & prayers, adapts to you.",
+    gapHl:'No Arabic fitness app combines <span class="hl">safety + intelligence + culture</span> in one place. Until now.',
+    howTag:"How it works", howTitle:"3 steps that protect you from injury", howSub:"FitGuard doesn't hand you random workouts — it decides with you when to train, how, and how hard.",
+    s1t:"Safety Audit", s1p:"6 smart questions map your level, injuries, and mobility — then build you a safe program.",
+    s2t:"Daily Readiness", s2p:"Each morning: sleep, stress, soreness → we tell you if today's your day or not.",
+    s3t:"Adaptive program", s3p:"A real gym training split that adjusts automatically to your readiness and injuries.",
+    featTag:"Built for you", featTitle:"Things you won't find in any other app", featSub:"These aren't add-ons — they're the reason FitGuard is yours.",
+    excl:"Exclusive",
+    f1t:"Prayer-time aware", f1p:"Schedules your workout around prayer automatically and nudges you in the right window.",
+    f2t:"Ramadan mode", f2p:"Fasting-adapted training — post-Iftar timing, lower intensity, hydration & nutrition.",
+    f3t:"Women's program + cycle tracker", f3p:"Culturally appropriate workouts that adapt to your cycle phase.",
+    f4t:"Auto injury modification", f4p:"Knee pain or past surgery? We swap risky moves for safe ones instantly.",
+    f5t:"Muscle map", f5p:"See exactly which muscle each exercise works — with real anatomical accuracy.",
+    f6t:"Track your progress", f6p:"Daily streak, badges, and your walking counts too — every move matters.",
+    visTag:"Vision 2030", visTitle:"Aligned with the Kingdom's sports agenda",
+    visP:"The goal of raising physical activity from 13% to 40% by 2030 — FitGuard is a tool that helps, safely.",
+    visStat:"annual growth of Saudi Arabia's fitness sector",
+    joinTag:"Join now", joinTitle:"Be the first to try FitGuard",
+    joinP:"Drop your email and we'll send you a TestFlight invite before launch + 3 months of Pro, free.",
+    joinNote:"🔒 No spam. Your email is stored securely (PDPL-compliant).",
+    footTag:"Train Smart. Stay Safe. · تدرّب بذكاء. ابقَ محمياً.",
+    fPrivacy:"Privacy", fTerms:"Terms", fContact:"Contact",
+    medical:"⚕️ Medical notice: FitGuard content is for fitness and information only and is not medical advice. Consult a professional before starting any exercise program, especially with an injury or health condition. Readiness and injury features are guidance and do not replace a doctor's opinion.",
+    msgOk:"✓ You're on the list! We'll send your invite soon.", msgDup:"✓ You're already signed up!", msgErr:"Something went wrong, please try again.", msgInvalid:"Please check your email format.", msgSending:"Sending…", msgDone:"✓ Done",
+    tyTitle:"You're in! 🎉", tySub:"We'll send a TestFlight invite before launch + 3 months of Pro, free. Keep an eye on your inbox.",
+    tyDupTitle:"Already signed up ✓", tyDupSub:"Your email is on file — we'll send your invite as soon as it's ready."
+  }
+};
+
+/* ─── Supabase config ───────────────────────────────────────────────────────
+   SUPABASE_ANON is the PUBLIC publishable/anon key — it is designed to live in
+   the front-end and is protected by Row Level Security. It is NOT a secret.
+   NEVER put the service_role key here. ───────────────────────────────────── */
+const SUPABASE_URL  = "https://pxhdptebzbudswrkgapf.supabase.co";
+const SUPABASE_ANON = "sb_publishable_T8V39HVugJIhJfeXqubSqg_6HQ8Oqj5";
+
+const isValidEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+/* Capture traffic source: UTM campaign if present, else the referrer host, else 'direct'. */
+function trafficSource(){
+  try{
+    const q = new URLSearchParams(location.search);
+    const utm = q.get('utm_source');
+    if(utm) return (q.get('utm_campaign') ? `${utm}/${q.get('utm_campaign')}` : utm).slice(0,120);
+    if(document.referrer){ try{ return new URL(document.referrer).hostname.slice(0,120); }catch{ return 'referral'; } }
+    return 'direct';
+  }catch{ return 'direct'; }
+}
+
+let LANG = "ar";
+function applyLang(l){
+  LANG = l;
+  const d = T[l];
+  document.body.setAttribute("dir", l === "ar" ? "rtl" : "ltr");
+  document.documentElement.setAttribute("lang", l);
+  document.querySelectorAll("[data-i]").forEach(el=>{
+    const v = d[el.getAttribute("data-i")];
+    if(v!=null) el.innerHTML = v;
+  });
+  document.querySelectorAll("[data-i-ph]").forEach(el=>{
+    const v = d[el.getAttribute("data-i-ph")];
+    if(v!=null) el.placeholder = v;
+  });
+  document.querySelectorAll("[data-i-al]").forEach(el=>{
+    const v = d[el.getAttribute("data-i-al")];
+    if(v!=null) el.setAttribute("aria-label", v);
+  });
+  // prayer cells
+  document.querySelectorAll("[data-pray]").forEach(box=>{
+    box.innerHTML = d.pray.map(p=>`<div class="pc${p[2]?' on':''}"><div class="n">${p[0]}</div><div class="t">${p[1]}</div></div>`).join("");
+  });
+  document.getElementById("langToggle").textContent = l === "ar" ? "EN" : "عربي";
+}
+document.getElementById("langToggle").onclick = ()=>applyLang(LANG==="ar"?"en":"ar");
+
+/* ─── Waitlist submit → Supabase ─── */
+async function submitEmail(email){
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`,{
+      method:"POST",
+      headers:{ "Content-Type":"application/json", apikey:SUPABASE_ANON,
+        Authorization:`Bearer ${SUPABASE_ANON}`, Prefer:"return=minimal" },
+      body:JSON.stringify({ email, lang:LANG, referrer: trafficSource() })
+    });
+    if(res.status===201 || res.ok) return {ok:true};
+    if(res.status===409) return {ok:true, dup:true}; // duplicate email (unique constraint)
+    return {ok:false};
+  }catch{ return {ok:false}; }
+}
+
+document.querySelectorAll("form[data-wl]").forEach(form=>{
+  form.addEventListener("submit", async e=>{
+    e.preventDefault();
+    const input = form.querySelector('input[type="email"]');
+    const hp = form.querySelector('.js-hp');
+    const btn = form.querySelector("button");
+    const msg = form.parentElement.querySelector("[data-msg]");
+    const d = T[LANG];
+
+    // honeypot: if a bot filled the hidden field, drop silently (fake success)
+    if(hp && hp.value){ msg.textContent = d.msgOk; msg.className = "form-msg ok"; input.value = ""; return; }
+
+    const email = input.value.trim();
+    if(!isValidEmail(email)){ msg.textContent = d.msgInvalid; msg.className = "form-msg err"; return; }
+
+    btn.disabled = true;
+    const prevBtn = btn.textContent; btn.textContent = d.msgSending;
+    const r = await submitEmail(email);
+    if(r.ok){
+      input.value = "";
+      if(!r.dup && window.plausible) plausible('waitlist_signup'); // analytics (TASK 2)
+      if(!r.dup) fillScarcity(); // refresh the live spots counter (TASK 6)
+      // Celebratory thank-you state (replaces the form)
+      showThankYou(form, r.dup);
+    }else{
+      msg.textContent = d.msgErr; msg.className = "form-msg err";
+      btn.disabled = false; btn.textContent = prevBtn;
+    }
+  });
+});
+
+/* Swap the form for a thank-you panel after a successful signup. */
+function showThankYou(form, isDup){
+  const d = T[LANG];
+  const panel = document.createElement('div');
+  panel.className = 'thanks animate-pop';
+  panel.setAttribute('role','status');
+  panel.innerHTML =
+    `<div class="thanks-check">✓</div>
+     <div class="thanks-title">${isDup ? d.tyDupTitle : d.tyTitle}</div>
+     <div class="thanks-sub">${isDup ? d.tyDupSub : d.tySub}</div>`;
+  // hide the form + its inline message, show the panel in place
+  form.style.display = 'none';
+  const msg = form.parentElement.querySelector('[data-msg]');
+  if(msg){ msg.textContent=''; }
+  form.insertAdjacentElement('afterend', panel);
+}
+
+applyLang("ar");
+
+/* ═══════════ DYNAMIC / MOTION ENGINE ═══════════ */
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if(!reduce){
+  /* 1. Scroll reveal */
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold:0.15, rootMargin:'0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal, .step, .vision').forEach(el=>io.observe(el));
+
+  /* 2. Count-up for numeric stats (runs once when visible) */
+  const countEl = (el)=>{
+    const raw = el.textContent.trim();
+    const m = raw.match(/([+\-]?)(\d[\d,\.]*)(.*)/s); if(!m) return;
+    const prefix=m[1], target=parseFloat(m[2].replace(/,/g,'')), suffix=m[3];
+    const dur=1100, t0=performance.now(); const dec=(m[2].includes('.'))?1:0;
+    const tick=(t)=>{ const p=Math.min(1,(t-t0)/dur); const v=(target*(1-Math.pow(1-p,3)));
+      el.textContent = prefix + (dec? v.toFixed(dec): Math.round(v).toLocaleString()) + suffix;
+      if(p<1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  };
+  const statIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ countEl(e.target); statIO.unobserve(e.target); } });
+  }, { threshold:0.6 });
+  document.querySelectorAll('.vision .stat').forEach(el=>statIO.observe(el));
+
+  /* Attribute-driven count-up for the health/Vision stat band */
+  const bigIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(!e.isIntersecting) return; const el=e.target;
+      const target=parseFloat(el.dataset.target), dec=parseInt(el.dataset.dec||'0',10);
+      const pre=el.dataset.prefix||'', suf=el.dataset.suffix||'';
+      const t0=performance.now(), dur=1400;
+      const tick=(t)=>{ const p=Math.min(1,(t-t0)/dur); const v=target*(1-Math.pow(1-p,3));
+        el.textContent=pre+(dec?v.toFixed(dec):Math.round(v))+suf; if(p<1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick); bigIO.unobserve(el);
+    });
+  }, { threshold:0.5 });
+  document.querySelectorAll('.bignum').forEach(el=>bigIO.observe(el));
+
+  /* 3. Scroll progress bar */
+  const prog=document.getElementById('scrollProg');
+  const onScroll=()=>{ const h=document.documentElement; const sc=h.scrollTop/(h.scrollHeight-h.clientHeight);
+    prog.style.width=(sc*100)+'%'; };
+  document.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  /* 4. Subtle parallax on hero orbs */
+  const orbs=document.querySelectorAll('.orb');
+  document.addEventListener('scroll', ()=>{ const y=window.scrollY;
+    orbs.forEach((o,i)=>{ o.style.transform=`translateY(${y*(0.04+i*0.02)}px)`; });
+  }, {passive:true});
+
+  /* 5. Phone screen carousel (readiness → split → scanner) */
+  let curScreen=0;
+  const screens=document.querySelectorAll('.ph-screen');
+  const dots=document.querySelectorAll('.ph-dot');
+  if(screens.length){
+    setInterval(()=>{
+      curScreen=(curScreen+1)%screens.length;
+      screens.forEach((s,i)=>s.classList.toggle('active', i===curScreen));
+      dots.forEach((d,i)=>d.classList.toggle('on', i===curScreen));
+    }, 2200);
+  }
+
+  /* 6. Card tilt on pointer move */
+  document.querySelectorAll('.fc').forEach(card=>{
+    card.addEventListener('pointermove',(e)=>{
+      const r=card.getBoundingClientRect();
+      const px=(e.clientX-r.left)/r.width-0.5, py=(e.clientY-r.top)/r.height-0.5;
+      card.style.transform=`perspective(600px) rotateY(${px*7}deg) rotateX(${-py*7}deg) translateY(-3px)`;
+    });
+    card.addEventListener('pointerleave',()=>{ card.style.transform=''; });
+  });
+
+  /* 7. Magnetic primary buttons */
+  document.querySelectorAll('.wait button, .nav-cta').forEach(btn=>{
+    btn.addEventListener('pointermove',(e)=>{
+      const r=btn.getBoundingClientRect();
+      btn.style.transform=`translate(${(e.clientX-r.left-r.width/2)*0.18}px, ${(e.clientY-r.top-r.height/2)*0.3}px)`;
+    });
+    btn.addEventListener('pointerleave',()=>{ btn.style.transform=''; });
+  });
+
+  /* 8b. Stat card spotlight follows cursor */
+  document.querySelectorAll('.statc').forEach(card=>{
+    card.addEventListener('pointermove',(e)=>{
+      const r=card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
+      card.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
+    });
+  });
+
+  /* 8c. GLOBAL interactive particle field (whole page, repels from cursor) */
+  const gcv=document.getElementById('globalParticles');
+  if(gcv){
+    const gctx=gcv.getContext('2d'); let GW,GH,gp; const m={x:-999,y:-999};
+    const sizeUp=()=>{ GW=gcv.width=innerWidth; GH=gcv.height=innerHeight;
+      const n=Math.min(64, Math.floor(GW/26));
+      gp=Array.from({length:n},()=>({x:Math.random()*GW,y:Math.random()*GH,
+        r:Math.random()*2.2+0.7, vy:-(Math.random()*0.28+0.05), vx:(Math.random()-0.5)*0.14,
+        a:Math.random()*0.45+0.18})); };
+    sizeUp(); addEventListener('resize',sizeUp,{passive:true});
+    // track cursor in viewport coords (canvas is fixed → viewport-aligned)
+    addEventListener('pointermove',e=>{ m.x=e.clientX; m.y=e.clientY; },{passive:true});
+    addEventListener('pointerleave',()=>{ m.x=-999; m.y=-999; });
+    (function gdraw(){ gctx.clearRect(0,0,GW,GH);
+      for(const p of gp){
+        const dx=p.x-m.x, dy=p.y-m.y, d2=dx*dx+dy*dy;
+        if(d2<34000){ const f=(34000-d2)/34000; const d=Math.sqrt(d2)||1; p.x+=dx/d*f*11; p.y+=dy/d*f*11; }
+        p.x+=p.vx; p.y+=p.vy;
+        if(p.y<-6){p.y=GH+6;p.x=Math.random()*GW;} if(p.x<-6)p.x=GW+6; if(p.x>GW+6)p.x=-6;
+        gctx.beginPath(); gctx.arc(p.x,p.y,p.r,0,7);
+        gctx.fillStyle=`rgba(255,150,60,${p.a})`; gctx.shadowBlur=8; gctx.shadowColor='rgba(255,107,0,.65)'; gctx.fill();
+      }
+      requestAnimationFrame(gdraw); })();
+  }
+}
+
+/* 8. Hero headline word-by-word (runs after each language render) */
+function animateHeadline(){
+  const h1=document.querySelector('h1'); if(!h1) return;
+  if(reduce) return;
+  // wrap each top-level word/segment that isn't already a span, plus the .hl span
+  h1.querySelectorAll('.hl').forEach(s=>s.classList.add('word-anim'));
+  // wrap plain text nodes into word spans
+  [...h1.childNodes].forEach(n=>{
+    if(n.nodeType===3 && n.textContent.trim()){
+      const frag=document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach(w=>{
+        if(/^\s+$/.test(w)){ frag.appendChild(document.createTextNode(w)); }
+        else if(w){ const sp=document.createElement('span'); sp.className='word-anim'; sp.textContent=w; frag.appendChild(sp); }
+      });
+      n.replaceWith(frag);
+    }
+  });
+  h1.querySelectorAll('.word-anim').forEach((s,i)=>{ s.style.animationDelay=(i*0.09)+'s'; });
+}
+
+/* 9. Scarcity bar fill + count (spots "left") */
+const TOTAL_SPOTS = 500;
+
+/* Fetch real signup count from Supabase RPC; fall back gracefully if unavailable. */
+async function fetchTaken(){
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/waitlist_count`,{
+      method:"POST",
+      headers:{ "Content-Type":"application/json", apikey:SUPABASE_ANON, Authorization:`Bearer ${SUPABASE_ANON}` },
+      body:"{}"
+    });
+    if(res.ok){ const v = await res.json(); const num = parseInt(v,10); if(!isNaN(num)) return num; }
+  }catch{ /* ignore */ }
+  return null; // unknown (table/RPC not ready)
+}
+
+async function fillScarcity(){
+  const fill=document.getElementById('scarFill'), n=document.getElementById('scarN');
+  if(!fill||!n) return;
+  const taken = await fetchTaken();
+  // Until the backend is live, show a modest seed so the bar reads naturally.
+  const realTaken = (taken==null) ? 120 : taken;
+  const left = Math.max(0, TOTAL_SPOTS - realTaken);
+  const pct  = Math.min(100, realTaken / TOTAL_SPOTS * 100);
+  setTimeout(()=>{ fill.style.width = pct + '%'; }, 400);
+  n.textContent = left;            // set final value first (robust if rAF is throttled)
+  if(reduce) return;
+  const t0=performance.now(), dur=1400;
+  const tick=(t)=>{ const p=Math.min(1,(t-t0)/dur); n.textContent=Math.round(left*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(tick); };
+  requestAnimationFrame(tick);
+}
+
+/* 10. Trust marquee content (duplicated for seamless loop) */
+function buildMarquee(){
+  const track=document.getElementById('marqTrack'); if(!track) return;
+  const items = LANG==='ar'
+    ? ['🛡️ فحص السلامة','🕌 أوقات الصلاة','🌙 وضع رمضان','🌸 برنامج نسائي','🔥 خريطة العضلات','📸 مسح بالذكاء','🏅 أوسمة ومكافآت','⚡ نقاط ومستويات','🏆 رؤية ٢٠٣٠']
+    : ['🛡️ Safety Audit','🕌 Prayer Times','🌙 Ramadan Mode','🌸 Women\'s Track','🔥 Muscle Map','📸 AI Scan','🏅 Badges & Rewards','⚡ XP & Levels','🏆 Vision 2030'];
+  const html = items.map(i=>`<span class="marq-item">${i}</span>`).join('');
+  track.innerHTML = html + html; // duplicate for -50% loop
+}
+
+// Reduced-motion: show final stat values immediately
+if(reduce){
+  document.querySelectorAll('.bignum').forEach(el=>{
+    const dec=parseInt(el.dataset.dec||'0',10);
+    el.textContent=(el.dataset.prefix||'')+(dec?parseFloat(el.dataset.target).toFixed(dec):el.dataset.target)+(el.dataset.suffix||'');
+  });
+}
+
+// run dynamic bits after first render + on each language switch
+animateHeadline(); fillScarcity(); buildMarquee();
+const _origApply = applyLang;
+applyLang = function(l){ _origApply(l); animateHeadline(); buildMarquee(); };
+
+</script>
+</body>
+</html>
