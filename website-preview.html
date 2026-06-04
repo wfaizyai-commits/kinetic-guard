@@ -56,6 +56,19 @@
     padding:10px 16px;border-radius:8px;font-weight:700;font-family:inherit}
   .skip:focus{inset-inline-start:12px}
 
+  /* Thank-you panel (after signup) */
+  .thanks{max-width:480px;background:linear-gradient(160deg,#1c140c,#16120d);border:1px solid var(--border-hi);
+    border-radius:18px;padding:24px 22px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+  @media(max-width:860px){.thanks{margin-inline:auto}}
+  .thanks-check{width:54px;height:54px;border-radius:50%;background:var(--ember-grad);color:#1a0f04;
+    display:grid;place-items:center;font-size:30px;font-weight:900;margin-bottom:6px;box-shadow:0 0 24px rgba(255,107,0,.4)}
+  .thanks-title{font-family:'Cairo',sans-serif;font-weight:900;font-size:20px;color:var(--text)}
+  body[dir=ltr] .thanks-title{font-family:'Inter',sans-serif}
+  .thanks-sub{font-size:14px;color:var(--text-2);line-height:1.6}
+  .animate-pop{animation:ty-pop .5s cubic-bezier(.34,1.56,.64,1) both}
+  @keyframes ty-pop{from{opacity:0;transform:scale(.9) translateY(8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){ .animate-pop{animation:none} }
+
   nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(12,10,8,.7);border-bottom:1px solid var(--border)}
   nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px}
   .logo{display:flex;align-items:center;gap:9px;font-weight:900;font-size:20px}
@@ -738,7 +751,9 @@ const T = {
     footTag:"تدرّب بذكاء. ابقَ محمياً. · Train Smart. Stay Safe.",
     fPrivacy:"الخصوصية", fTerms:"الشروط", fContact:"تواصل معنا",
     medical:"⚕️ تنبيه طبي: محتوى FitGuard لأغراض اللياقة والمعلومات فقط وليس استشارة طبية. استشر مختصاً قبل بدء أي برنامج رياضي، خاصة مع وجود إصابة أو حالة صحية. ميزات الجاهزية والإصابات إرشادية ولا تُغني عن رأي الطبيب.",
-    msgOk:"✓ تم تسجيلك! بنرسل لك الدعوة قريباً.", msgDup:"✓ أنت مسجّل بالفعل!", msgErr:"صار خطأ، حاول مرة ثانية.", msgInvalid:"تأكد من صيغة البريد الإلكتروني.", msgSending:"جارٍ الإرسال…", msgDone:"✓ تم"
+    msgOk:"✓ تم تسجيلك! بنرسل لك الدعوة قريباً.", msgDup:"✓ أنت مسجّل بالفعل!", msgErr:"صار خطأ، حاول مرة ثانية.", msgInvalid:"تأكد من صيغة البريد الإلكتروني.", msgSending:"جارٍ الإرسال…", msgDone:"✓ تم",
+    tyTitle:"تم! أنت على القائمة 🎉", tySub:"بنرسل لك دعوة TestFlight قبل الإطلاق + ٣ أشهر Pro مجاناً. خلّ عينك على بريدك.",
+    tyDupTitle:"أنت مسجّل بالفعل ✓", tyDupSub:"بريدك موجود عندنا — بنرسل لك الدعوة فور توفّرها."
   },
   en: {
     banner:"Design preview · we can change anything before launch",
@@ -809,7 +824,9 @@ const T = {
     footTag:"Train Smart. Stay Safe. · تدرّب بذكاء. ابقَ محمياً.",
     fPrivacy:"Privacy", fTerms:"Terms", fContact:"Contact",
     medical:"⚕️ Medical notice: FitGuard content is for fitness and information only and is not medical advice. Consult a professional before starting any exercise program, especially with an injury or health condition. Readiness and injury features are guidance and do not replace a doctor's opinion.",
-    msgOk:"✓ You're on the list! We'll send your invite soon.", msgDup:"✓ You're already signed up!", msgErr:"Something went wrong, please try again.", msgInvalid:"Please check your email format.", msgSending:"Sending…", msgDone:"✓ Done"
+    msgOk:"✓ You're on the list! We'll send your invite soon.", msgDup:"✓ You're already signed up!", msgErr:"Something went wrong, please try again.", msgInvalid:"Please check your email format.", msgSending:"Sending…", msgDone:"✓ Done",
+    tyTitle:"You're in! 🎉", tySub:"We'll send a TestFlight invite before launch + 3 months of Pro, free. Keep an eye on your inbox.",
+    tyDupTitle:"Already signed up ✓", tyDupSub:"Your email is on file — we'll send your invite as soon as it's ready."
   }
 };
 
@@ -893,18 +910,34 @@ document.querySelectorAll("form[data-wl]").forEach(form=>{
     const prevBtn = btn.textContent; btn.textContent = d.msgSending;
     const r = await submitEmail(email);
     if(r.ok){
-      msg.textContent = r.dup ? d.msgDup : d.msgOk;
-      msg.className = "form-msg ok";
       input.value = "";
-      btn.textContent = d.msgDone;
       if(!r.dup && window.plausible) plausible('waitlist_signup'); // analytics (TASK 2)
       if(!r.dup) fillScarcity(); // refresh the live spots counter (TASK 6)
+      // Celebratory thank-you state (replaces the form)
+      showThankYou(form, r.dup);
     }else{
       msg.textContent = d.msgErr; msg.className = "form-msg err";
       btn.disabled = false; btn.textContent = prevBtn;
     }
   });
 });
+
+/* Swap the form for a thank-you panel after a successful signup. */
+function showThankYou(form, isDup){
+  const d = T[LANG];
+  const panel = document.createElement('div');
+  panel.className = 'thanks animate-pop';
+  panel.setAttribute('role','status');
+  panel.innerHTML =
+    `<div class="thanks-check">✓</div>
+     <div class="thanks-title">${isDup ? d.tyDupTitle : d.tyTitle}</div>
+     <div class="thanks-sub">${isDup ? d.tyDupSub : d.tySub}</div>`;
+  // hide the form + its inline message, show the panel in place
+  form.style.display = 'none';
+  const msg = form.parentElement.querySelector('[data-msg]');
+  if(msg){ msg.textContent=''; }
+  form.insertAdjacentElement('afterend', panel);
+}
 
 applyLang("ar");
 
