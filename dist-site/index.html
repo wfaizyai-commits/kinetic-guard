@@ -27,6 +27,10 @@
 <script>window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<!-- Scroll-depth libs: Lenis (smooth scroll) + GSAP ScrollTrigger. Deferred; site works without them. -->
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
 <style>
   :root{
     --bg:#0C0A08; --surface:#16120D; --surface-2:#1E1810;
@@ -421,10 +425,23 @@
   .medal{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:20px;
     background:var(--surface-2);border:1px solid var(--border);opacity:.4;transition:.4s}
   .medal.on{opacity:1;border-color:var(--border-hi);box-shadow:0 0 14px rgba(255,107,0,.25)}
+
+  /* ═══════════ SCROLL DEPTH + COLOR WASH ═══════════ */
+  /* Fixed gradient layer behind everything; hue shifts per section via JS. */
+  #colorwash{position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(ellipse 95% 65% at 50% 0%, var(--wash, rgba(255,107,0,.10)), transparent 62%), var(--bg);
+    transition:background 1s ease}
+  body{perspective:1400px}
+  /* smooth-scroll (Lenis) plumbing */
+  html.lenis,html.lenis body{height:auto}
+  .lenis.lenis-smooth{scroll-behavior:auto !important}
+  .lenis.lenis-stopped{overflow:hidden}
+  @media (prefers-reduced-motion: reduce){ #colorwash{transition:none} }
 </style>
 </head>
 <body dir="rtl">
 
+<div id="colorwash"></div>
 <canvas id="globalParticles"></canvas>
 <div class="scroll-prog" id="scrollProg"></div>
 <div class="preview-banner" data-i="banner"></div>
@@ -439,7 +456,7 @@
 </div></nav>
 
 <main id="main">
-<header class="hero">
+<header class="hero" data-wash="rgba(255,107,0,.12)">
   <div class="orbs"><span class="orb orb1"></span><span class="orb orb2"></span><span class="orb orb3"></span></div>
   <div class="wrap hero-grid">
   <div>
@@ -524,7 +541,7 @@
 <div class="marquee"><div class="marquee-track" id="marqTrack"></div></div>
 
 <!-- HEALTH / INJURY / VISION 2030 STATS -->
-<section class="statband">
+<section class="statband" data-wash="rgba(255,90,60,.12)">
   <div class="wrap">
   <div class="sec-tag reveal" data-i="stbTag"></div>
   <div class="sec-title reveal d1" data-i="stbTitle"></div>
@@ -542,7 +559,7 @@
   </div>
 </section>
 
-<section class="gap"><div class="wrap">
+<section class="gap" data-wash="rgba(74,120,180,.10)"><div class="wrap">
   <div class="sec-tag reveal" data-i="gapTag"></div>
   <div class="sec-title reveal d1" data-i="gapTitle"></div>
   <div class="sec-sub reveal d2" data-i="gapSub"></div>
@@ -566,7 +583,7 @@
 </div></section>
 
 <!-- AI LOGGING -->
-<section class="ai-sec"><div class="wrap">
+<section class="ai-sec" data-wash="rgba(43,217,160,.10)"><div class="wrap">
   <div class="ai-grid">
     <div class="reveal">
       <div class="ai-phone">
@@ -649,7 +666,7 @@
   </div>
 </div></section>
 
-<section class="vision"><div class="wrap">
+<section class="vision" data-wash="rgba(255,193,94,.14)"><div class="wrap">
   <div class="sec-tag reveal" style="color:var(--ember)" data-i="visTag"></div>
   <h2 data-i="visTitle"></h2>
   <p data-i="visP"></p>
@@ -657,7 +674,7 @@
   <div class="stat-l" data-i="visStat"></div>
 </div></section>
 
-<section class="final" id="join"><div class="wrap">
+<section class="final" id="join" data-wash="rgba(255,107,0,.16)"><div class="wrap">
   <div class="sec-tag reveal" data-i="joinTag"></div>
   <h2 data-i="joinTitle"></h2>
   <p data-i="joinP"></p>
@@ -1132,6 +1149,56 @@ if(reduce){
 animateHeadline(); fillScarcity(); buildMarquee();
 const _origApply = applyLang;
 applyLang = function(l){ _origApply(l); animateHeadline(); buildMarquee(); };
+
+/* ═══════════ SCROLL DEPTH + COLOR WASH ENGINE ═══════════
+   Loads after Lenis + GSAP are ready. Fully optional: if the CDN libs fail or
+   the user prefers reduced motion, the site stays exactly as-is. */
+(function initDepth(){
+  if(reduce) return;
+  let tries = 0;
+  const ready = () => window.Lenis && window.gsap && window.ScrollTrigger;
+  const start = () => {
+    const { gsap } = window;
+    gsap.registerPlugin(window.ScrollTrigger);
+
+    // 1) Smooth scroll (Lenis) ↔ ScrollTrigger sync
+    const lenis = new window.Lenis({ duration: 1.1, smoothWheel: true });
+    lenis.on('scroll', window.ScrollTrigger.update);
+    gsap.ticker.add((t)=> lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    // 2) Color wash transitions — fade the fixed bg layer to each section's hue
+    const wash = document.getElementById('colorwash');
+    document.querySelectorAll('[data-wash]').forEach((sec)=>{
+      const c = sec.getAttribute('data-wash');
+      window.ScrollTrigger.create({
+        trigger: sec, start: 'top 60%', end: 'bottom 40%',
+        onEnter:     ()=> wash.style.setProperty('--wash', c),
+        onEnterBack: ()=> wash.style.setProperty('--wash', c),
+      });
+    });
+
+    // 3) Depth parallax — layers drift at different speeds for a 3D feel
+    document.querySelectorAll('.orb').forEach((o,i)=>{
+      gsap.to(o, { yPercent: 18 + i*10, ease:'none',
+        scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:true } });
+    });
+    const phone = document.querySelector('.phone');
+    if(phone){
+      gsap.to(phone, { yPercent: -8, ease:'none',
+        scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:true } });
+    }
+    // subtle rise on the big section titles
+    gsap.utils.toArray('.sec-title').forEach((el)=>{
+      gsap.from(el, { y:24, opacity:.6, ease:'power2.out',
+        scrollTrigger:{ trigger:el, start:'top 85%', end:'top 55%', scrub:true } });
+    });
+  };
+  const wait = setInterval(()=>{
+    if(ready()){ clearInterval(wait); start(); }
+    else if(++tries > 40){ clearInterval(wait); } // ~6s → give up silently, site fine
+  }, 150);
+})();
 
 </script>
 </body>
