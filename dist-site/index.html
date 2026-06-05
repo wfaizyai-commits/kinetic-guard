@@ -426,6 +426,35 @@
     background:var(--surface-2);border:1px solid var(--border);opacity:.4;transition:.4s}
   .medal.on{opacity:1;border-color:var(--border-hi);box-shadow:0 0 14px rgba(255,107,0,.25)}
 
+  /* ═══════════ STORYTELLING ═══════════ */
+  .story{position:relative;border-block:1px solid var(--border);
+    background:linear-gradient(180deg, #08070a 0%, #0C0A08 50%, #120b06 100%)}
+  .story-head{text-align:center;margin-bottom:56px}
+  .story-scenes{display:flex;flex-direction:column;gap:0}
+  .scene{display:grid;grid-template-columns:120px 1fr;gap:30px;align-items:start;
+    padding:42px 0;border-top:1px solid rgba(255,255,255,.05);position:relative}
+  .scene:first-child{border-top:none}
+  @media(max-width:680px){.scene{grid-template-columns:1fr;gap:10px;padding:32px 0}}
+  .scene-num{font-family:var(--num);font-size:clamp(54px,9vw,104px);font-weight:700;line-height:.8;
+    color:transparent;-webkit-text-stroke:1.5px rgba(255,107,0,.35);text-stroke:1.5px rgba(255,107,0,.35)}
+  .scene-body{max-width:560px}
+  .scene-k{font-family:var(--num);letter-spacing:3px;font-size:12px;text-transform:uppercase;margin-bottom:8px}
+  .scene-t{font-size:clamp(22px,3.2vw,34px);font-weight:900;line-height:1.25;margin-bottom:12px}
+  .scene-p{font-size:15.5px;color:var(--text-2);font-weight:300;line-height:1.85}
+  .scene-p .hl{color:var(--orange);font-weight:600}
+  /* mood: problem scenes muted/cold, turn scene warm */
+  .scene--problem .scene-k{color:var(--danger)}
+  .scene--problem .scene-num{-webkit-text-stroke-color:rgba(255,90,110,.3)}
+  .scene--turn .scene-k{color:var(--ember)}
+  .scene--turn .scene-num{color:var(--orange);-webkit-text-stroke:none;text-shadow:0 0 30px rgba(255,107,0,.45)}
+  .scene--turn .scene-t{color:var(--text)}
+  .scene--promise .scene-k{color:var(--green)}
+  .scene--promise .scene-num{-webkit-text-stroke-color:rgba(43,217,160,.4)}
+  /* a connecting vertical line down the numbers column */
+  .scene::before{content:'';position:absolute;inset-inline-start:59px;top:0;bottom:0;width:1px;
+    background:linear-gradient(rgba(255,107,0,.18),transparent);pointer-events:none}
+  @media(max-width:680px){.scene::before{display:none}}
+
   /* ═══════════ FEATURE SPOTLIGHTS — Prayer + Women's ═══════════ */
   .spotlight{position:relative;overflow:hidden;border-block:1px solid var(--border)}
   .spot-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
@@ -489,7 +518,6 @@
 <div id="colorwash"></div>
 <canvas id="globalParticles"></canvas>
 <div class="scroll-prog" id="scrollProg"></div>
-<div class="preview-banner" data-i="banner"></div>
 
 <a class="skip" href="#main" data-i="skip">تخطّ إلى المحتوى</a>
 <nav aria-label="FitGuard"><div class="wrap">
@@ -614,6 +642,48 @@
     <div class="gap-card" style="border-color:var(--border-hi)"><div class="ok" data-i="gap3t"></div><p data-i="gap3p"></p></div>
   </div>
   <p class="gap-highlight reveal d3" data-i="gapHl"></p>
+</div></section>
+
+<!-- STORYTELLING -->
+<section class="story" data-wash="rgba(255,90,60,.10)"><div class="wrap">
+  <div class="story-head">
+    <div class="sec-tag reveal" data-i="storyTag"></div>
+    <div class="sec-title reveal d1" data-i="storyTitle"></div>
+  </div>
+  <div class="story-scenes">
+    <div class="scene scene--problem reveal">
+      <div class="scene-num">01</div>
+      <div class="scene-body">
+        <div class="scene-k" data-i="sc1k"></div>
+        <div class="scene-t" data-i="sc1t"></div>
+        <div class="scene-p" data-i="sc1p"></div>
+      </div>
+    </div>
+    <div class="scene scene--problem reveal">
+      <div class="scene-num">02</div>
+      <div class="scene-body">
+        <div class="scene-k" data-i="sc2k"></div>
+        <div class="scene-t" data-i="sc2t"></div>
+        <div class="scene-p" data-i="sc2p"></div>
+      </div>
+    </div>
+    <div class="scene scene--turn reveal">
+      <div class="scene-num">03</div>
+      <div class="scene-body">
+        <div class="scene-k" data-i="sc3k"></div>
+        <div class="scene-t" data-i="sc3t"></div>
+        <div class="scene-p" data-i="sc3p"></div>
+      </div>
+    </div>
+    <div class="scene scene--promise reveal">
+      <div class="scene-num">04</div>
+      <div class="scene-body">
+        <div class="scene-k" data-i="sc4k"></div>
+        <div class="scene-t" data-i="sc4t"></div>
+        <div class="scene-p" data-i="sc4p"></div>
+      </div>
+    </div>
+  </div>
 </div></section>
 
 <section><div class="wrap">
@@ -853,6 +923,11 @@ const T = {
     gap2t:"✗ المدرب الشخصي", gap2p:"غالي، مو متاح ٢٤ ساعة، ويختلف من شخص لشخص.",
     gap3t:"✦ FitGuard", gap3p:"عربي ١٠٠٪، يفحص جاهزيتك وإصاباتك، يحترم وقتك وصلاتك، ويتكيّف معك.",
     gapHl:'ما في تطبيق لياقة عربي يجمع <span class="hl">الأمان + الذكاء + الثقافة</span> في مكان واحد. إلى الآن.',
+    storyTag:"القصة", storyTitle:"ليه بنينا FitGuard",
+    sc1k:"البداية", sc1t:"دخلت الجيم متحمّس… وطلعت بإصابة.", sc1p:"قصة تتكرر كل يوم: حماس زائد، وزن أكبر من جاهزيتك، وأداء غلط — والنتيجة ألم يوقفك أسابيع.",
+    sc2k:"المشكلة", sc2t:"كل التطبيقات تعطيك تمارين… محدش يسألك إذا جسمك جاهز.", sc2p:"برنامج واحد للجميع، بلا فحص إصابات، بلا إحساس بيومك. تتمرّن وانت مش عارف إذا اليوم مناسب أصلاً.",
+    sc3k:"التحوّل", sc3t:'قلبنا المعادلة: <span class="hl">الأمان أولاً، قبل الحديد.</span>', sc3p:"FitGuard يفحص جاهزيتك كل يوم، يحلل حالتك، ويصمّم تمرينك على حسب جسمك — مو العكس. أول مدرب يقرّر معك متى وكيف تتمرّن بأمان.",
+    sc4k:"الوعد", sc4t:"تتمرّن بذكاء، توصل أبعد، وانت محميّ.", sc4p:"مش مجرد تطبيق تمارين — شريك يحميك من الإصابة ويبني قوتك على المدى الطويل. عشان تستمر، مو تتوقف.",
     howTag:"كيف يشتغل", howTitle:"٣ خطوات تحميك من الإصابة", howSub:"FitGuard ما يعطيك تمارين عشوائية — يقرر معك متى تتمرن، كيف، وبأي شدة.",
     s1t:"فحص السلامة", s1p:"٦ أسئلة ذكية تحدد مستواك، إصاباتك، ومرونتك — وتصمّم لك برنامج آمن.",
     s2t:"جاهزية اليوم", s2p:"كل صباح: نوم، توتر، إجهاد العضلات → نقول لك إذا اليوم يومك أو لا.",
@@ -941,6 +1016,11 @@ const T = {
     gap2t:"✗ A personal trainer", gap2p:"Expensive, not available 24/7, and quality varies wildly.",
     gap3t:"✦ FitGuard", gap3p:"100% Arabic, screens your readiness & injuries, respects your time & prayers, adapts to you.",
     gapHl:'No Arabic fitness app combines <span class="hl">safety + intelligence + culture</span> in one place. Until now.',
+    storyTag:"The story", storyTitle:"Why we built FitGuard",
+    sc1k:"The start", sc1t:"You hit the gym pumped… and walked out injured.", sc1p:"A story that repeats daily: too much hype, more weight than you're ready for, poor form — and weeks of pain that stop you cold.",
+    sc2k:"The problem", sc2t:"Every app hands you workouts… none asks if your body's ready.", sc2p:"One-size-fits-all, no injury screening, no sense of your day. You train without knowing if today is even the right day.",
+    sc3k:"The shift", sc3t:'We flipped it: <span class="hl">safety first, before the iron.</span>', sc3p:"FitGuard checks your readiness daily, reads your condition, and shapes your workout around your body — not the other way round. The first coach that decides with you when and how to train, safely.",
+    sc4k:"The promise", sc4t:"Train smart, go further, stay protected.", sc4p:"Not just a workout app — a partner that protects you from injury and builds your strength for the long run. So you keep going, not stop.",
     howTag:"How it works", howTitle:"3 steps that protect you from injury", howSub:"FitGuard doesn't hand you random workouts — it decides with you when to train, how, and how hard.",
     s1t:"Safety Audit", s1p:"6 smart questions map your level, injuries, and mobility — then build you a safe program.",
     s2t:"Daily Readiness", s2p:"Each morning: sleep, stress, soreness → we tell you if today's your day or not.",
