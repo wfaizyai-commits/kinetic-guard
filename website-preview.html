@@ -616,6 +616,38 @@
     background:radial-gradient(circle,var(--cg,rgba(255,107,0,.16)),transparent 66%)}
   #cursorGlow.on{opacity:1}
   @media(hover:none),(prefers-reduced-motion:reduce){#cursorGlow{display:none}}
+
+  /* ═══════════ AI COACH SECTION ═══════════ */
+  .ac-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,52px);align-items:center;margin-top:12px}
+  @media(max-width:860px){.ac-grid{grid-template-columns:1fr;gap:30px}}
+  /* chat mockup */
+  .ac-chat{background:linear-gradient(165deg,rgba(90,150,255,.1),rgba(20,18,26,.55));border:1px solid rgba(120,160,255,.26);
+    border-radius:24px;padding:18px;backdrop-filter:blur(10px);box-shadow:0 30px 70px rgba(0,0,0,.5),0 0 50px rgba(90,150,255,.08)}
+  .ac-chat-top{display:flex;align-items:center;gap:11px;padding-bottom:14px;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .ac-bot{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:21px;flex:0 0 auto;
+    background:radial-gradient(circle,rgba(90,150,255,.4),rgba(90,150,255,.1));border:1px solid rgba(120,160,255,.45)}
+  .ac-chat-top b{display:block;font-size:15px;font-weight:800}
+  .ac-status{font-size:12px;color:var(--green)}
+  .ac-status::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-inline-end:6px;box-shadow:0 0 8px var(--green)}
+  .ac-msg{max-width:90%;padding:12px 16px;border-radius:16px;font-size:14.5px;line-height:1.75;margin-bottom:12px;animation:ac-pop .5s cubic-bezier(.22,1,.36,1) both}
+  @keyframes ac-pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .ac-user{margin-inline-start:auto;background:var(--ember-grad);color:#1a0f04;font-weight:700;border-end-end-radius:5px}
+  .ac-ai{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);color:var(--text);border-end-start-radius:5px;animation-delay:.35s}
+  .ac-ai b{color:#7FB0FF;font-weight:800}
+  .ac-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .ac-chip{font-size:12.5px;font-weight:700;color:#9CC2FF;border:1px solid rgba(120,160,255,.4);background:rgba(90,150,255,.08);padding:8px 14px;border-radius:999px;cursor:pointer;transition:.2s}
+  .ac-chip:hover{background:rgba(90,150,255,.2);transform:translateY(-2px)}
+  .ac-input{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:11px 11px 11px 18px;color:var(--text-3);font-size:13.5px}
+  body[dir=ltr] .ac-input{padding:11px 18px 11px 11px}
+  .ac-send{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--ember-grad);color:#1a0f04;font-size:13px;flex:0 0 auto}
+  .ac-send{transform:scaleX(-1)} body[dir=ltr] .ac-send{transform:none}
+  /* differentiator points */
+  .ac-badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#9CC2FF;border:1px solid rgba(120,160,255,.4);background:rgba(90,150,255,.08);padding:8px 16px;border-radius:999px;margin-bottom:20px}
+  .ac-point{display:flex;gap:14px;margin-bottom:18px;align-items:flex-start}
+  .ac-point .aci{flex:0 0 auto;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:22px;
+    background:radial-gradient(circle,rgba(90,150,255,.2),rgba(90,150,255,.04));border:1px solid rgba(120,160,255,.32)}
+  .ac-point h4{font-size:16.5px;font-weight:800;margin-bottom:3px}
+  .ac-point p{font-size:13.5px;color:var(--text-2);line-height:1.65}
 </style>
 </head>
 <body dir="rtl">
@@ -870,6 +902,29 @@
   </div>
 </div></section>
 
+<!-- AI COACH — specialized personal assistant -->
+<section class="aicoach" data-wash="rgba(90,150,255,.14)"><div class="wrap">
+  <div class="sec-tag reveal" data-i="acTag"></div>
+  <div class="sec-title reveal d1" data-i="acTitle"></div>
+  <div class="sec-sub reveal d2" data-i="acSub"></div>
+  <div class="ac-grid">
+    <div class="ac-chat reveal d2">
+      <div class="ac-chat-top"><span class="ac-bot">🤖</span><div><b data-i="acBotName"></b><span class="ac-status" data-i="acBotStatus"></span></div></div>
+      <div class="ac-msg ac-user" data-i="acQ1"></div>
+      <div class="ac-msg ac-ai" data-i="acA1"></div>
+      <div class="ac-chips"><span class="ac-chip" data-i="acChip1"></span><span class="ac-chip" data-i="acChip2"></span></div>
+      <div class="ac-input"><span data-i="acPh"></span><span class="ac-send">➤</span></div>
+    </div>
+    <div class="ac-points">
+      <span class="ac-badge reveal">🛡️ <span data-i="acBadge"></span></span>
+      <div class="ac-point reveal d1"><span class="aci">🛡️</span><div><h4 data-i="ac1t"></h4><p data-i="ac1p"></p></div></div>
+      <div class="ac-point reveal d2"><span class="aci">🧬</span><div><h4 data-i="ac2t"></h4><p data-i="ac2p"></p></div></div>
+      <div class="ac-point reveal d3"><span class="aci">💡</span><div><h4 data-i="ac3t"></h4><p data-i="ac3p"></p></div></div>
+      <div class="ac-point reveal d4"><span class="aci">🥗</span><div><h4 data-i="ac4t"></h4><p data-i="ac4p"></p></div></div>
+    </div>
+  </div>
+</div></section>
+
 <!-- REWARDS -->
 <section style="background:var(--surface);border-block:1px solid var(--border)"><div class="wrap">
   <div class="sec-tag reveal" data-i="rewTag"></div>
@@ -1041,6 +1096,18 @@ const T = {
     cap2t:"كوتش ذكي يردّ عليك", cap2p:"اسأل عن أي تمرين أو ألم، ويعطيك جواب مبني على حالتك بالعربي.",
     cap3t:"تحليل ذكي للتقدّم", cap3p:"يكتشف الأنماط: عضلة مهملة، حِمل زائد، أو وقت تحتاج فيه راحة.",
     cap4t:"خصوصية أولاً", cap4p:"تحليل الصور آمن وما نحتفظ بها، ومتوافق مع نظام حماية البيانات PDPL.",
+    acTag:"مدرّبك الذكي", acTitle:'مساعد ذكي يعرفك <span class="hl">إنت</span> — مش نصائح عامة',
+    acSub:"اسأله أي حاجة عن تمرينك أو نظامك الغذائي. يحلّل حالتك إنت بالذات، ويردّ بالعربي — وبأمان.",
+    acBotName:"مدرّب FitGuard", acBotStatus:"متصل",
+    acQ1:"أقدر أعمل سكوات ثقيل النهاردة؟",
+    acA1:'جاهزيتك النهاردة <b>٦٢٪</b> وسجّلت ألم بسيط في ركبتك الأسبوع اللي فات. أنصحك تأجّل السكوات الثقيل وتعمل بداله <b>Goblet Squat</b> أخف. أعدّل برنامج النهاردة؟',
+    acChip1:"✅ عدّل برنامجي", acChip2:"🥗 اقترح وجبة",
+    acPh:"اسأل أي حاجة عن تمرينك أو أكلك…",
+    acBadge:"ذكاء مُدرَّب على سلامتك إنت",
+    ac1t:"الأمان أولاً", ac1p:"يتأكد إن التمرين مناسب لجاهزيتك وإصاباتك قبل أي نصيحة.",
+    ac2t:"يعرف سياقك الكامل", ac2p:"جاهزيتك، تاريخك، دورتك، ورمضان — كله في الحسبان.",
+    ac3t:"يشرح كل قرار", ac3p:"مايقولّكش «اعمل كذا» وبس — يقولّك ليه، عشان تتعلّم.",
+    ac4t:"تمرين وتغذية معاً", ac4p:"إرشاد أكل حلال يتماشى مع تمرينك وأهدافك اليومية.",
     showTitle:"مبني للحديد الحقيقي", showSub:"تمارين الجيم بالأوزان والسيتات والتقدّم — مو مجرد تطبيق منزلي.",
     vizTag:"تتبّع ذكي", vizTitle:"شوف تقدّمك يكبر", vizSub:"رسوم بيانية حيّة لكل تمرين، حجم التدريب، والعضلات اللي اشتغلت.",
     chartT:"نقاط السلامة عبر الوقت", chartS:"آخر ٨ أسابيع",
@@ -1136,6 +1203,18 @@ const T = {
     cap2t:"AI coach that answers", cap2p:"Ask about any exercise or pain and get advice tailored to you, in Arabic.",
     cap3t:"Smart progress analysis", cap3p:"Spots patterns: a lagging muscle, overtraining, or when you need rest.",
     cap4t:"Privacy first", cap4p:"Photo analysis is secure, images aren't stored, and it's PDPL-compliant.",
+    acTag:"Your AI coach", acTitle:'An AI coach that knows <span class="hl">you</span> — not generic tips',
+    acSub:"Ask anything about your training or diet. It analyzes your specific situation and replies in Arabic — safely.",
+    acBotName:"FitGuard Coach", acBotStatus:"Online",
+    acQ1:"Can I do heavy squats today?",
+    acA1:'Your readiness today is <b>62%</b> and you logged minor knee pain last week. I\'d postpone heavy squats and do a lighter <b>Goblet Squat</b> instead. Adjust today\'s plan?',
+    acChip1:"✅ Adjust my plan", acChip2:"🥗 Suggest a meal",
+    acPh:"Ask anything about your training or diet…",
+    acBadge:"AI trained on YOUR safety",
+    ac1t:"Safety first", ac1p:"Checks the move fits your readiness and injuries before any advice.",
+    ac2t:"Knows your full context", ac2p:"Your readiness, history, cycle, and Ramadan — all factored in.",
+    ac3t:"Explains every call", ac3p:"Never just ‘do this’ — it tells you why, so you learn.",
+    ac4t:"Training + nutrition", ac4p:"Halal meal guidance aligned to your training and daily goals.",
     showTitle:"Built for real iron", showSub:"Gym training with weights, sets and progression — not just another home app.",
     vizTag:"Smart tracking", vizTitle:"Watch your progress grow", vizSub:"Live charts for every lift, training volume, and the muscles you hit.",
     chartT:"Safety score over time", chartS:"Last 8 weeks",
