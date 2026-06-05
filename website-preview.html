@@ -426,6 +426,51 @@
     background:var(--surface-2);border:1px solid var(--border);opacity:.4;transition:.4s}
   .medal.on{opacity:1;border-color:var(--border-hi);box-shadow:0 0 14px rgba(255,107,0,.25)}
 
+  /* ═══════════ FEATURE SPOTLIGHTS — Prayer + Women's ═══════════ */
+  .spotlight{position:relative;overflow:hidden;border-block:1px solid var(--border)}
+  .spot-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  @media(max-width:860px){.spot-grid{grid-template-columns:1fr;gap:34px}}
+  .spot-tag{display:inline-flex;align-items:center;gap:8px;font-size:13px;border:1px solid;border-radius:999px;padding:6px 16px;margin-bottom:18px;font-weight:700}
+  .spot-title{font-size:clamp(26px,4vw,42px);font-weight:900;line-height:1.15;margin-bottom:14px}
+  .spot-sub{font-size:16px;color:var(--text-2);font-weight:300;line-height:1.8;margin-bottom:20px}
+  .spot-points{display:flex;flex-direction:column;gap:12px}
+  .spot-point{display:flex;gap:11px;align-items:flex-start;font-size:14px;color:var(--text-2)}
+  .spot-point .pc{flex:0 0 auto;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;margin-top:1px}
+
+  /* Prayer spotlight — spiritual ember/gold */
+  .spot-prayer{background:radial-gradient(ellipse 70% 90% at 80% 30%, rgba(255,193,94,.10), transparent 60%), var(--surface)}
+  .spot-prayer .spot-tag{color:var(--ember);border-color:var(--border-hi);background:rgba(255,107,0,.08)}
+  .spot-prayer .spot-title .hl{color:var(--ember)}
+  .spot-prayer .pc{background:rgba(255,193,94,.16);color:var(--ember)}
+  /* live prayer card */
+  .prayer-card{background:linear-gradient(165deg,#1c140c,#120f0a);border:1px solid var(--border-hi);border-radius:24px;padding:26px 22px;box-shadow:0 30px 70px rgba(0,0,0,.5)}
+  .prayer-next{text-align:center;margin-bottom:20px}
+  .prayer-next .lbl{font-size:12px;color:var(--text-3)}
+  .prayer-next .name{font-family:'Cairo',sans-serif;font-size:30px;font-weight:900;color:var(--ember);margin:2px 0}
+  .prayer-next .cd{font-family:var(--num);font-size:13px;color:var(--text-2)}
+  .prayer-row{display:flex;gap:7px}
+  .prayer-cell{flex:1;text-align:center;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:10px 4px;transition:.3s}
+  .prayer-cell.now{background:rgba(255,107,0,.14);border-color:var(--border-hi);transform:translateY(-3px)}
+  .prayer-cell .pn{font-size:10px;color:var(--text-3)}
+  .prayer-cell.now .pn{color:var(--ember)}
+  .prayer-cell .pt{font-family:var(--num);font-size:13px;font-weight:700;margin-top:3px;color:var(--text)}
+  .prayer-window{margin-top:16px;background:var(--bg);border:1px dashed var(--border-hi);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--text-2);text-align:center}
+  .prayer-window b{color:var(--ember)}
+
+  /* Women's spotlight — violet theme (app's female theme color) */
+  .spot-women{background:radial-gradient(ellipse 70% 90% at 20% 30%, rgba(176,106,255,.12), transparent 60%), #100a18}
+  .spot-women .spot-tag{color:#C891FF;border-color:rgba(176,106,255,.5);background:rgba(176,106,255,.1)}
+  .spot-women .spot-title .hl{color:#B06AFF}
+  .spot-women .pc{background:rgba(176,106,255,.18);color:#C891FF}
+  .cycle-card{background:linear-gradient(165deg,#1e1530,#160f24);border:1px solid rgba(176,106,255,.35);border-radius:24px;padding:26px 22px;box-shadow:0 30px 70px rgba(80,0,140,.4)}
+  .cycle-ring{width:150px;height:150px;margin:0 auto 16px;position:relative}
+  .cycle-ring .cc{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+  .cycle-ring .cc b{font-family:'Cairo',sans-serif;font-size:20px;font-weight:900;color:#C891FF;line-height:1.1}
+  .cycle-ring .cc small{font-size:11px;color:rgba(240,220,255,.6)}
+  .cycle-phases{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+  .cycle-phase{font-size:11px;padding:5px 11px;border-radius:999px;border:1px solid rgba(176,106,255,.25);color:rgba(240,220,255,.7)}
+  .cycle-phase.active{background:rgba(176,106,255,.18);border-color:rgba(176,106,255,.6);color:#C891FF;font-weight:700}
+
   /* ═══════════ SCROLL DEPTH + COLOR WASH ═══════════ */
   /* Fixed gradient layer behind everything; hue shifts per section via JS. */
   #colorwash{position:fixed;inset:0;z-index:-1;pointer-events:none;
@@ -657,12 +702,73 @@
   <div class="sec-title reveal d1" data-i="featTitle"></div>
   <div class="sec-sub reveal d2" data-i="featSub"></div>
   <div class="feat reveal d2">
-    <div class="fc"><div class="ic">🕌</div><h3 data-i="f1t"></h3><p data-i="f1p"></p><span class="tag" data-i="excl"></span></div>
     <div class="fc"><div class="ic">🌙</div><h3 data-i="f2t"></h3><p data-i="f2p"></p><span class="tag" data-i="excl"></span></div>
-    <div class="fc"><div class="ic">🌸</div><h3 data-i="f3t"></h3><p data-i="f3p"></p><span class="tag" data-i="excl"></span></div>
     <div class="fc"><div class="ic">🦴</div><h3 data-i="f4t"></h3><p data-i="f4p"></p></div>
     <div class="fc"><div class="ic">🔥</div><h3 data-i="f5t"></h3><p data-i="f5p"></p></div>
     <div class="fc"><div class="ic">📊</div><h3 data-i="f6t"></h3><p data-i="f6p"></p></div>
+  </div>
+</div></section>
+
+<!-- SPOTLIGHT: Prayer times -->
+<section class="spotlight spot-prayer" data-wash="rgba(255,193,94,.13)"><div class="wrap">
+  <div class="spot-grid">
+    <div class="reveal">
+      <span class="spot-tag">🕌 <span data-i="prTag"></span></span>
+      <div class="spot-title" data-i="prTitle"></div>
+      <div class="spot-sub" data-i="prSub"></div>
+      <div class="spot-points">
+        <div class="spot-point"><span class="pc">✓</span><span data-i="prP1"></span></div>
+        <div class="spot-point"><span class="pc">✓</span><span data-i="prP2"></span></div>
+        <div class="spot-point"><span class="pc">✓</span><span data-i="prP3"></span></div>
+      </div>
+    </div>
+    <div class="reveal d2">
+      <div class="prayer-card">
+        <div class="prayer-next">
+          <div class="lbl" data-i="prNextLbl"></div>
+          <div class="name" data-i="prNextName"></div>
+          <div class="cd" data-i="prNextCd"></div>
+        </div>
+        <div class="prayer-row">
+          <div class="prayer-cell"><div class="pn" data-i="prF"></div><div class="pt">4:58</div></div>
+          <div class="prayer-cell"><div class="pn" data-i="prD"></div><div class="pt">11:52</div></div>
+          <div class="prayer-cell now"><div class="pn" data-i="prA"></div><div class="pt">3:22</div></div>
+          <div class="prayer-cell"><div class="pn" data-i="prM"></div><div class="pt">6:42</div></div>
+          <div class="prayer-cell"><div class="pn" data-i="prI"></div><div class="pt">8:12</div></div>
+        </div>
+        <div class="prayer-window" data-i="prWindow"></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- SPOTLIGHT: Women's program -->
+<section class="spotlight spot-women" data-wash="rgba(176,106,255,.14)"><div class="wrap">
+  <div class="spot-grid">
+    <div class="reveal d2">
+      <div class="cycle-card">
+        <div class="cycle-ring">
+          <svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="62" fill="none" stroke="rgba(176,106,255,.15)" stroke-width="10"/><circle cx="75" cy="75" r="62" fill="none" stroke="#B06AFF" stroke-width="10" stroke-linecap="round" stroke-dasharray="389" stroke-dashoffset="150" transform="rotate(-90 75 75)"/></svg>
+          <div class="cc"><div><b data-i="cyPhase"></b><br/><small data-i="cyDay"></small></div></div>
+        </div>
+        <div class="cycle-phases">
+          <span class="cycle-phase" data-i="cyP1"></span>
+          <span class="cycle-phase active" data-i="cyP2"></span>
+          <span class="cycle-phase" data-i="cyP3"></span>
+          <span class="cycle-phase" data-i="cyP4"></span>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <span class="spot-tag">🌸 <span data-i="wmTag"></span></span>
+      <div class="spot-title" data-i="wmTitle"></div>
+      <div class="spot-sub" data-i="wmSub"></div>
+      <div class="spot-points">
+        <div class="spot-point"><span class="pc">✓</span><span data-i="wmP1"></span></div>
+        <div class="spot-point"><span class="pc">✓</span><span data-i="wmP2"></span></div>
+        <div class="spot-point"><span class="pc">✓</span><span data-i="wmP3"></span></div>
+      </div>
+    </div>
   </div>
 </div></section>
 
@@ -759,6 +865,21 @@ const T = {
     f4t:"تعديل الإصابات تلقائياً", f4p:"ألم بالركبة أو عملية سابقة؟ نبدّل التمارين الخطرة بآمنة فوراً.",
     f5t:"خريطة العضلات", f5p:"تشوف بالضبط أي عضلة تشتغل في كل تمرين — بدقة علمية.",
     f6t:"تتبّع تقدمك", f6p:"سلسلة يومية، أوسمة، ومشيك يُحتسب — كل حركة تعدّ.",
+    prTag:"حصري · أول تطبيق يسويها", prTitle:'تمرينك يحترم <span class="hl">وقت صلاتك</span>',
+    prSub:"FitGuard يعرف مواعيد الصلاة في مدينتك، ويرتّب تمرينك حولها تلقائياً — تتمرّن وتصلّي بدون ما تفوّت ولا واحدة.",
+    prP1:"مواعيد دقيقة حسب موقعك (أم القرى وغيرها).",
+    prP2:"ينبّهك بأفضل نافذة تمرين بين الصلوات.",
+    prP3:"يوقف المؤقّت تلقائياً وقت الأذان لو طلبت.",
+    prNextLbl:"الصلاة القادمة", prNextName:"العصر", prNextCd:"بعد ٤٥ دقيقة",
+    prF:"الفجر", prD:"الظهر", prA:"العصر", prM:"المغرب", prI:"العشاء",
+    prWindow:"💡 عندك <b>٤٥ دقيقة</b> قبل العصر — وقت ممتاز لجلسة سريعة.",
+    wmTag:"حصري · مصمّم لكِ", wmTitle:'برنامج نسائي <span class="hl">يفهم جسمك</span>',
+    wmSub:"تمارين مناسبة ثقافياً تتكيّف مع مراحل دورتك الشهرية — شدّة أعلى وقت طاقتك، وألطف وقت ما تحتاجين.",
+    wmP1:"متتبّع دورة مدمج يضبط شدّة التمرين.",
+    wmP2:"تمارين منزلية ومناسبة، بخصوصية كاملة.",
+    wmP3:"ثيم وتجربة مصمّمة خصيصاً للنساء.",
+    cyPhase:"الإباضة", cyDay:"اليوم ١٤",
+    cyP1:"الحيض", cyP2:"الإباضة", cyP3:"الجريبية", cyP4:"الأصفرية",
     visTag:"رؤية ٢٠٣٠", visTitle:"نتماشى مع أجندة المملكة الرياضية",
     visP:"هدف رفع ممارسة الرياضة من ١٣٪ إلى ٤٠٪ بحلول ٢٠٣٠ — FitGuard أداة تساعد على ذلك بأمان.",
     visStat:"نمو سنوي لقطاع اللياقة في السعودية",
@@ -832,6 +953,21 @@ const T = {
     f4t:"Auto injury modification", f4p:"Knee pain or past surgery? We swap risky moves for safe ones instantly.",
     f5t:"Muscle map", f5p:"See exactly which muscle each exercise works — with real anatomical accuracy.",
     f6t:"Track your progress", f6p:"Daily streak, badges, and your walking counts too — every move matters.",
+    prTag:"Exclusive · first to do it", prTitle:'Training that respects <span class="hl">your prayer times</span>',
+    prSub:"FitGuard knows the prayer times in your city and schedules your workout around them automatically — train and pray without missing either.",
+    prP1:"Accurate times for your location (Umm al-Qura & more).",
+    prP2:"Nudges you to the best workout window between prayers.",
+    prP3:"Auto-pauses the timer at adhan if you want.",
+    prNextLbl:"Next prayer", prNextName:"Asr", prNextCd:"in 45 min",
+    prF:"Fajr", prD:"Dhuhr", prA:"Asr", prM:"Maghrib", prI:"Isha",
+    prWindow:"💡 You have <b>45 min</b> before Asr — perfect for a quick session.",
+    wmTag:"Exclusive · made for her", wmTitle:'A women\'s program <span class="hl">that gets your body</span>',
+    wmSub:"Culturally appropriate workouts that adapt to your cycle phases — higher intensity when your energy peaks, gentler when you need it.",
+    wmP1:"Built-in cycle tracker tunes workout intensity.",
+    wmP2:"Home-friendly, appropriate workouts, fully private.",
+    wmP3:"A theme and experience designed for women.",
+    cyPhase:"Ovulation", cyDay:"Day 14",
+    cyP1:"Menstrual", cyP2:"Ovulation", cyP3:"Follicular", cyP4:"Luteal",
     visTag:"Vision 2030", visTitle:"Aligned with the Kingdom's sports agenda",
     visP:"The goal of raising physical activity from 13% to 40% by 2030 — FitGuard is a tool that helps, safely.",
     visStat:"annual growth of Saudi Arabia's fitness sector",
