@@ -544,18 +544,73 @@
   section{ padding-block: clamp(56px, 9vh, 110px); }
   /* the colorwash now carries ALL the mood — make it a touch stronger + slower */
   #colorwash{ transition: background 1.4s ease; }
+
+  /* ═══════════ TOP CTA BAR ═══════════ */
+  .topbar{position:relative;z-index:45;display:flex;align-items:center;justify-content:center;gap:8px;
+    background:linear-gradient(90deg,#FF6B00,#FFC15E,#FF6B00);background-size:200% auto;animation:tb-shift 7s linear infinite;
+    color:#1a0f04;font-weight:800;font-size:13.5px;line-height:1.35;padding:9px 44px;cursor:pointer;text-align:center;overflow:hidden;
+    transition:height .4s ease,opacity .4s ease,padding .4s ease}
+  .topbar.gone{height:0 !important;opacity:0;padding-block:0}
+  .topbar:hover{filter:brightness(1.06)}
+  @keyframes tb-shift{to{background-position:200% center}}
+  .topbar-x{position:absolute;inset-inline-end:10px;top:50%;transform:translateY(-50%);background:rgba(26,15,4,.2);
+    border:0;color:#1a0f04;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:15px;line-height:1;font-weight:900;display:grid;place-items:center}
+  .topbar-x:hover{background:rgba(26,15,4,.36)}
+  @media (prefers-reduced-motion: reduce){ .topbar{animation:none} }
+
+  /* nav: women link */
+  .nav-women{font-size:13.5px;color:var(--text);text-decoration:none;font-weight:700;padding:7px 13px;border-radius:999px;
+    border:1px solid rgba(255,93,162,.42);background:rgba(255,93,162,.08);transition:.25s;white-space:nowrap}
+  .nav-women:hover{background:rgba(255,93,162,.2);border-color:rgba(255,93,162,.75);transform:translateY(-1px)}
+  @media(max-width:560px){.nav-women{display:none}}
+
+  /* women spotlight → page CTA */
+  .spot-cta{display:inline-flex;align-items:center;gap:8px;margin-top:26px;cursor:pointer;text-decoration:none;border:0;
+    background:linear-gradient(100deg,#FF5DA2,#B06AFF);color:#fff;font-weight:800;font-size:14.5px;padding:13px 24px;border-radius:999px;
+    box-shadow:0 10px 30px rgba(255,93,162,.32);transition:transform .25s,box-shadow .25s}
+  .spot-cta:hover{transform:translateY(-3px);box-shadow:0 16px 42px rgba(255,93,162,.5)}
+
+  /* ═══════════ UNIVERSAL HOVER ═══════════ */
+  /* cards with no hover yet get a lift+glow */
+  .gap-card,.feat,.step,.prayer-cell,.ai-feat,.cycle-card{
+    transition:transform .35s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .35s}
+  .gap-card:hover,.feat:hover,.step:hover,.prayer-cell:hover,.ai-feat:hover,.cycle-card:hover{
+    border-color:var(--border-hi);box-shadow:0 18px 44px rgba(0,0,0,.45),0 0 30px rgba(255,107,0,.10)}
+  /* while the pointer rides a card, JS sets an inline 3D tilt; this keeps it smooth */
+  .tilting{transition:transform .12s ease-out !important}
+  /* links + small interactive bits answer the cursor too */
+  .footer a,.spot-point,.marq-item{transition:color .2s,transform .2s}
+  .footer a:hover{color:var(--orange)}
+  .spot-point:hover{transform:translateX(-3px)}
+  body[dir=ltr] .spot-point:hover{transform:translateX(3px)}
+
+  /* ═══════════ CURSOR GLOW (follows the mouse, tinted per section) ═══════════ */
+  #cursorGlow{position:fixed;top:0;left:0;width:360px;height:360px;border-radius:50%;z-index:0;pointer-events:none;
+    transform:translate(-50%,-50%);opacity:0;transition:opacity .5s;mix-blend-mode:screen;
+    background:radial-gradient(circle,var(--cg,rgba(255,107,0,.16)),transparent 66%)}
+  #cursorGlow.on{opacity:1}
+  @media(hover:none),(prefers-reduced-motion:reduce){#cursorGlow{display:none}}
 </style>
 </head>
 <body dir="rtl">
 
 <div id="colorwash"></div>
 <canvas id="globalParticles"></canvas>
+<div id="cursorGlow"></div>
 <div class="scroll-prog" id="scrollProg"></div>
 
+<div class="topbar" id="topbar" role="button" tabindex="0" data-i-al="topbarAria"
+     onclick="document.getElementById('join').scrollIntoView({behavior:'smooth'})"
+     onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('join').scrollIntoView({behavior:'smooth'})}">
+  <span class="topbar-txt" data-i="topbar"></span>
+  <button class="topbar-x" type="button" data-i-al="topbarClose"
+     onclick="event.stopPropagation();var t=document.getElementById('topbar');t.style.height=t.offsetHeight+'px';requestAnimationFrame(function(){t.classList.add('gone')});setTimeout(function(){t.remove()},420)">×</button>
+</div>
 <a class="skip" href="#main" data-i="skip">تخطّ إلى المحتوى</a>
 <nav aria-label="FitGuard"><div class="wrap">
   <div class="logo"><span class="mark" aria-hidden="true">🛡</span><span>Fit<b>Guard</b></span></div>
   <div class="nav-r">
+    <a class="nav-women" href="women.html" data-i="navWomen"></a>
     <button class="lang-btn" id="langToggle" aria-label="Switch language / تبديل اللغة">EN</button>
     <button class="nav-cta" data-i="navCta" onclick="document.getElementById('join').scrollIntoView()"></button>
   </div>
@@ -880,6 +935,7 @@
         <div class="spot-point"><span class="pc">✓</span><span data-i="wmP2"></span></div>
         <div class="spot-point"><span class="pc">✓</span><span data-i="wmP3"></span></div>
       </div>
+      <a class="spot-cta" href="women.html" data-i="wmCta"></a>
     </div>
   </div>
 </div></section>
@@ -920,6 +976,8 @@ const T = {
   ar: {
     banner:"معاينة تصميم · نقدر نعدّل أي شي قبل النشر",
     navCta:"انضم للقائمة", skip:"تخطّ إلى المحتوى", emailAria:"بريدك الإلكتروني للانضمام لقائمة الانتظار", pill:"قريباً في السعودية · Q4 2026",
+    topbar:"🎁 احجز مكانك في أول ٥٠٠ عضو — سجّل دلوقتي ←", topbarAria:"سجّل في قائمة الانتظار", topbarClose:"إغلاق الشريط",
+    navWomen:"🌸 للنساء", wmCta:"اكتشفي تجربة FitGuard للنساء ←",
     h1:'قبل التمرين<br><span class="hl">نتأكد إن جسمك جاهز</span>',
     heroSub:"أول مدرب لياقة ذكي بالعربي يفحص جاهزيتك قبل كل تمرين، يتابع حركتك، ويصمّم برنامجك على حسب جسمك ويومك — وبأمان.",
     emailPh:"بريدك الإلكتروني", ctaBtn:"احجز مكانك 🚀",
@@ -1013,6 +1071,8 @@ const T = {
   en: {
     banner:"Design preview · we can change anything before launch",
     navCta:"Join the list", skip:"Skip to content", emailAria:"Your email to join the waitlist", pill:"Coming to Saudi Arabia · Q4 2026",
+    topbar:"🎁 Claim your spot in the first 500 — sign up today →", topbarAria:"Sign up to the waitlist", topbarClose:"Dismiss bar",
+    navWomen:"🌸 For Her", wmCta:"Explore the women's experience →",
     h1:'Before you train<br><span class="hl">we make sure your body\'s ready</span>',
     heroSub:"The first Arabic AI fitness safety coach. It checks your readiness before every workout, watches your form, and adapts your program to your body and your day — safely.",
     emailPh:"Your email", ctaBtn:"Reserve my spot 🚀",
@@ -1307,29 +1367,86 @@ if(!reduce){
     });
   });
 
-  /* 8c. GLOBAL interactive particle field (whole page, repels from cursor) */
+  /* 8c. GLOBAL particle field — colour + motion morph to the section in view */
   const gcv=document.getElementById('globalParticles');
-  if(gcv){
+  const cg=document.getElementById('cursorGlow');
+  if(gcv && !reduce){
     const gctx=gcv.getContext('2d'); let GW,GH,gp; const m={x:-999,y:-999};
+    const rgbOf=(w)=>{ const z=(w||'').match(/(\d+)\D+(\d+)\D+(\d+)/); return z?[+z[1],+z[2],+z[3]]:[255,150,60]; };
+    // each section gets a motion "mode" → distinct feel, not just colour
+    const modeFor=(c)=> /ai-sec/.test(c)?'data' : /spot-women/.test(c)?'soft'
+      : /spot-prayer/.test(c)?'serene' : /\bfinal\b/.test(c)?'celebrate'
+      : /statband|\bstory\b/.test(c)?'embers' : 'drift';
+    const MODES={
+      drift:    {count:.65,speed:.55,dir:-.15,size:1,  glow:6, twk:0},
+      embers:   {count:1,  speed:1,  dir:-1,  size:1,  glow:9, twk:0},
+      data:     {count:1,  speed:.85,dir:0,   size:.8, glow:5, twk:1},
+      soft:     {count:.6, speed:.45,dir:-.4, size:1.8,glow:13,twk:.35},
+      serene:   {count:.5, speed:.5, dir:-1,  size:1.1,glow:10,twk:.25},
+      celebrate:{count:1.1,speed:1.4,dir:-1,  size:1,  glow:11,twk:.4}
+    };
+    const zones=[...document.querySelectorAll('[data-wash]')].map(el=>(
+      {el,col:rgbOf(el.getAttribute('data-wash')),mode:modeFor(el.className)}));
+    const cur={col:[255,150,60],count:1,speed:1,dir:-1,size:1,glow:9,twk:0};
+    const tgt={...cur,col:[255,150,60]};
+    const setZone=(z)=>{ tgt.col=z.col.slice(); const M=MODES[z.mode];
+      tgt.count=M.count;tgt.speed=M.speed;tgt.dir=M.dir;tgt.size=M.size;tgt.glow=M.glow;tgt.twk=M.twk;
+      if(cg) cg.style.setProperty('--cg',`rgba(${z.col[0]},${z.col[1]},${z.col[2]},.16)`); };
+    if(zones[0]) setZone(zones[0]);
+    const io=new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting){
+      const z=zones.find(zz=>zz.el===e.target); if(z) setZone(z); } }),{rootMargin:'-45% 0px -45% 0px'});
+    zones.forEach(z=>io.observe(z.el));
     const sizeUp=()=>{ GW=gcv.width=innerWidth; GH=gcv.height=innerHeight;
-      const n=Math.min(64, Math.floor(GW/26));
+      const n=Math.min(82, Math.floor(GW/22));
       gp=Array.from({length:n},()=>({x:Math.random()*GW,y:Math.random()*GH,
-        r:Math.random()*2.2+0.7, vy:-(Math.random()*0.28+0.05), vx:(Math.random()-0.5)*0.14,
-        a:Math.random()*0.45+0.18})); };
+        r:Math.random()*2.2+0.7, base:Math.random()*0.4+0.18, ph:Math.random()*6.28,
+        vy:-(Math.random()*0.28+0.06), vx:(Math.random()-0.5)*0.3})); };
     sizeUp(); addEventListener('resize',sizeUp,{passive:true});
-    // track cursor in viewport coords (canvas is fixed → viewport-aligned)
     addEventListener('pointermove',e=>{ m.x=e.clientX; m.y=e.clientY; },{passive:true});
     addEventListener('pointerleave',()=>{ m.x=-999; m.y=-999; });
-    (function gdraw(){ gctx.clearRect(0,0,GW,GH);
-      for(const p of gp){
+    let tk=0;
+    (function gdraw(){ tk+=0.016;
+      for(let i=0;i<3;i++) cur.col[i]+=(tgt.col[i]-cur.col[i])*0.05;
+      cur.count+=(tgt.count-cur.count)*0.05; cur.speed+=(tgt.speed-cur.speed)*0.05;
+      cur.dir+=(tgt.dir-cur.dir)*0.05; cur.size+=(tgt.size-cur.size)*0.05;
+      cur.glow+=(tgt.glow-cur.glow)*0.05; cur.twk+=(tgt.twk-cur.twk)*0.05;
+      gctx.clearRect(0,0,GW,GH);
+      const R=Math.round(cur.col[0]),Gc=Math.round(cur.col[1]),B=Math.round(cur.col[2]);
+      const vis=Math.floor(gp.length*cur.count), sway=1-Math.min(1,Math.abs(cur.dir));
+      for(let i=0;i<vis;i++){ const p=gp[i];
         const dx=p.x-m.x, dy=p.y-m.y, d2=dx*dx+dy*dy;
         if(d2<34000){ const f=(34000-d2)/34000; const d=Math.sqrt(d2)||1; p.x+=dx/d*f*11; p.y+=dy/d*f*11; }
-        p.x+=p.vx; p.y+=p.vy;
-        if(p.y<-6){p.y=GH+6;p.x=Math.random()*GW;} if(p.x<-6)p.x=GW+6; if(p.x>GW+6)p.x=-6;
-        gctx.beginPath(); gctx.arc(p.x,p.y,p.r,0,7);
-        gctx.fillStyle=`rgba(255,150,60,${p.a})`; gctx.shadowBlur=8; gctx.shadowColor='rgba(255,107,0,.65)'; gctx.fill();
+        p.y += cur.dir*Math.abs(p.vy)*cur.speed*2.4;
+        p.x += p.vx*cur.speed + Math.sin(tk+p.ph)*0.25*sway;
+        if(p.y<-8){p.y=GH+8;p.x=Math.random()*GW;} if(p.y>GH+8){p.y=-8;p.x=Math.random()*GW;}
+        if(p.x<-8)p.x=GW+8; if(p.x>GW+8)p.x=-8;
+        const tw = cur.twk ? (1-cur.twk*0.55 + cur.twk*0.55*Math.sin(tk*2.6+p.ph)) : 1;
+        gctx.beginPath(); gctx.arc(p.x,p.y,p.r*cur.size,0,7);
+        gctx.fillStyle=`rgba(${R},${Gc},${B},${(p.base*tw).toFixed(3)})`;
+        gctx.shadowBlur=cur.glow; gctx.shadowColor=`rgba(${R},${Gc},${B},.6)`; gctx.fill();
       }
       requestAnimationFrame(gdraw); })();
+  }
+
+  /* 8d. Cursor glow + 3D card tilt — the page reacts to the mouse everywhere */
+  if(!reduce && matchMedia('(hover:hover)').matches){
+    if(cg){ let tx=innerWidth/2,ty=innerHeight/2,cx=tx,cy=ty,shown=false;
+      addEventListener('pointermove',e=>{ tx=e.clientX; ty=e.clientY;
+        if(!shown){ shown=true; cg.classList.add('on'); } },{passive:true});
+      (function move(){ cx+=(tx-cx)*0.15; cy+=(ty-cy)*0.15;
+        cg.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`;
+        requestAnimationFrame(move); })();
+    }
+    document.querySelectorAll('.gap-card,.feat,.step,.prayer-cell,.ai-feat,.cycle-card,.fc,.aicap,.rewc')
+      .forEach(el=>{
+        el.addEventListener('pointerenter',()=>el.classList.add('tilting'));
+        el.addEventListener('pointermove',(e)=>{ const r=el.getBoundingClientRect();
+          const px=(e.clientX-r.left)/r.width-0.5, py=(e.clientY-r.top)/r.height-0.5;
+          el.style.transform=`perspective(820px) rotateX(${(-py*7).toFixed(2)}deg) rotateY(${(px*9).toFixed(2)}deg) translateY(-5px)`;
+        });
+        el.addEventListener('pointerleave',()=>{ el.style.transform='';
+          setTimeout(()=>el.classList.remove('tilting'),260); });
+      });
   }
 }
 

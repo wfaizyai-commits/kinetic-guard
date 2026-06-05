@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FitGuard للنساء · For Her</title>
+<meta name="description" content="FitGuard للنساء — تجربة لياقة عربية تفهم دورتك، تحترم خصوصيتك، وتتكيّف مع طاقتك. A women's fitness experience that understands your cycle and respects your privacy."/>
+<meta name="theme-color" content="#0b0710"/>
+<meta property="og:title" content="FitGuard للنساء · For Her"/>
+<meta property="og:description" content="تتمرّني بأمان، على إيقاع جسمك — Train safely, in tune with your body."/>
+<meta property="og:type" content="website"/>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#0b0710; --surface:rgba(255,138,196,.05); --surface-2:rgba(255,138,196,.09);
+    --pink:#FF4FA3; --pink-2:#FF8AC4; --violet:#B06AFF; --violet-2:#C891FF;
+    --text:#F6EEF4; --text-2:rgba(246,238,244,.72); --text-3:rgba(246,238,244,.45);
+    --border:rgba(255,138,196,.16); --border-hi:rgba(255,138,196,.42);
+    --grad:linear-gradient(100deg,#FF4FA3,#B06AFF); --num:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;line-height:1.8;overflow-x:hidden;
+    background-image:
+      radial-gradient(ellipse 70% 50% at 85% -5%,rgba(255,79,163,.16),transparent 55%),
+      radial-gradient(ellipse 60% 50% at 10% 8%,rgba(176,106,255,.14),transparent 55%);}
+  body[dir=ltr]{font-family:'Inter',sans-serif;line-height:1.7}
+  .wrap{max-width:1080px;margin:auto;padding:0 24px}
+  a{color:inherit}
+  [data-en]{display:none}
+  body[dir=ltr] [data-ar]{display:none}
+  body[dir=ltr] [data-en]{display:revert}
+
+  /* soft drifting petals */
+  #petals{position:fixed;inset:0;z-index:0;pointer-events:none}
+  @media (prefers-reduced-motion:reduce){#petals{display:none}}
+  #cg{position:fixed;top:0;left:0;width:340px;height:340px;border-radius:50%;z-index:0;pointer-events:none;
+    transform:translate(-50%,-50%);opacity:0;transition:opacity .5s;mix-blend-mode:screen;
+    background:radial-gradient(circle,rgba(255,79,163,.16),transparent 66%)}
+  #cg.on{opacity:1}
+  @media(hover:none),(prefers-reduced-motion:reduce){#cg{display:none}}
+  main,header,footer{position:relative;z-index:1}
+
+  /* top bar */
+  .top{display:flex;align-items:center;justify-content:space-between;padding:16px 0;position:sticky;top:0;z-index:30;
+    backdrop-filter:blur(12px);background:rgba(11,7,16,.6);border-bottom:1px solid var(--border)}
+  .logo{display:flex;align-items:center;gap:9px;font-weight:900;font-size:19px;text-decoration:none;color:var(--text)}
+  .logo .mark{width:30px;height:30px;border-radius:9px;background:var(--grad);display:grid;place-items:center;font-size:15px}
+  .logo b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .top-r{display:flex;align-items:center;gap:10px}
+  .lng,.home{font-size:13px;color:var(--text-2);border:1px solid var(--border);padding:7px 14px;border-radius:999px;
+    cursor:pointer;background:none;font-family:inherit;text-decoration:none;transition:.25s}
+  .lng:hover,.home:hover{border-color:var(--border-hi);color:var(--text);transform:translateY(-1px)}
+
+  /* hero */
+  .hero{padding:70px 0 56px;display:grid;grid-template-columns:1.1fr .9fr;gap:46px;align-items:center}
+  @media(max-width:840px){.hero{grid-template-columns:1fr;text-align:center;padding:48px 0 36px}}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--pink-2);
+    border:1px solid var(--border-hi);background:rgba(255,79,163,.1);padding:7px 16px;border-radius:999px;margin-bottom:22px}
+  h1{font-size:clamp(34px,6vw,62px);font-weight:900;line-height:1.1;letter-spacing:-.5px;margin-bottom:18px}
+  h1 .hl{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{font-size:18px;color:var(--text-2);font-weight:400;max-width:540px;margin-bottom:30px}
+  @media(max-width:840px){.lead{margin-inline:auto}}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  @media(max-width:840px){.cta-row{justify-content:center}}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;padding:14px 26px;border-radius:999px;
+    text-decoration:none;cursor:pointer;border:0;font-family:inherit;transition:transform .25s,box-shadow .25s}
+  .btn-primary{background:var(--grad);color:#fff;box-shadow:0 12px 34px rgba(255,79,163,.34)}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 46px rgba(255,79,163,.5)}
+  .btn-ghost{border:1px solid var(--border-hi);color:var(--text);background:rgba(255,138,196,.06)}
+  .btn-ghost:hover{transform:translateY(-3px);background:rgba(255,138,196,.12)}
+
+  /* hero ring visual */
+  .ring-wrap{display:grid;place-items:center}
+  .ring-card{position:relative;width:min(380px,86vw);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;
+    background:radial-gradient(circle at 50% 38%,rgba(255,79,163,.3),rgba(176,106,255,.14) 55%,transparent 72%);
+    box-shadow:0 30px 90px rgba(255,79,163,.22),inset 0 0 80px rgba(255,79,163,.1);
+    animation:ring-breathe 6s ease-in-out infinite}
+  @keyframes ring-breathe{0%,100%{transform:scale(1);box-shadow:0 30px 90px rgba(255,79,163,.2),inset 0 0 80px rgba(255,79,163,.08)}
+    50%{transform:scale(1.035);box-shadow:0 36px 110px rgba(255,79,163,.34),inset 0 0 90px rgba(255,79,163,.14)}}
+  .ring-card::before{content:'';position:absolute;inset:-2px;border-radius:50%;padding:2px;pointer-events:none;
+    background:conic-gradient(from 0deg,#FF4FA3,#B06AFF,#FF8AC4,#FF4FA3);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+    opacity:.6;animation:ring-spin 14s linear infinite}
+  @keyframes ring-spin{to{transform:rotate(360deg)}}
+  .ring-card svg{width:74%;height:74%}
+  @media (prefers-reduced-motion:reduce){.ring-card,.ring-card::before{animation:none}}
+  .ring-c{position:absolute;text-align:center}
+  .ring-c b{font-size:24px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ring-c small{color:var(--text-2);font-size:13px}
+
+  /* section heading */
+  .sec{padding:54px 0}
+  .eyebrow{font-family:var(--num);letter-spacing:3px;font-size:12px;text-transform:uppercase;color:var(--pink-2);
+    text-align:center;margin-bottom:12px;font-weight:700}
+  .sec h2{font-size:clamp(24px,3.6vw,38px);font-weight:900;text-align:center;line-height:1.3;margin-bottom:14px}
+  .sec .sub{color:var(--text-2);text-align:center;max-width:600px;margin:0 auto 40px}
+
+  /* pillars */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}}
+  .card{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px 24px;
+    transition:transform .35s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .35s;overflow:hidden}
+  .card:hover{border-color:var(--border-hi);box-shadow:0 20px 48px rgba(0,0,0,.45),0 0 34px rgba(255,79,163,.12)}
+  .card .ic{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;font-size:25px;margin-bottom:16px;
+    background:radial-gradient(circle,rgba(255,79,163,.18),rgba(176,106,255,.06));border:1px solid var(--border-hi)}
+  .card h3{font-size:18px;font-weight:800;margin-bottom:8px}
+  .card p{font-size:14.5px;color:var(--text-2)}
+
+  /* cycle phases */
+  .phases{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:680px){.phases{grid-template-columns:1fr 1fr}}
+  .phase{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:22px 16px;text-align:center;
+    transition:transform .3s,border-color .3s}
+  .phase:hover{transform:translateY(-5px);border-color:var(--border-hi)}
+  .phase .nm{font-weight:800;font-size:15px;margin-bottom:6px}
+  .phase .ds{font-size:12.5px;color:var(--text-2);min-height:38px}
+  .bar{height:6px;border-radius:6px;margin-top:14px;background:rgba(255,138,196,.12);overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:6px;background:var(--grad)}
+
+  /* elegance panel */
+  .panel{position:relative;border-radius:26px;padding:54px 40px;text-align:center;overflow:hidden;
+    background:linear-gradient(120deg,rgba(255,79,163,.14),rgba(176,106,255,.12));border:1px solid var(--border-hi)}
+  .panel h2{font-size:clamp(24px,3.6vw,40px);font-weight:900;margin-bottom:14px}
+  .panel p{color:var(--text);opacity:.9;max-width:620px;margin:0 auto;font-size:16.5px}
+  .reassure{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:30px}
+  .chip{font-size:13px;font-weight:700;color:var(--text);background:rgba(255,138,196,.1);border:1px solid var(--border);
+    padding:9px 16px;border-radius:999px}
+
+  /* final */
+  .final{text-align:center;padding:66px 0}
+  .final h2{font-size:clamp(26px,4vw,44px);font-weight:900;margin-bottom:14px}
+  .final p{color:var(--text-2);max-width:520px;margin:0 auto 28px}
+
+  /* footer */
+  footer{border-top:1px solid var(--border);padding:30px 0;text-align:center;color:var(--text-3);font-size:13px}
+  footer a{color:var(--pink-2);text-decoration:none}
+
+  /* entrance reveal */
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+  .rv.in{opacity:1;transform:none}
+  /* hero is above the fold → animate on load, never gated on scroll */
+  .hero-in{animation:hero-rise .85s cubic-bezier(.22,1,.36,1) both}
+  @keyframes hero-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.hero-in{animation:none}}
+</style>
+</head>
+<body dir="rtl">
+<canvas id="petals"></canvas>
+<div id="cg"></div>
+
+<div class="top"><div class="wrap" style="display:flex;align-items:center;justify-content:space-between;padding:0">
+  <a class="logo" href="/"><span class="mark" aria-hidden="true">🛡</span><span>Fit<b>Guard</b></span></a>
+  <div class="top-r">
+    <a class="home" href="/"><span data-ar>← الرئيسية</span><span data-en>Home →</span></a>
+    <button class="lng" id="lng">EN</button>
+  </div>
+</div></div>
+
+<main>
+<header class="hero wrap">
+  <div class="hero-in">
+    <span class="badge">🌸 <span data-ar>مصمّم لكِ</span><span data-en>Made for her</span></span>
+    <h1><span data-ar>تتمرّني بأمان، <span class="hl">على إيقاع جسمك</span></span><span data-en>Train safely, <span class="hl">in tune with your body</span></span></h1>
+    <p class="lead">
+      <span data-ar>FitGuard للنساء — أول تجربة لياقة عربية تفهم دورتك، تحترم خصوصيتك، وتتكيّف مع طاقتك يوم بيوم.</span>
+      <span data-en>FitGuard for women — the first Arabic fitness experience that understands your cycle, respects your privacy, and adapts to your energy day by day.</span>
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/#join"><span data-ar>انضمي لقائمة الانتظار</span><span data-en>Join the waitlist</span></a>
+      <a class="btn btn-ghost" href="/"><span data-ar>تصفّحي التطبيق</span><span data-en>Explore the app</span></a>
+    </div>
+  </div>
+  <div class="ring-wrap">
+    <div class="ring-card">
+      <svg viewBox="0 0 150 150" aria-hidden="true">
+        <circle cx="75" cy="75" r="62" fill="none" stroke="rgba(255,138,196,.16)" stroke-width="9"/>
+        <circle cx="75" cy="75" r="62" fill="none" stroke="url(#pg)" stroke-width="9" stroke-linecap="round"
+          stroke-dasharray="389" stroke-dashoffset="150" transform="rotate(-90 75 75)"/>
+        <defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#FF4FA3"/><stop offset="1" stop-color="#B06AFF"/></linearGradient></defs>
+      </svg>
+      <div class="ring-c">
+        <b data-ar>الإباضة</b><b data-en>Ovulation</b><br/>
+        <small data-ar>اليوم ١٤ · ذروة الطاقة</small><small data-en>Day 14 · peak energy</small>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="sec wrap">
+  <div class="eyebrow rv"><span data-ar>لماذا FitGuard للنساء</span><span data-en>Why FitGuard for women</span></div>
+  <h2 class="rv"><span data-ar>تجربة كاملة، مش مجرد لون وردي</span><span data-en>A complete experience, not just a pink coat of paint</span></h2>
+  <p class="sub rv"><span data-ar>صمّمنا كل تفصيلة حوالين جسمك واحتياجك وخصوصيتك.</span><span data-en>Every detail is designed around your body, your needs, and your privacy.</span></p>
+  <div class="grid">
+    <div class="card rv">
+      <div class="ic">🩷</div>
+      <h3><span data-ar>تدريب يفهم دورتك</span><span data-en>Cycle-aware training</span></h3>
+      <p><span data-ar>شدّة أعلى وقت طاقتك، وألطف وقت ما تحتاجين راحة — متتبّع الدورة يضبط برنامجك تلقائياً.</span><span data-en>Higher intensity when your energy peaks, gentler when you need rest — the cycle tracker tunes your program automatically.</span></p>
+    </div>
+    <div class="card rv">
+      <div class="ic">🧕</div>
+      <h3><span data-ar>تمارين مناسبة ثقافياً</span><span data-en>Culturally-mindful workouts</span></h3>
+      <p><span data-ar>خيارات منزلية ومحتشمة تناسب أسلوب حياتك وقيمك، بدون أي إحراج.</span><span data-en>Home-friendly, modest options that fit your lifestyle and values — no awkwardness.</span></p>
+    </div>
+    <div class="card rv">
+      <div class="ic">🔒</div>
+      <h3><span data-ar>خصوصية كاملة</span><span data-en>Full privacy</span></h3>
+      <p><span data-ar>بياناتك لكِ وحدك — لا مشاركة، ولا صور إجبارية، وكل شيء مشفّر ومحمي.</span><span data-en>Your data is yours alone — no sharing, no mandatory photos, everything encrypted and protected.</span></p>
+    </div>
+    <div class="card rv">
+      <div class="ic">💜</div>
+      <h3><span data-ar>ثيم وتجربة لكِ</span><span data-en>A theme made for you</span></h3>
+      <p><span data-ar>واجهة أنيقة بألوان ناعمة، ومجتمع داعم من النساء يشجّعك في كل خطوة.</span><span data-en>An elegant interface in soft tones, and a supportive women's community cheering you on.</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap">
+  <div class="eyebrow rv"><span data-ar>على إيقاعك</span><span data-en>In your rhythm</span></div>
+  <h2 class="rv"><span data-ar>برنامج يتنفّس مع جسمك</span><span data-en>A program that breathes with your body</span></h2>
+  <p class="sub rv"><span data-ar>أربع مراحل، وكل مرحلة لها شدّتها المثالية.</span><span data-en>Four phases, each with its ideal intensity.</span></p>
+  <div class="phases">
+    <div class="phase rv"><div class="nm" data-ar>الحيض</div><div class="nm" data-en>Menstrual</div><div class="ds"><span data-ar>راحة وحركة خفيفة</span><span data-en>Rest &amp; gentle movement</span></div><div class="bar"><i style="width:28%"></i></div></div>
+    <div class="phase rv"><div class="nm" data-ar>الجريبية</div><div class="nm" data-en>Follicular</div><div class="ds"><span data-ar>طاقة تتصاعد</span><span data-en>Rising energy</span></div><div class="bar"><i style="width:64%"></i></div></div>
+    <div class="phase rv"><div class="nm" data-ar>الإباضة</div><div class="nm" data-en>Ovulation</div><div class="ds"><span data-ar>ذروة القوة</span><span data-en>Peak strength</span></div><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="phase rv"><div class="nm" data-ar>الأصفرية</div><div class="nm" data-en>Luteal</div><div class="ds"><span data-ar>تهدئة تدريجية</span><span data-en>Gradual wind-down</span></div><div class="bar"><i style="width:48%"></i></div></div>
+  </div>
+</section>
+
+<section class="sec wrap">
+  <div class="panel rv">
+    <h2><span data-ar>قوة… بلمسة أنوثة</span><span data-en>Strength, with a feminine touch</span></h2>
+    <p><span data-ar>صمّمنا كل تفصيلة — من الألوان للحركة — تحتفي بكِ. لأن العناية بنفسك ليست رفاهية، بل بداية كل شيء.</span><span data-en>We designed every detail — from colour to motion — to celebrate you. Because caring for yourself isn't a luxury; it's where everything begins.</span></p>
+    <div class="reassure">
+      <span class="chip"><span data-ar>🚫 بدون صور إجبارية</span><span data-en>🚫 No mandatory photos</span></span>
+      <span class="chip"><span data-ar>🔐 بياناتك مشفّرة</span><span data-en>🔐 Encrypted data</span></span>
+      <span class="chip"><span data-ar>✋ إلغاء في أي وقت</span><span data-en>✋ Cancel anytime</span></span>
+    </div>
+  </div>
+</section>
+
+<section class="final wrap">
+  <h2 class="rv"><span data-ar>ابدئي رحلتك بأمان</span><span data-en>Begin your journey, safely</span></h2>
+  <p class="rv"><span data-ar>كوني من أول النساء اللي يجرّبن FitGuard. أضيفي بريدك واحجزي مكانك.</span><span data-en>Be among the first women to try FitGuard. Add your email and claim your spot.</span></p>
+  <a class="btn btn-primary rv" href="/#join"><span data-ar>انضمي لقائمة الانتظار ←</span><span data-en>Join the waitlist →</span></a>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <p><span data-ar>صُنع بحبّ للمرأة العربية</span><span data-en>Made with love for Arab women</span> · <a href="/">FitGuard</a> · © 2026</p>
+</div></footer>
+
+<script>
+  // language toggle
+  const b=document.body, btn=document.getElementById('lng');
+  btn.onclick=()=>{ const ar=b.getAttribute('dir')==='rtl';
+    b.setAttribute('dir',ar?'ltr':'rtl'); document.documentElement.lang=ar?'en':'ar'; btn.textContent=ar?'عربي':'EN'; };
+
+  // reveal on scroll
+  const io=new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.14});
+  document.querySelectorAll('.rv').forEach((el,i)=>{ el.style.transitionDelay=(i%4*0.06)+'s'; io.observe(el); });
+
+  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  // pink cursor glow
+  if(!reduce && matchMedia('(hover:hover)').matches){
+    const cg=document.getElementById('cg'); let tx=innerWidth/2,ty=innerHeight/2,cx=tx,cy=ty,shown=false;
+    addEventListener('pointermove',e=>{ tx=e.clientX; ty=e.clientY; if(!shown){shown=true;cg.classList.add('on');} },{passive:true});
+    (function mv(){ cx+=(tx-cx)*0.15; cy+=(ty-cy)*0.15; cg.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`; requestAnimationFrame(mv); })();
+    // card tilt
+    document.querySelectorAll('.card,.phase').forEach(el=>{
+      el.addEventListener('pointermove',(e)=>{ const r=el.getBoundingClientRect();
+        const px=(e.clientX-r.left)/r.width-0.5, py=(e.clientY-r.top)/r.height-0.5;
+        el.style.transition='transform .12s ease-out';
+        el.style.transform=`perspective(820px) rotateX(${(-py*6).toFixed(2)}deg) rotateY(${(px*8).toFixed(2)}deg) translateY(-5px)`; });
+      el.addEventListener('pointerleave',()=>{ el.style.transition=''; el.style.transform=''; });
+    });
+  }
+
+  // soft drifting petals (pink + violet)
+  const cv=document.getElementById('petals');
+  if(cv && !reduce){
+    const ctx=cv.getContext('2d'); let W,H,ps; const cols=[[255,79,163],[176,106,255],[255,138,196]];
+    const size=()=>{ W=cv.width=innerWidth; H=cv.height=innerHeight;
+      const n=Math.min(54,Math.floor(W/26));
+      ps=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2.4+1,
+        vy:-(Math.random()*0.25+0.05),vx:(Math.random()-0.5)*0.3,ph:Math.random()*6.28,
+        c:cols[Math.floor(Math.random()*cols.length)],a:Math.random()*0.4+0.2})); };
+    size(); addEventListener('resize',size,{passive:true});
+    let t=0;
+    (function d(){ t+=0.016; ctx.clearRect(0,0,W,H);
+      for(const p of ps){ p.y+=p.vy; p.x+=p.vx+Math.sin(t+p.ph)*0.25;
+        if(p.y<-8){p.y=H+8;p.x=Math.random()*W;} if(p.x<-8)p.x=W+8; if(p.x>W+8)p.x=-8;
+        const tw=0.6+0.4*Math.sin(t*2+p.ph);
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7);
+        ctx.fillStyle=`rgba(${p.c[0]},${p.c[1]},${p.c[2]},${(p.a*tw).toFixed(3)})`;
+        ctx.shadowBlur=10; ctx.shadowColor=`rgba(${p.c[0]},${p.c[1]},${p.c[2]},.6)`; ctx.fill(); }
+      requestAnimationFrame(d); })();
+  }
+</script>
+</body>
+</html>
