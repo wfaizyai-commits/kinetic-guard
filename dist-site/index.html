@@ -137,7 +137,7 @@
 
   section{padding:64px 0}
   .sec-tag{font-family:var(--num);letter-spacing:3px;font-size:12px;color:var(--orange);text-transform:uppercase;margin-bottom:10px;text-align:center}
-  .sec-title{font-size:clamp(24px,3.5vw,38px);font-weight:900;text-align:center;margin-bottom:12px;line-height:1.2}
+  .sec-title{font-size:clamp(24px,3.5vw,38px);font-weight:900;text-align:center;margin-bottom:20px;line-height:1.28}
   .sec-sub{color:var(--text-2);text-align:center;max-width:600px;margin:0 auto 44px;font-weight:300}
 
   .gap{background:var(--surface);border-block:1px solid var(--border)}
@@ -438,7 +438,7 @@
   .story-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.18);transition:.4s}
   .story-dot.on{background:var(--orange);box-shadow:0 0 10px var(--orange);transform:scale(1.3)}
   /* each scene stacks in the same place; JS toggles .is-active. Image is full-bleed. */
-  .st-scene{position:absolute;inset:0;
+  .st-scene{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
     opacity:0;transform:scale(1.06);transition:opacity 1.1s ease, transform 1.4s cubic-bezier(.22,1,.36,1);
     pointer-events:none}
   .st-scene.is-active{opacity:1;transform:scale(1);pointer-events:auto}
@@ -460,7 +460,7 @@
   @media(max-width:760px){.st-text{max-width:none;text-align:center;padding:0 26px}
     .st-scene::after{background:linear-gradient(180deg, rgba(8,7,10,.5) 0%, rgba(8,7,10,.82) 55%, rgba(8,7,10,.95) 100%) !important}}
   .st-k{font-family:var(--num);letter-spacing:4px;font-size:13px;text-transform:uppercase;margin-bottom:14px;font-weight:700}
-  .st-t{font-size:clamp(28px,4.4vw,52px);font-weight:900;line-height:1.18;margin-bottom:16px}
+  .st-t{font-size:clamp(26px,3.6vw,42px);font-weight:900;line-height:1.24;margin-bottom:18px}
   .st-p{font-size:16px;color:var(--text);opacity:.82;font-weight:300;line-height:1.9;max-width:480px}
   @media(max-width:760px){.st-p{margin-inline:auto}}
   .st-p .hl,.st-t .hl{color:var(--orange);font-weight:700}
@@ -920,7 +920,7 @@ const T = {
   ar: {
     banner:"معاينة تصميم · نقدر نعدّل أي شي قبل النشر",
     navCta:"انضم للقائمة", skip:"تخطّ إلى المحتوى", emailAria:"بريدك الإلكتروني للانضمام لقائمة الانتظار", pill:"قريباً في السعودية · Q4 2026",
-    h1:'قبل التمرين — <span class="hl">نتأكد إن جسمك جاهز</span>',
+    h1:'قبل التمرين<br><span class="hl">نتأكد إن جسمك جاهز</span>',
     heroSub:"أول مدرب لياقة ذكي بالعربي يفحص جاهزيتك قبل كل تمرين، يتابع حركتك، ويصمّم برنامجك على حسب جسمك ويومك — وبأمان.",
     emailPh:"بريدك الإلكتروني", ctaBtn:"احجز مكانك 🚀",
     note:'انضم لأول <b>500</b> عضو واحصل على FitGuard Pro <b>مجاناً</b> ٣ أشهر.',
@@ -1013,7 +1013,7 @@ const T = {
   en: {
     banner:"Design preview · we can change anything before launch",
     navCta:"Join the list", skip:"Skip to content", emailAria:"Your email to join the waitlist", pill:"Coming to Saudi Arabia · Q4 2026",
-    h1:'Before you train — <span class="hl">we make sure your body\'s ready</span>',
+    h1:'Before you train<br><span class="hl">we make sure your body\'s ready</span>',
     heroSub:"The first Arabic AI fitness safety coach. It checks your readiness before every workout, watches your form, and adapts your program to your body and your day — safely.",
     emailPh:"Your email", ctaBtn:"Reserve my spot 🚀",
     note:'Join the first <b>500</b> and get FitGuard Pro <b>free</b> for 3 months.',
@@ -1433,7 +1433,7 @@ applyLang = function(l){ _origApply(l); animateHeadline(); buildMarquee(); };
     gsap.registerPlugin(window.ScrollTrigger);
 
     // 1) Smooth scroll (Lenis) ↔ ScrollTrigger sync
-    const lenis = new window.Lenis({ duration: 1.6, smoothWheel: true, wheelMultiplier: 0.9,
+    const lenis = new window.Lenis({ duration: 1.0, smoothWheel: true, wheelMultiplier: 1.0,
       easing: (t)=> 1 - Math.pow(1 - t, 3) });
     window.__lenis = lenis; // exposed for debugging
     lenis.on('scroll', window.ScrollTrigger.update);
@@ -1461,11 +1461,8 @@ applyLang = function(l){ _origApply(l); animateHeadline(); buildMarquee(); };
       gsap.to(phone, { yPercent: -8, ease:'none',
         scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:true } });
     }
-    // subtle rise on the big section titles
-    gsap.utils.toArray('.sec-title').forEach((el)=>{
-      gsap.from(el, { y:24, opacity:.6, ease:'power2.out',
-        scrollTrigger:{ trigger:el, start:'top 85%', end:'top 55%', scrub:true } });
-    });
+    // NOTE: section-title rise is handled by the CSS .reveal IntersectionObserver.
+    // A second GSAP transform here fought the same property → caused title/sub overlap.
 
     // Pinned storytelling: map scroll progress over the track → active scene
     const track = document.getElementById('storyTrack');
