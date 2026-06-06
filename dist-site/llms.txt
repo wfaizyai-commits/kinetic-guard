@@ -1,6 +1,6 @@
 # FitGuard
 
-> FitGuard is the first Arabic-language AI fitness *safety* coach. It checks a user's readiness before training and helps prevent injury — not just weight loss. Launching in Saudi Arabia in Q4 2026. Built by Laft Co.
+> FitGuard is the first Arabic-language AI fitness *safety* coach. It checks a user's readiness before training and helps prevent injury — not just weight loss. Launching in Saudi Arabia in Q4 2026. Built by Vigzag.
 
 ## What it is
 - An Arabic-first (also English) fitness app focused on safety and injury prevention.
