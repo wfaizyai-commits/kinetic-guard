@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>الصفحة غير موجودة · FitGuard</title>
+<meta name="robots" content="noindex"/>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+  :root{--bg:#0C0A08;--orange:#FF6B00;--ember:#FFC15E;--text:#F5EFE8;--text-2:rgba(245,239,232,.66);--border:rgba(255,170,110,.14)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh;display:grid;place-items:center;text-align:center;padding:24px;
+    background-image:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(255,107,0,.12),transparent 60%)}
+  body[dir=ltr]{font-family:'Inter',sans-serif}
+  .mark{width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,#FF6B00,#FFC15E);display:grid;place-items:center;font-size:30px;margin:0 auto 24px}
+  .code{font-size:clamp(64px,14vw,120px);font-weight:900;line-height:1;background:linear-gradient(120deg,#FF6B00,#FFC15E);-webkit-background-clip:text;background-clip:text;color:transparent}
+  h1{font-size:clamp(20px,3vw,28px);font-weight:900;margin:10px 0 8px}
+  p{color:var(--text-2);max-width:420px;margin:0 auto 28px;line-height:1.8}
+  .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;padding:13px 26px;border-radius:999px;text-decoration:none;cursor:pointer;transition:transform .25s,box-shadow .25s}
+  .btn-primary{background:linear-gradient(135deg,#FF6B00,#FFC15E);color:#1a0f04;box-shadow:0 12px 30px rgba(255,107,0,.32)}
+  .btn-primary:hover{transform:translateY(-3px)}
+  .btn-ghost{border:1px solid var(--border);color:var(--text)}
+  .btn-ghost:hover{transform:translateY(-3px);border-color:var(--orange)}
+  .lng{position:fixed;top:18px;inset-inline-end:18px;font-size:13px;color:var(--text-2);border:1px solid var(--border);padding:7px 14px;border-radius:999px;cursor:pointer;background:none;font-family:inherit}
+  [data-en]{display:none}
+  body[dir=ltr] [data-ar]{display:none}
+  body[dir=ltr] [data-en]{display:revert}
+</style>
+</head>
+<body dir="rtl">
+<button class="lng" id="lng">EN</button>
+<div>
+  <div class="mark" aria-hidden="true">🛡</div>
+  <div class="code">404</div>
+  <h1><span data-ar>الصفحة مش موجودة</span><span data-en>Page not found</span></h1>
+  <p>
+    <span data-ar>يمكن الرابط قديم أو اتغيّر. رجّعك للصفحة الرئيسية أو احجز مكانك في قائمة الانتظار.</span>
+    <span data-en>The link may be old or changed. Head back home, or claim your spot on the waitlist.</span>
+  </p>
+  <div class="row">
+    <a class="btn btn-primary" href="/"><span data-ar>الصفحة الرئيسية</span><span data-en>Home</span></a>
+    <a class="btn btn-ghost" href="/#join"><span data-ar>انضم لقائمة الانتظار</span><span data-en>Join the waitlist</span></a>
+  </div>
+</div>
+<script>
+  const b=document.body,btn=document.getElementById('lng');
+  btn.onclick=()=>{const ar=b.getAttribute('dir')==='rtl';b.setAttribute('dir',ar?'ltr':'rtl');document.documentElement.lang=ar?'en':'ar';btn.textContent=ar?'عربي':'EN';};
+</script>
+</body>
+</html>

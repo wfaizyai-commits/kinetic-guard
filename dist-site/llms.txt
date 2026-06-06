@@ -1,0 +1,29 @@
+# FitGuard
+
+> FitGuard is the first Arabic-language AI fitness *safety* coach. It checks a user's readiness before training and helps prevent injury — not just weight loss. Launching in Saudi Arabia in Q4 2026. Built by Laft Co.
+
+## What it is
+- An Arabic-first (also English) fitness app focused on safety and injury prevention.
+- A specialized AI coach that analyzes each person individually: it answers questions about their training and nutrition, and — uniquely — checks whether an exercise is safe for them *today* based on their readiness score and injury history before giving advice, and explains the reasoning behind every recommendation.
+- Adapts training to daily readiness; logs workouts via an AI exercise scanner (photograph a gym machine or cardio screen and it identifies and logs the exercise).
+- Emphasizes data privacy (PDPL-compliant); culturally-mindful (halal nutrition, Ramadan mode, prayer-time awareness).
+
+## For women
+- A cycle-aware program that adjusts intensity across the menstrual cycle (higher when energy peaks, gentler when needed).
+- Culturally-mindful, modest, home-friendly workouts; no mandatory photos; encrypted data.
+- Dedicated page: https://www.fitguardapp.com/women
+
+## What makes it different
+- Safety-first positioning (readiness + injury prevention), where most competitors lead with weight loss or workout variety.
+- Arabic-native and culturally fluent for the Gulf market.
+- Explainable, context-aware AI coaching (knows your readiness, history, cycle, and Ramadan/prayer schedule).
+
+## Status
+- Pre-launch waitlist; early access via TestFlight (iOS). Target launch: KSA, Q4 2026.
+
+## Links
+- Home: https://www.fitguardapp.com/
+- For women: https://www.fitguardapp.com/women
+- Privacy: https://www.fitguardapp.com/privacy
+- Terms: https://www.fitguardapp.com/terms
+- Contact: hello@fitguardapp.com
