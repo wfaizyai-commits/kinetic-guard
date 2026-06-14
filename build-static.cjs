@@ -73,6 +73,11 @@ for (const [srcName, outName] of PAGES) {
   html = html.replace(/data-i-al="([a-zA-Z0-9]+)"/g, (m, key) =>
     ar[key] != null ? `${m} aria-label="${attrEsc(ar[key])}"` : m);
 
+  // Vercel zero-config treats a `public/` dir as the output root, which would
+  // hide index.html. So in the deployed output, reference images at exercises/
+  // (copied below) instead of public/exercises/. Source keeps public/ for local preview.
+  html = html.replace(/public\/exercises\//g, 'exercises/');
+
   fs.writeFileSync(path.join(OUTDIR, outName), html);
   console.log(`✓ ${srcName} → dist-site/${outName} — ${injected} strings` +
     (missing.size ? ` (${missing.size} keys missing: ${[...missing].slice(0, 5).join(', ')}…)` : ''));
@@ -90,10 +95,12 @@ const copyDir = (from, to) => {
   }
 };
 copyDir(path.join(ROOT, 'fonts'), path.join(OUTDIR, 'fonts'));
-// hero exercise thumbnails (referenced as public/exercises/*_sm.jpg)
-const exDirOut = path.join(OUTDIR, 'public', 'exercises');
+// hero exercise thumbnails → dist-site/exercises/ (NOT public/ — see rewrite above)
+const exDirOut = path.join(OUTDIR, 'exercises');
 fs.mkdirSync(exDirOut, { recursive: true });
 for (const f of fs.readdirSync(path.join(ROOT, 'public', 'exercises'))) {
   if (f.endsWith('_sm.jpg')) fs.copyFileSync(path.join(ROOT, 'public', 'exercises', f), path.join(exDirOut, f));
 }
-console.log('✓ assets copied: site.css, site.js, favicon, fonts/, public/exercises/*_sm.jpg');
+// Remove any stale public/ dir in the output (it would override the site root on Vercel)
+fs.rmSync(path.join(OUTDIR, 'public'), { recursive: true, force: true });
+console.log('✓ assets copied: site.css, site.js, favicon, fonts/, exercises/*_sm.jpg (no public/)');
