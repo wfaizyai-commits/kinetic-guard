@@ -3,306 +3,151 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>FitGuard للنساء · For Her</title>
-<link rel="canonical" href="https://www.fitguardapp.com/women"/>
-<meta property="og:url" content="https://www.fitguardapp.com/women"/>
-<meta name="description" content="FitGuard للنساء — تجربة لياقة عربية تفهم دورتك، تحترم خصوصيتك، وتتكيّف مع طاقتك. A women's fitness experience that understands your cycle and respects your privacy."/>
-<meta name="theme-color" content="#0b0710"/>
-<meta property="og:title" content="FitGuard للنساء · For Her"/>
-<meta property="og:description" content="تتمرّني بأمان، على إيقاع جسمك — Train safely, in tune with your body."/>
+<title>FitGuard للنساء — لياقة آمنة تفهم دورتك وتحترم خصوصيتك</title>
+<meta name="description" content="FitGuard للنساء: أول تجربة لياقة عربية تفهم دورتك الشهرية، تتكيّف مع طاقتك، وتحترم خصوصيتك — بدون صور إجبارية. انضمي لقائمة الانتظار."/>
 <meta property="og:type" content="website"/>
+<meta property="og:site_name" content="FitGuard"/>
+<meta property="og:title" content="FitGuard للنساء — لياقة آمنة على إيقاع جسمك"/>
+<meta property="og:description" content="تفهم دورتك، تتكيّف مع طاقتك، وتحترم خصوصيتك. قريباً في السعودية."/>
+<meta property="og:image" content="https://www.fitguardapp.com/og-image.png"/>
+<meta property="og:url" content="https://www.fitguardapp.com/women"/>
+<meta property="og:locale" content="ar_SA"/>
+<meta property="og:locale:alternate" content="en_US"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="canonical" href="https://www.fitguardapp.com/women"/>
+<link rel="alternate" hreflang="ar-SA" href="https://www.fitguardapp.com/women"/>
+<link rel="alternate" hreflang="x-default" href="https://www.fitguardapp.com/women"/>
+<meta name="theme-color" content="#0C0A08"/>
 <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet"/>
-<style>
-  :root{
-    --bg:#0b0710; --surface:rgba(255,138,196,.05); --surface-2:rgba(255,138,196,.09);
-    --pink:#FF4FA3; --pink-2:#FF8AC4; --violet:#B06AFF; --violet-2:#C891FF;
-    --text:#F6EEF4; --text-2:rgba(246,238,244,.72); --text-3:rgba(246,238,244,.45);
-    --border:rgba(255,138,196,.16); --border-hi:rgba(255,138,196,.42);
-    --grad:linear-gradient(100deg,#FF4FA3,#B06AFF); --num:'Inter',sans-serif;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;line-height:1.8;overflow-x:hidden;
-    background-image:
-      radial-gradient(ellipse 70% 50% at 85% -5%,rgba(255,79,163,.16),transparent 55%),
-      radial-gradient(ellipse 60% 50% at 10% 8%,rgba(176,106,255,.14),transparent 55%);}
-  body[dir=ltr]{font-family:'Inter',sans-serif;line-height:1.7}
-  .wrap{max-width:1080px;margin:auto;padding:0 24px}
-  a{color:inherit}
-  [data-en]{display:none}
-  body[dir=ltr] [data-ar]{display:none}
-  body[dir=ltr] [data-en]{display:revert}
-
-  /* soft drifting petals */
-  #petals{position:fixed;inset:0;z-index:0;pointer-events:none}
-  @media (prefers-reduced-motion:reduce){#petals{display:none}}
-  #cg{position:fixed;top:0;left:0;width:340px;height:340px;border-radius:50%;z-index:0;pointer-events:none;
-    transform:translate(-50%,-50%);opacity:0;transition:opacity .5s;mix-blend-mode:screen;
-    background:radial-gradient(circle,rgba(255,79,163,.16),transparent 66%)}
-  #cg.on{opacity:1}
-  @media(hover:none),(prefers-reduced-motion:reduce){#cg{display:none}}
-  main,header,footer{position:relative;z-index:1}
-
-  /* top bar */
-  .top{display:flex;align-items:center;justify-content:space-between;padding:16px 0;position:sticky;top:0;z-index:30;
-    backdrop-filter:blur(12px);background:rgba(11,7,16,.6);border-bottom:1px solid var(--border)}
-  .logo{display:flex;align-items:center;gap:9px;font-weight:900;font-size:19px;text-decoration:none;color:var(--text)}
-  .logo .mark{width:30px;height:30px;border-radius:9px;background:var(--grad);display:grid;place-items:center;font-size:15px}
-  .logo b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .top-r{display:flex;align-items:center;gap:10px}
-  .lng,.home{font-size:13px;color:var(--text-2);border:1px solid var(--border);padding:7px 14px;border-radius:999px;
-    cursor:pointer;background:none;font-family:inherit;text-decoration:none;transition:.25s}
-  .lng:hover,.home:hover{border-color:var(--border-hi);color:var(--text);transform:translateY(-1px)}
-
-  /* hero */
-  .hero{padding:70px 0 56px;display:grid;grid-template-columns:1.1fr .9fr;gap:46px;align-items:center}
-  @media(max-width:840px){.hero{grid-template-columns:1fr;text-align:center;padding:48px 0 36px}}
-  .badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--pink-2);
-    border:1px solid var(--border-hi);background:rgba(255,79,163,.1);padding:7px 16px;border-radius:999px;margin-bottom:22px}
-  h1{font-size:clamp(34px,6vw,62px);font-weight:900;line-height:1.1;letter-spacing:-.5px;margin-bottom:18px}
-  h1 .hl{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .lead{font-size:18px;color:var(--text-2);font-weight:400;max-width:540px;margin-bottom:30px}
-  @media(max-width:840px){.lead{margin-inline:auto}}
-  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
-  @media(max-width:840px){.cta-row{justify-content:center}}
-  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;padding:14px 26px;border-radius:999px;
-    text-decoration:none;cursor:pointer;border:0;font-family:inherit;transition:transform .25s,box-shadow .25s}
-  .btn-primary{background:var(--grad);color:#fff;box-shadow:0 12px 34px rgba(255,79,163,.34)}
-  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 46px rgba(255,79,163,.5)}
-  .btn-ghost{border:1px solid var(--border-hi);color:var(--text);background:rgba(255,138,196,.06)}
-  .btn-ghost:hover{transform:translateY(-3px);background:rgba(255,138,196,.12)}
-
-  /* hero ring visual */
-  .ring-wrap{display:grid;place-items:center}
-  .ring-card{position:relative;width:min(380px,86vw);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;
-    background:radial-gradient(circle at 50% 38%,rgba(255,79,163,.3),rgba(176,106,255,.14) 55%,transparent 72%);
-    box-shadow:0 30px 90px rgba(255,79,163,.22),inset 0 0 80px rgba(255,79,163,.1);
-    animation:ring-breathe 6s ease-in-out infinite}
-  @keyframes ring-breathe{0%,100%{transform:scale(1);box-shadow:0 30px 90px rgba(255,79,163,.2),inset 0 0 80px rgba(255,79,163,.08)}
-    50%{transform:scale(1.035);box-shadow:0 36px 110px rgba(255,79,163,.34),inset 0 0 90px rgba(255,79,163,.14)}}
-  .ring-card::before{content:'';position:absolute;inset:-2px;border-radius:50%;padding:2px;pointer-events:none;
-    background:conic-gradient(from 0deg,#FF4FA3,#B06AFF,#FF8AC4,#FF4FA3);
-    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
-    opacity:.6;animation:ring-spin 14s linear infinite}
-  @keyframes ring-spin{to{transform:rotate(360deg)}}
-  .ring-card svg{width:74%;height:74%}
-  @media (prefers-reduced-motion:reduce){.ring-card,.ring-card::before{animation:none}}
-  .ring-c{position:absolute;text-align:center}
-  .ring-c b{font-size:24px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .ring-c small{color:var(--text-2);font-size:13px}
-
-  /* section heading */
-  .sec{padding:54px 0}
-  .eyebrow{font-family:var(--num);letter-spacing:3px;font-size:12px;text-transform:uppercase;color:var(--pink-2);
-    text-align:center;margin-bottom:12px;font-weight:700}
-  .sec h2{font-size:clamp(24px,3.6vw,38px);font-weight:900;text-align:center;line-height:1.3;margin-bottom:14px}
-  .sec .sub{color:var(--text-2);text-align:center;max-width:600px;margin:0 auto 40px}
-
-  /* pillars */
-  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-  @media(max-width:680px){.grid{grid-template-columns:1fr}}
-  .card{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px 24px;
-    transition:transform .35s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .35s;overflow:hidden}
-  .card:hover{border-color:var(--border-hi);box-shadow:0 20px 48px rgba(0,0,0,.45),0 0 34px rgba(255,79,163,.12)}
-  .card .ic{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;font-size:25px;margin-bottom:16px;
-    background:radial-gradient(circle,rgba(255,79,163,.18),rgba(176,106,255,.06));border:1px solid var(--border-hi)}
-  .card h3{font-size:18px;font-weight:800;margin-bottom:8px}
-  .card p{font-size:14.5px;color:var(--text-2)}
-
-  /* cycle phases */
-  .phases{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-  @media(max-width:680px){.phases{grid-template-columns:1fr 1fr}}
-  .phase{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:22px 16px;text-align:center;
-    transition:transform .3s,border-color .3s}
-  .phase:hover{transform:translateY(-5px);border-color:var(--border-hi)}
-  .phase .nm{font-weight:800;font-size:15px;margin-bottom:6px}
-  .phase .ds{font-size:12.5px;color:var(--text-2);min-height:38px}
-  .bar{height:6px;border-radius:6px;margin-top:14px;background:rgba(255,138,196,.12);overflow:hidden}
-  .bar i{display:block;height:100%;border-radius:6px;background:var(--grad)}
-
-  /* elegance panel */
-  .panel{position:relative;border-radius:26px;padding:54px 40px;text-align:center;overflow:hidden;
-    background:linear-gradient(120deg,rgba(255,79,163,.14),rgba(176,106,255,.12));border:1px solid var(--border-hi)}
-  .panel h2{font-size:clamp(24px,3.6vw,40px);font-weight:900;margin-bottom:14px}
-  .panel p{color:var(--text);opacity:.9;max-width:620px;margin:0 auto;font-size:16.5px}
-  .reassure{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:30px}
-  .chip{font-size:13px;font-weight:700;color:var(--text);background:rgba(255,138,196,.1);border:1px solid var(--border);
-    padding:9px 16px;border-radius:999px}
-
-  /* final */
-  .final{text-align:center;padding:66px 0}
-  .final h2{font-size:clamp(26px,4vw,44px);font-weight:900;margin-bottom:14px}
-  .final p{color:var(--text-2);max-width:520px;margin:0 auto 28px}
-
-  /* footer */
-  footer{border-top:1px solid var(--border);padding:30px 0;text-align:center;color:var(--text-3);font-size:13px}
-  footer a{color:var(--pink-2);text-decoration:none}
-
-  /* entrance reveal */
-  .rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
-  .rv.in{opacity:1;transform:none}
-  /* hero is above the fold → animate on load, never gated on scroll */
-  .hero-in{animation:hero-rise .85s cubic-bezier(.22,1,.36,1) both}
-  @keyframes hero-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-  @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.hero-in{animation:none}}
-</style>
+<link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+<script defer data-domain="fitguardapp.com" src="https://plausible.io/js/script.js"></script>
+<script>window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}</script>
+<link rel="preload" href="fonts/ibm-plex-sans-arabic-arabic-700-normal.woff2" as="font" type="font/woff2" crossorigin/>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<link rel="stylesheet" href="site.css"/>
 </head>
-<body dir="rtl">
-<canvas id="petals"></canvas>
-<div id="cg"></div>
+<body dir="rtl" class="wm-theme">
 
-<div class="top"><div class="wrap" style="display:flex;align-items:center;justify-content:space-between;padding:0">
-  <a class="logo" href="/"><span class="mark" aria-hidden="true">🛡</span><span>Fit<b>Guard</b></span></a>
-  <div class="top-r">
-    <a class="home" href="/"><span data-ar>← الرئيسية</span><span data-en>Home →</span></a>
-    <button class="lng" id="lng">EN</button>
-  </div>
-</div></div>
 
-<main>
-<header class="hero wrap">
-  <div class="hero-in">
-    <span class="badge">🌸 <span data-ar>مصمّم لكِ</span><span data-en>Made for her</span></span>
-    <h1><span data-ar>تتمرّني بأمان، <span class="hl">على إيقاع جسمك</span></span><span data-en>Train safely, <span class="hl">in tune with your body</span></span></h1>
-    <p class="lead">
-      <span data-ar>FitGuard للنساء — أول تجربة لياقة عربية تفهم دورتك، تحترم خصوصيتك، وتتكيّف مع طاقتك يوم بيوم.</span>
-      <span data-en>FitGuard for women — the first Arabic fitness experience that understands your cycle, respects your privacy, and adapts to your energy day by day.</span>
-    </p>
-    <div class="cta-row">
-      <a class="btn btn-primary" href="/#join"><span data-ar>انضمي لقائمة الانتظار</span><span data-en>Join the waitlist</span></a>
-      <a class="btn btn-ghost" href="/"><span data-ar>تصفّحي التطبيق</span><span data-en>Explore the app</span></a>
-    </div>
-  </div>
-  <div class="ring-wrap">
-    <div class="ring-card">
-      <svg viewBox="0 0 150 150" aria-hidden="true">
-        <circle cx="75" cy="75" r="62" fill="none" stroke="rgba(255,138,196,.16)" stroke-width="9"/>
-        <circle cx="75" cy="75" r="62" fill="none" stroke="url(#pg)" stroke-width="9" stroke-linecap="round"
-          stroke-dasharray="389" stroke-dashoffset="150" transform="rotate(-90 75 75)"/>
-        <defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#FF4FA3"/><stop offset="1" stop-color="#B06AFF"/></linearGradient></defs>
-      </svg>
-      <div class="ring-c">
-        <b data-ar>الإباضة</b><b data-en>Ovulation</b><br/>
-        <small data-ar>اليوم ١٤ · ذروة الطاقة</small><small data-en>Day 14 · peak energy</small>
-      </div>
-    </div>
-  </div>
-</header>
+<!-- ── Custom icon set: stroke-based, single weight, currentColor. Replaces emoji-as-UI. ── -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="ic-shield" viewBox="0 0 24 24"><path d="M12 2.5l7.5 2.8v5.7c0 4.8-3.2 8.4-7.5 9.8-4.3-1.4-7.5-5-7.5-9.8V5.3z"/><path d="M8.7 11.8l2.4 2.4 4.4-4.9"/></symbol>
+<symbol id="ic-flame" viewBox="0 0 24 24"><path d="M12 3c1.6 3 4.6 4.3 4.6 8a4.6 4.6 0 1 1-9.2 0c0-1.8.9-3 1.7-3.8.4 1 .9 1.5 1.7 1.7C11.4 7 10.6 5 12 3z"/></symbol>
+<symbol id="ic-bolt" viewBox="0 0 24 24"><path d="M13 2 4.5 13H11l-1 9 9-12H12z"/></symbol>
+<symbol id="ic-medal" viewBox="0 0 24 24"><path d="M8.6 9.4 5.8 3M15.4 9.4 18.2 3"/><circle cx="12" cy="14.5" r="5.2"/><path d="M10.2 14.4l1.3 1.3 2.4-2.7"/></symbol>
+<symbol id="ic-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6z"/><path d="M19 3.5l.5 1.6L21 5.6l-1.5.5L19 7.7"/></symbol>
+<symbol id="ic-chat" viewBox="0 0 24 24"><path d="M20 5H4v11h4v3l4-3h8z"/><path d="M8.5 10.5h7M8.5 13h4"/></symbol>
+<symbol id="ic-chart" viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="M7.5 15l3-3.5 3 2 4-5.5"/></symbol>
+<symbol id="ic-lock" viewBox="0 0 24 24"><rect x="5.5" y="11" width="13" height="9" rx="2"/><path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/><path d="M12 15v2"/></symbol>
+<symbol id="ic-moon" viewBox="0 0 24 24"><path d="M20 14.7A8 8 0 1 1 9.3 4 6.6 6.6 0 0 0 20 14.7z"/></symbol>
+<symbol id="ic-mosque" viewBox="0 0 24 24"><path d="M3.5 20h17"/><path d="M5.5 20v-7a6.5 6.5 0 0 1 13 0v7"/><path d="M12 3.2c-1.4 1.2-1.4 2.8 0 3.6"/><path d="M8 20v-9M16 20v-9"/></symbol>
+<symbol id="ic-female" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M12 13v8M8.5 18h7"/></symbol>
+<symbol id="ic-camera" viewBox="0 0 24 24"><path d="M4 8.5h3.5L9 6.5h6L16.5 8.5H20v10.5H4z"/><circle cx="12" cy="13.5" r="3.4"/></symbol>
+<symbol id="ic-bandage" viewBox="0 0 24 24"><rect x="3.8" y="9" width="16.4" height="6" rx="3" transform="rotate(45 12 12)"/><path d="M11 11h.01M13 13h.01M11.4 13.6h.01M12.6 10.4h.01"/></symbol>
+<symbol id="ic-runner" viewBox="0 0 24 24"><circle cx="14" cy="5" r="1.8"/><path d="M13.5 9l-3.5 2.5 2.5 3-1.5 4.5"/><path d="M12.5 14.5l-4-1M13.5 9l3.5 1 1.5 3.5"/></symbol>
+<symbol id="ic-heart" viewBox="0 0 24 24"><path d="M3.5 11h3l1.5-3 2.5 6 1.6-3.4h2.4"/><path d="M16 6a3.6 3.6 0 0 1 4 3.6c0 4.4-8 9.4-8 9.4s-1.7-1-3.6-2.6"/></symbol>
+<symbol id="ic-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+<symbol id="ic-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="ic-scan" viewBox="0 0 24 24"><path d="M4 8V6a2 2 0 0 1 2-2h2M20 8V6a2 2 0 0 0-2-2h-2M4 16v2a2 2 0 0 0 2 2h2M20 16v2a2 2 0 0 1-2 2h-2"/><path d="M7 12h10"/></symbol>
+<symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.5V12l3 1.8"/></symbol>
+<symbol id="ic-dumbbell" viewBox="0 0 24 24"><path d="M3 9.5v5M6 7.5v9M18 7.5v9M21 9.5v5M6 12h12"/></symbol>
+<symbol id="ic-gift" viewBox="0 0 24 24"><rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M4 13h16M12 9v11"/><path d="M12 9C12 6 10 5 8.5 5.6 7 6.2 7.6 9 12 9zM12 9c0-3 2-4 3.5-3.4C17 6.2 16.4 9 12 9z"/></symbol>
+<symbol id="ic-x" viewBox="0 0 24 24"><path d="M4.5 4.5l15 15M19.5 4.5l-15 15"/></symbol>
+<symbol id="ic-instagram" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.2 6.8h.01"/></symbol>
+<symbol id="ic-tiktok" viewBox="0 0 24 24"><path d="M14 4v9.5a4.5 4.5 0 1 1-4.5-4.5"/><path d="M14 5.5c.7 2.1 2.4 3.4 5 3.6"/></symbol>
+<symbol id="ic-snapchat" viewBox="0 0 24 24"><path d="M12 4.2c2.7 0 4.3 1.9 4.3 4.4 0 .8 0 1.6.2 2.2.6 1.5 1.9 2.3 3.2 2.7-.5.9-1.7 1.3-2.7 1.5-.2.6-.3 1.1-.7 1.1-.5 0-1.1-.25-2.1-.25-.8 0-1.3 1.35-2.2 1.35s-1.4-1.35-2.2-1.35c-1 0-1.6.25-2.1.25-.4 0-.5-.5-.7-1.1-1-.2-2.2-.6-2.7-1.5 1.3-.4 2.6-1.2 3.2-2.7.2-.6.2-1.4.2-2.2 0-2.5 1.6-4.4 4.3-4.4z"/></symbol>
+</defs></svg>
 
-<section class="sec wrap">
-  <div class="eyebrow rv"><span data-ar>لماذا FitGuard للنساء</span><span data-en>Why FitGuard for women</span></div>
-  <h2 class="rv"><span data-ar>تجربة كاملة، مش مجرد لون وردي</span><span data-en>A complete experience, not just a pink coat of paint</span></h2>
-  <p class="sub rv"><span data-ar>صمّمنا كل تفصيلة حوالين جسمك واحتياجك وخصوصيتك.</span><span data-en>Every detail is designed around your body, your needs, and your privacy.</span></p>
-  <div class="grid">
-    <div class="card rv">
-      <div class="ic">🩷</div>
-      <h3><span data-ar>تدريب يفهم دورتك</span><span data-en>Cycle-aware training</span></h3>
-      <p><span data-ar>شدّة أعلى وقت طاقتك، وألطف وقت ما تحتاجين راحة — متتبّع الدورة يضبط برنامجك تلقائياً.</span><span data-en>Higher intensity when your energy peaks, gentler when you need rest — the cycle tracker tunes your program automatically.</span></p>
-    </div>
-    <div class="card rv">
-      <div class="ic">🧕</div>
-      <h3><span data-ar>تمارين مناسبة ثقافياً</span><span data-en>Culturally-mindful workouts</span></h3>
-      <p><span data-ar>خيارات منزلية ومحتشمة تناسب أسلوب حياتك وقيمك، بدون أي إحراج.</span><span data-en>Home-friendly, modest options that fit your lifestyle and values — no awkwardness.</span></p>
-    </div>
-    <div class="card rv">
-      <div class="ic">🔒</div>
-      <h3><span data-ar>خصوصية كاملة</span><span data-en>Full privacy</span></h3>
-      <p><span data-ar>بياناتك لكِ وحدك — لا مشاركة، ولا صور إجبارية، وكل شيء مشفّر ومحمي.</span><span data-en>Your data is yours alone — no sharing, no mandatory photos, everything encrypted and protected.</span></p>
-    </div>
-    <div class="card rv">
-      <div class="ic">💜</div>
-      <h3><span data-ar>ثيم وتجربة لكِ</span><span data-en>A theme made for you</span></h3>
-      <p><span data-ar>واجهة أنيقة بألوان ناعمة، ومجتمع داعم من النساء يشجّعك في كل خطوة.</span><span data-en>An elegant interface in soft tones, and a supportive women's community cheering you on.</span></p>
-    </div>
+<div id="colorwash"></div>
+<canvas id="globalParticles"></canvas>
+<div id="cursorGlow"></div>
+<div class="scroll-prog" id="scrollProg"></div>
+<a class="skip" href="#main" data-i="skip">تخطّ إلى المحتوى</a>
+<nav aria-label="FitGuard"><div class="wrap">
+  <div class="logo"><span class="mark" aria-hidden="true"><svg class="icon"><use href="#ic-shield"/></svg></span><span>Fit<b>Guard</b></span></div>
+  <div class="nav-r">
+    <a class="nav-link" href="features.html" data-i="navFeat">المميزات</a>
+    <a class="nav-link" href="academy.html" aria-current="page" data-i="navAcad">الأكاديمية</a>
+    <a class="nav-women" href="women.html" aria-current="page"><svg class="icon icon-flip"><use href="#ic-female"/></svg> <span data-i="navWomen">للنساء</span></a>
+    <button class="lang-btn" id="langToggle" aria-label="Switch language / تبديل اللغة">EN</button>
+    <button class="nav-cta" data-i="navCta" onclick="document.getElementById('join').scrollIntoView()">انضم للقائمة</button>
   </div>
-</section>
+</div></nav>
 
-<section class="sec wrap">
-  <div class="eyebrow rv"><span data-ar>على إيقاعك</span><span data-en>In your rhythm</span></div>
-  <h2 class="rv"><span data-ar>برنامج يتنفّس مع جسمك</span><span data-en>A program that breathes with your body</span></h2>
-  <p class="sub rv"><span data-ar>أربع مراحل، وكل مرحلة لها شدّتها المثالية.</span><span data-en>Four phases, each with its ideal intensity.</span></p>
-  <div class="phases">
-    <div class="phase rv"><div class="nm" data-ar>الحيض</div><div class="nm" data-en>Menstrual</div><div class="ds"><span data-ar>راحة وحركة خفيفة</span><span data-en>Rest &amp; gentle movement</span></div><div class="bar"><i style="width:28%"></i></div></div>
-    <div class="phase rv"><div class="nm" data-ar>الجريبية</div><div class="nm" data-en>Follicular</div><div class="ds"><span data-ar>طاقة تتصاعد</span><span data-en>Rising energy</span></div><div class="bar"><i style="width:64%"></i></div></div>
-    <div class="phase rv"><div class="nm" data-ar>الإباضة</div><div class="nm" data-en>Ovulation</div><div class="ds"><span data-ar>ذروة القوة</span><span data-en>Peak strength</span></div><div class="bar"><i style="width:100%"></i></div></div>
-    <div class="phase rv"><div class="nm" data-ar>الأصفرية</div><div class="nm" data-en>Luteal</div><div class="ds"><span data-ar>تهدئة تدريجية</span><span data-en>Gradual wind-down</span></div><div class="bar"><i style="width:48%"></i></div></div>
+<main id="main">
+<header class="page-hero"><div class="wrap">
+  <div class="wm-brand reveal" style="justify-content:center">
+    <span class="wm-mark" aria-hidden="true"><svg class="icon"><use href="#ic-female"/></svg></span>
+    <span class="wm-logo">Fit<b>Guard</b></span>
+    <span class="wm-her"><span class="lang-ar">للنساء</span><span class="lang-en" lang="en">For Her</span></span>
   </div>
-</section>
-
-<section class="sec wrap">
-  <div class="panel rv">
-    <h2><span data-ar>قوة… بلمسة أنوثة</span><span data-en>Strength, with a feminine touch</span></h2>
-    <p><span data-ar>صمّمنا كل تفصيلة — من الألوان للحركة — تحتفي بكِ. لأن العناية بنفسك ليست رفاهية، بل بداية كل شيء.</span><span data-en>We designed every detail — from colour to motion — to celebrate you. Because caring for yourself isn't a luxury; it's where everything begins.</span></p>
-    <div class="reassure">
-      <span class="chip"><span data-ar>🚫 بدون صور إجبارية</span><span data-en>🚫 No mandatory photos</span></span>
-      <span class="chip"><span data-ar>🔐 بياناتك مشفّرة</span><span data-en>🔐 Encrypted data</span></span>
-      <span class="chip"><span data-ar>✋ إلغاء في أي وقت</span><span data-en>✋ Cancel anytime</span></span>
-    </div>
+  <h1 class="reveal d1"><span class="lang-ar">تتمرّني بأمان، <span class="hl">على إيقاع جسمك</span></span><span class="lang-en" lang="en">Train safely, <span class="hl">in tune with your body</span></span></h1>
+  <p class="sec-sub reveal d2"><span class="lang-ar">أول تجربة لياقة عربية تفهم دورتك، تحترم خصوصيتك، وتتكيّف مع طاقتك يوماً بيوم.</span><span class="lang-en" lang="en">The first Arabic fitness experience that understands your cycle, respects your privacy, and adapts to your energy day by day.</span></p>
+  <div class="reveal d3" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px">
+    <a class="nav-cta" href="/#join" style="text-decoration:none"><span class="lang-ar">انضمي لقائمة الانتظار</span><span class="lang-en" lang="en">Join the waitlist</span></a>
   </div>
-</section>
+</div></header>
 
-<section class="final wrap">
-  <h2 class="rv"><span data-ar>ابدئي رحلتك بأمان</span><span data-en>Begin your journey, safely</span></h2>
-  <p class="rv"><span data-ar>كوني من أول النساء اللي يجرّبن FitGuard. أضيفي بريدك واحجزي مكانك.</span><span data-en>Be among the first women to try FitGuard. Add your email and claim your spot.</span></p>
-  <a class="btn btn-primary rv" href="/#join"><span data-ar>انضمي لقائمة الانتظار ←</span><span data-en>Join the waitlist →</span></a>
-</section>
+<section><div class="wrap">
+  <div class="sec-tag reveal" style="color:#C891FF"><span class="lang-ar">لماذا FitGuard للنساء</span><span class="lang-en" lang="en">Why FitGuard for women</span></div>
+  <div class="sec-title reveal d1"><span class="lang-ar">تجربة كاملة، مش مجرد لون وردي</span><span class="lang-en" lang="en">A complete experience, not just a pink coat of paint</span></div>
+  <p class="sec-sub reveal d2"><span class="lang-ar">صمّمنا كل تفصيلة حوالين جسمك واحتياجك وخصوصيتك.</span><span class="lang-en" lang="en">Every detail is designed around your body, your needs, and your privacy.</span></p>
+  <div class="trust-grid">
+    <div class="tc reveal d1"><div class="tc-ic"><svg class="icon"><use href="#ic-heart"/></svg></div>
+      <h3><span class="lang-ar">تدريب يفهم دورتك</span><span class="lang-en" lang="en">Cycle-aware training</span></h3>
+      <p><span class="lang-ar">شدّة أعلى وقت طاقتك، وألطف وقت ما تحتاجين راحة — متتبّع الدورة يضبط برنامجك تلقائياً.</span><span class="lang-en" lang="en">Higher intensity when your energy peaks, gentler when you need rest — the cycle tracker tunes your program automatically.</span></p></div>
+    <div class="tc reveal d2"><div class="tc-ic"><svg class="icon"><use href="#ic-moon"/></svg></div>
+      <h3><span class="lang-ar">تمارين مناسبة ثقافياً</span><span class="lang-en" lang="en">Culturally-mindful workouts</span></h3>
+      <p><span class="lang-ar">خيارات منزلية ومحتشمة تناسب أسلوب حياتك وقيمك، بدون أي إحراج.</span><span class="lang-en" lang="en">Home-friendly, modest options that fit your lifestyle and values — no awkwardness.</span></p></div>
+    <div class="tc reveal d3"><div class="tc-ic"><svg class="icon"><use href="#ic-lock"/></svg></div>
+      <h3><span class="lang-ar">خصوصية كاملة</span><span class="lang-en" lang="en">Full privacy</span></h3>
+      <p><span class="lang-ar">بياناتك لكِ وحدك — لا مشاركة، ولا صور إجبارية، وكل شيء مشفّر ومحمي.</span><span class="lang-en" lang="en">Your data is yours alone — no sharing, no mandatory photos, everything encrypted and protected.</span></p></div>
+    <div class="tc reveal d4"><div class="tc-ic"><svg class="icon"><use href="#ic-spark"/></svg></div>
+      <h3><span class="lang-ar">ثيم وتجربة لكِ</span><span class="lang-en" lang="en">A theme made for you</span></h3>
+      <p><span class="lang-ar">واجهة أنيقة بألوان ناعمة، ومجتمع داعم من النساء يشجّعك في كل خطوة.</span><span class="lang-en" lang="en">An elegant interface in soft tones, and a supportive women's community cheering you on.</span></p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-tag reveal" style="color:#C891FF"><span class="lang-ar">على إيقاعك</span><span class="lang-en" lang="en">In your rhythm</span></div>
+  <div class="sec-title reveal d1"><span class="lang-ar">برنامج يتنفّس مع جسمك</span><span class="lang-en" lang="en">A program that breathes with your body</span></div>
+  <p class="sec-sub reveal d2"><span class="lang-ar">أربع مراحل، وكل مرحلة لها شدّتها المثالية.</span><span class="lang-en" lang="en">Four phases, each with its ideal intensity.</span></p>
+  <div class="wm-phases reveal d2">
+    <div class="wm-phase"><div class="nm"><span class="lang-ar">الحيض</span><span class="lang-en" lang="en">Menstrual</span></div><div class="ds"><span class="lang-ar">راحة وحركة خفيفة</span><span class="lang-en" lang="en">Rest & gentle movement</span></div><div class="bar"><i style="width:28%"></i></div></div>
+    <div class="wm-phase"><div class="nm"><span class="lang-ar">الجريبية</span><span class="lang-en" lang="en">Follicular</span></div><div class="ds"><span class="lang-ar">طاقة تتصاعد</span><span class="lang-en" lang="en">Rising energy</span></div><div class="bar"><i style="width:64%"></i></div></div>
+    <div class="wm-phase"><div class="nm"><span class="lang-ar">الإباضة</span><span class="lang-en" lang="en">Ovulation</span></div><div class="ds"><span class="lang-ar">ذروة القوة</span><span class="lang-en" lang="en">Peak strength</span></div><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="wm-phase"><div class="nm"><span class="lang-ar">الأصفرية</span><span class="lang-en" lang="en">Luteal</span></div><div class="ds"><span class="lang-ar">تهدئة تدريجية</span><span class="lang-en" lang="en">Gradual wind-down</span></div><div class="bar"><i style="width:48%"></i></div></div>
+  </div>
+  <div class="wm-reassure reveal d3">
+    <span class="chip"><svg class="icon"><use href="#ic-camera"/></svg> <span class="lang-ar">بدون صور إجبارية</span><span class="lang-en" lang="en">No mandatory photos</span></span>
+    <span class="chip"><svg class="icon"><use href="#ic-lock"/></svg> <span class="lang-ar">بياناتك مشفّرة</span><span class="lang-en" lang="en">Encrypted data</span></span>
+    <span class="chip"><svg class="icon"><use href="#ic-check"/></svg> <span class="lang-ar">إلغاء في أي وقت</span><span class="lang-en" lang="en">Cancel anytime</span></span>
+  </div>
+</div></section>
+
+<section class="final" id="join-cta"><div class="wrap">
+  <div class="sec-tag reveal" style="color:#C891FF"><span class="lang-ar">ابدئي الآن</span><span class="lang-en" lang="en">Start now</span></div>
+  <div class="sec-title reveal d1"><span class="lang-ar">ابدئي رحلتك بأمان</span><span class="lang-en" lang="en">Begin your journey, safely</span></div>
+  <p class="sec-sub reveal d2"><span class="lang-ar">كوني من أول النساء اللي يجرّبن FitGuard. أضيفي بريدك واحجزي مكانك.</span><span class="lang-en" lang="en">Be among the first women to try FitGuard. Add your email and claim your spot.</span></p>
+  <a class="nav-cta reveal d2" href="/#join" style="text-decoration:none;display:inline-block;margin-top:8px"><span class="lang-ar">انضمي لقائمة الانتظار ←</span><span class="lang-en" lang="en">Join the waitlist →</span></a>
+</div></section>
 </main>
 
 <footer><div class="wrap">
-  <p><span data-ar>صُنع بحبّ للمرأة العربية</span><span data-en>Made with love for Arab women</span> · <a href="/">FitGuard</a> · © 2026</p>
+  <div class="logo"><span class="mark" aria-hidden="true"><svg class="icon"><use href="#ic-shield"/></svg></span><span>Fit<b>Guard</b></span></div>
+  <p data-i="footTag">تدرّب بذكاء. ابقَ محمياً. · Train Smart. Stay Safe.</p>
+  <div class="foot-social">
+    <a class="fs-link" href="#" aria-label="FitGuard on TikTok"><svg class="icon"><use href="#ic-tiktok"/></svg></a>
+    <a class="fs-link" href="#" aria-label="FitGuard on Snapchat"><svg class="icon"><use href="#ic-snapchat"/></svg></a>
+    <a class="fs-link" href="#" aria-label="FitGuard on X"><svg class="icon"><use href="#ic-x"/></svg></a>
+    <a class="fs-link" href="#" aria-label="FitGuard on Instagram"><svg class="icon"><use href="#ic-instagram"/></svg></a>
+  </div>
+  <p style="margin-top:10px"><a href="privacy.html" data-i="fPrivacy">الخصوصية</a> · <a href="terms.html" data-i="fTerms">الشروط</a> · <a href="mailto:hello@fitguardapp.com" data-i="fContact">تواصل معنا</a></p>
+  <p class="fnote" style="margin-top:10px">fitguardapp.com · © 2026 FitGuard / Vigzag</p>
 </div></footer>
 
-<script>
-  // language toggle
-  const b=document.body, btn=document.getElementById('lng');
-  btn.onclick=()=>{ const ar=b.getAttribute('dir')==='rtl';
-    b.setAttribute('dir',ar?'ltr':'rtl'); document.documentElement.lang=ar?'en':'ar'; btn.textContent=ar?'عربي':'EN'; };
-
-  // reveal on scroll
-  const io=new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.14});
-  document.querySelectorAll('.rv').forEach((el,i)=>{ el.style.transitionDelay=(i%4*0.06)+'s'; io.observe(el); });
-
-  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-
-  // pink cursor glow
-  if(!reduce && matchMedia('(hover:hover)').matches){
-    const cg=document.getElementById('cg'); let tx=innerWidth/2,ty=innerHeight/2,cx=tx,cy=ty,shown=false;
-    addEventListener('pointermove',e=>{ tx=e.clientX; ty=e.clientY; if(!shown){shown=true;cg.classList.add('on');} },{passive:true});
-    (function mv(){ cx+=(tx-cx)*0.15; cy+=(ty-cy)*0.15; cg.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`; requestAnimationFrame(mv); })();
-    // card tilt
-    document.querySelectorAll('.card,.phase').forEach(el=>{
-      el.addEventListener('pointermove',(e)=>{ const r=el.getBoundingClientRect();
-        const px=(e.clientX-r.left)/r.width-0.5, py=(e.clientY-r.top)/r.height-0.5;
-        el.style.transition='transform .12s ease-out';
-        el.style.transform=`perspective(820px) rotateX(${(-py*6).toFixed(2)}deg) rotateY(${(px*8).toFixed(2)}deg) translateY(-5px)`; });
-      el.addEventListener('pointerleave',()=>{ el.style.transition=''; el.style.transform=''; });
-    });
-  }
-
-  // soft drifting petals (pink + violet)
-  const cv=document.getElementById('petals');
-  if(cv && !reduce){
-    const ctx=cv.getContext('2d'); let W,H,ps; const cols=[[255,79,163],[176,106,255],[255,138,196]];
-    const size=()=>{ W=cv.width=innerWidth; H=cv.height=innerHeight;
-      const n=Math.min(54,Math.floor(W/26));
-      ps=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2.4+1,
-        vy:-(Math.random()*0.25+0.05),vx:(Math.random()-0.5)*0.3,ph:Math.random()*6.28,
-        c:cols[Math.floor(Math.random()*cols.length)],a:Math.random()*0.4+0.2})); };
-    size(); addEventListener('resize',size,{passive:true});
-    let t=0;
-    (function d(){ t+=0.016; ctx.clearRect(0,0,W,H);
-      for(const p of ps){ p.y+=p.vy; p.x+=p.vx+Math.sin(t+p.ph)*0.25;
-        if(p.y<-8){p.y=H+8;p.x=Math.random()*W;} if(p.x<-8)p.x=W+8; if(p.x>W+8)p.x=-8;
-        const tw=0.6+0.4*Math.sin(t*2+p.ph);
-        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7);
-        ctx.fillStyle=`rgba(${p.c[0]},${p.c[1]},${p.c[2]},${(p.a*tw).toFixed(3)})`;
-        ctx.shadowBlur=10; ctx.shadowColor=`rgba(${p.c[0]},${p.c[1]},${p.c[2]},.6)`; ctx.fill(); }
-      requestAnimationFrame(d); })();
-  }
-</script>
+<script src="site.js"></script>
 </body>
 </html>

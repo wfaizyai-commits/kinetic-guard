@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FitGuard — story section options</title>
+<style>
+  @font-face{font-family:'Plex';font-weight:400;font-display:swap;src:url(fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2) format('woff2');unicode-range:U+0600-06FF,U+FB50-FDFF,U+FE70-FEFF,U+0660-0669}
+  @font-face{font-family:'Plex';font-weight:600;font-display:swap;src:url(fonts/ibm-plex-sans-arabic-arabic-600-normal.woff2) format('woff2');unicode-range:U+0600-06FF,U+FB50-FDFF,U+FE70-FEFF,U+0660-0669}
+  @font-face{font-family:'Plex';font-weight:700;font-display:swap;src:url(fonts/ibm-plex-sans-arabic-arabic-700-normal.woff2) format('woff2');unicode-range:U+0600-06FF,U+FB50-FDFF,U+FE70-FEFF,U+0660-0669}
+  @font-face{font-family:'Plex';font-weight:400;font-display:swap;src:url(fonts/ibm-plex-sans-arabic-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF}
+  @font-face{font-family:'Plex';font-weight:700;font-display:swap;src:url(fonts/ibm-plex-sans-arabic-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF}
+  :root{
+    --bg:#040D0B;--surface:#091813;--surface-2:#0E231D;--border:rgba(180,230,215,.12);
+    --text:#EAF3F0;--text-2:rgba(234,243,240,.66);--text-3:rgba(234,243,240,.40);
+    --orange:#FF6B00;--ember:#FFC15E;--green:#27C498;--danger:#FF5A6E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Plex','Geeza Pro','Segoe UI Arabic',sans-serif;line-height:1.85;
+    background-image:radial-gradient(ellipse 90% 50% at 80% -5%, rgba(15,179,154,.10), transparent 55%)}
+  .opt-head{padding:54px 24px 8px;max-width:920px;margin:auto}
+  .opt-badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:3px;color:var(--orange);
+    border:1px solid var(--border);border-radius:999px;padding:6px 14px;margin-bottom:10px}
+  .opt-head h2{font-size:22px;font-weight:700}
+  .opt-head p{color:var(--text-2);font-size:14px;max-width:560px}
+  .wrap{max-width:920px;margin:auto;padding:36px 24px 72px}
+  .sec-eyebrow{font-size:13px;font-weight:700;letter-spacing:4px;color:var(--orange);margin-bottom:8px}
+  .sec-title{font-size:clamp(24px,5vw,34px);font-weight:700;margin-bottom:40px}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0}
+
+  /* ============ OPTION 1 — Vertical timeline thread ============ */
+  .tl{position:relative;padding-inline-start:54px}
+  .tl::before{content:'';position:absolute;inset-inline-start:19px;top:8px;bottom:8px;width:2px;
+    background:linear-gradient(var(--danger),var(--danger) 18%,var(--ember) 55%,var(--green) 92%);opacity:.5;border-radius:2px}
+  .tl-step{position:relative;padding-bottom:40px}
+  .tl-step:last-child{padding-bottom:0}
+  .tl-node{position:absolute;inset-inline-start:-54px;top:2px;width:40px;height:40px;border-radius:50%;
+    display:grid;place-items:center;font-weight:700;font-size:15px;background:var(--surface);
+    border:2px solid currentColor;box-shadow:0 0 0 5px var(--bg)}
+  .tl-step.c-danger{color:var(--danger)} .tl-step.c-ember{color:var(--ember)} .tl-step.c-green{color:var(--green)}
+  .tl-k{font-size:13px;font-weight:700;letter-spacing:3px;margin-bottom:4px}
+  .tl-t{color:var(--text);font-size:clamp(19px,4.4vw,24px);font-weight:700;line-height:1.4;margin-bottom:8px}
+  .tl-p{color:var(--text-2);font-size:15px;max-width:520px}
+  .hl{color:var(--orange)}
+
+  /* ============ OPTION 2 — Editorial ghost-number rows ============ */
+  .ed-step{position:relative;padding:30px 0;overflow:hidden}
+  .ed-step+.ed-step{border-top:1px solid var(--border)}
+  .ed-ghost{position:absolute;top:50%;inset-inline-end:-6px;transform:translateY(-50%);
+    font-size:clamp(110px,26vw,190px);font-weight:700;line-height:1;color:transparent;
+    -webkit-text-stroke:1.5px rgba(234,243,240,.07);text-stroke:1.5px rgba(234,243,240,.07);pointer-events:none;z-index:0}
+  .ed-in{position:relative;z-index:1;max-width:560px}
+  .ed-k{display:inline-block;font-size:12px;font-weight:700;letter-spacing:3px;padding:4px 12px;border-radius:999px;margin-bottom:12px}
+  .ed-step.c-danger .ed-k{color:var(--danger);background:rgba(255,90,110,.12)}
+  .ed-step.c-ember .ed-k{color:var(--ember);background:rgba(255,193,94,.12)}
+  .ed-step.c-green .ed-k{color:var(--green);background:rgba(39,196,152,.12)}
+  .ed-t{font-size:clamp(20px,4.6vw,26px);font-weight:700;line-height:1.4;margin-bottom:8px}
+  .ed-p{color:var(--text-2);font-size:15px}
+
+  /* ============ OPTION 3 — Bold kinetic chapters ============ */
+  .kn-step{position:relative;padding:46px 0;text-align:center}
+  .kn-step+.kn-step{border-top:1px solid var(--border)}
+  .kn-word{font-size:clamp(40px,13vw,86px);font-weight:700;line-height:1;letter-spacing:-1px;margin-bottom:6px}
+  .kn-step.c-danger .kn-word{color:var(--danger)} .kn-step.c-ember .kn-word{color:var(--ember)} .kn-step.c-green .kn-word{color:var(--green)}
+  .kn-step.c-base .kn-word{color:var(--text)}
+  .kn-idx{font-size:13px;font-weight:700;letter-spacing:4px;color:var(--text-3);margin-bottom:18px}
+  .kn-t{font-size:clamp(19px,4.6vw,24px);font-weight:700;line-height:1.45;max-width:600px;margin:0 auto 10px}
+  .kn-p{color:var(--text-2);font-size:15px;max-width:520px;margin:0 auto}
+</style>
+</head>
+<body>
+
+<!-- OPTION 1 -->
+<div class="opt-head"><span class="opt-badge">الخيار ١</span><h2>خط زمني عمودي (Timeline)</h2>
+  <p>رحلة متّصلة من المشكلة إلى الوعد، بخيط مضيء يربط الفصول ودوائر مرقّمة بألوان المزاج. يوحي بالتقدّم والانتقال.</p></div>
+<section class="wrap">
+  <div class="sec-eyebrow">القصة</div><div class="sec-title">ليه بنينا FitGuard</div>
+  <div class="tl">
+    <div class="tl-step c-danger"><span class="tl-node">١</span><div class="tl-k">البداية</div>
+      <div class="tl-t">دخلت الجيم متحمّس… وطلعت بإصابة.</div>
+      <div class="tl-p">قصة تتكرر كل يوم: حماس زائد، وزن أكبر من جاهزيتك، وأداء غلط — والنتيجة ألم يوقفك أسابيع.</div></div>
+    <div class="tl-step c-danger"><span class="tl-node">٢</span><div class="tl-k">المشكلة</div>
+      <div class="tl-t">كل التطبيقات تعطيك تمارين… محدش يسألك إذا جسمك جاهز.</div>
+      <div class="tl-p">برنامج واحد للجميع، بلا فحص إصابات، بلا إحساس بيومك.</div></div>
+    <div class="tl-step c-ember"><span class="tl-node">٣</span><div class="tl-k">التحوّل</div>
+      <div class="tl-t">قلبنا المعادلة: <span class="hl">الأمان أولاً، قبل الحديد.</span></div>
+      <div class="tl-p">FitGuard يفحص جاهزيتك كل يوم، يحلل حالتك، ويصمّم تمرينك على حسب جسمك — مو العكس.</div></div>
+    <div class="tl-step c-green"><span class="tl-node">٤</span><div class="tl-k">الوعد</div>
+      <div class="tl-t">تتمرّن بذكاء، توصل أبعد، وانت محميّ.</div>
+      <div class="tl-p">مش مجرد تطبيق تمارين — شريك يحميك من الإصابة ويبني قوتك على المدى الطويل.</div></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- OPTION 2 -->
+<div class="opt-head"><span class="opt-badge">الخيار ٢</span><h2>تحريري بأرقام شبحية (Editorial)</h2>
+  <p>كل فصل صف مستقل، خلفه رقم ضخم مفرّغ (outline) كعلامة مائية، مع كلمة الفصل في شارة ملوّنة. إحساس مجلّة راقية.</p></div>
+<section class="wrap">
+  <div class="sec-eyebrow">القصة</div><div class="sec-title">ليه بنينا FitGuard</div>
+  <div class="ed-step c-danger"><div class="ed-ghost">٠١</div><div class="ed-in"><span class="ed-k">البداية</span>
+    <div class="ed-t">دخلت الجيم متحمّس… وطلعت بإصابة.</div>
+    <div class="ed-p">قصة تتكرر كل يوم: حماس زائد، وزن أكبر من جاهزيتك، وأداء غلط — والنتيجة ألم يوقفك أسابيع.</div></div></div>
+  <div class="ed-step c-danger"><div class="ed-ghost">٠٢</div><div class="ed-in"><span class="ed-k">المشكلة</span>
+    <div class="ed-t">كل التطبيقات تعطيك تمارين… محدش يسألك إذا جسمك جاهز.</div>
+    <div class="ed-p">برنامج واحد للجميع، بلا فحص إصابات، بلا إحساس بيومك.</div></div></div>
+  <div class="ed-step c-ember"><div class="ed-ghost">٠٣</div><div class="ed-in"><span class="ed-k">التحوّل</span>
+    <div class="ed-t">قلبنا المعادلة: <span class="hl">الأمان أولاً، قبل الحديد.</span></div>
+    <div class="ed-p">FitGuard يفحص جاهزيتك كل يوم، يحلل حالتك، ويصمّم تمرينك على حسب جسمك — مو العكس.</div></div></div>
+  <div class="ed-step c-green"><div class="ed-ghost">٠٤</div><div class="ed-in"><span class="ed-k">الوعد</span>
+    <div class="ed-t">تتمرّن بذكاء، توصل أبعد، وانت محميّ.</div>
+    <div class="ed-p">مش مجرد تطبيق تمارين — شريك يحميك من الإصابة ويبني قوتك على المدى الطويل.</div></div></div>
+</section>
+<div class="divider"></div>
+
+<!-- OPTION 3 -->
+<div class="opt-head"><span class="opt-badge">الخيار ٣</span><h2>طباعة جريئة (Kinetic)</h2>
+  <p>كلمة الفصل ضخمة جداً كبطل بصري، تحتها العنوان والوصف. أناقة ومساحات واسعة وتأثير قوي — مناسب للسكرول المتتابع.</p></div>
+<section class="wrap">
+  <div class="kn-step c-danger"><div class="kn-word">البداية</div><div class="kn-idx">الفصل ٠١</div>
+    <div class="kn-t">دخلت الجيم متحمّس… وطلعت بإصابة.</div>
+    <div class="kn-p">حماس زائد، وزن أكبر من جاهزيتك، وأداء غلط — والنتيجة ألم يوقفك أسابيع.</div></div>
+  <div class="kn-step c-danger"><div class="kn-word">المشكلة</div><div class="kn-idx">الفصل ٠٢</div>
+    <div class="kn-t">كل التطبيقات تعطيك تمارين… محدش يسألك إذا جسمك جاهز.</div>
+    <div class="kn-p">برنامج واحد للجميع، بلا فحص إصابات، بلا إحساس بيومك.</div></div>
+  <div class="kn-step c-ember"><div class="kn-word">التحوّل</div><div class="kn-idx">الفصل ٠٣</div>
+    <div class="kn-t">قلبنا المعادلة: <span class="hl">الأمان أولاً، قبل الحديد.</span></div>
+    <div class="kn-p">FitGuard يفحص جاهزيتك كل يوم، ويصمّم تمرينك على حسب جسمك — مو العكس.</div></div>
+  <div class="kn-step c-green"><div class="kn-word">الوعد</div><div class="kn-idx">الفصل ٠٤</div>
+    <div class="kn-t">تتمرّن بذكاء، توصل أبعد، وانت محميّ.</div>
+    <div class="kn-p">شريك يحميك من الإصابة ويبني قوتك على المدى الطويل.</div></div>
+</section>
+
+</body>
+</html>

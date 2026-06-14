@@ -34,3 +34,4 @@ android/local.properties
 *.zip
 files/
 FitGuard-Analysis-Report.html
+.vercel
