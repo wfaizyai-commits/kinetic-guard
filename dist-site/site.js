@@ -291,6 +291,12 @@ const T = {
 const SUPABASE_URL  = "https://pxhdptebzbudswrkgapf.supabase.co";
 const SUPABASE_ANON = "sb_publishable_T8V39HVugJIhJfeXqubSqg_6HQ8Oqj5";
 
+/* Google "Sign in with Google" Client ID (OAuth 2.0 Web client).
+   Create at console.cloud.google.com → APIs & Services → Credentials.
+   Add Authorized JavaScript origins: https://www.fitguardapp.com and https://fitguardapp.com
+   Until a real ID is set here, the Google button stays hidden (graceful no-op). */
+const GOOGLE_CLIENT_ID = "PASTE_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+
 const isValidEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 
 /* Capture traffic source: UTM campaign if present, else the referrer host, else 'direct'. */
@@ -416,6 +422,40 @@ function showThankYou(form, isDup, email){
 }
 
 applyLang(LANG);
+
+/* "Sign up with Google" (Google Identity Services) — lightweight, no backend.
+   Decodes the verified email from Google's ID token and adds it to the waitlist
+   via the existing submitEmail + showThankYou flow. Stays hidden (no-op) until
+   GOOGLE_CLIENT_ID is configured, so it can ship safely before setup. */
+(function(){
+  if(!GOOGLE_CLIENT_ID || /^PASTE_/.test(GOOGLE_CLIENT_ID)) return;       // not configured yet
+  const forms = [...document.querySelectorAll('form[data-wl]')];
+  if(!forms.length) return;
+  // inject a Google button + "or" divider above each waitlist form
+  forms.forEach(f=>{
+    const wrap=document.createElement('div'); wrap.className='gsignin';
+    wrap.innerHTML='<div class="g-btn" data-g-btn></div><div class="g-or"><span>'+(LANG==='ar'?'أو':'or')+'</span></div>';
+    f.insertAdjacentElement('beforebegin', wrap);
+  });
+  const decodeJwt=(t)=>{ try{ return JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); }catch(e){ return null; } };
+  const onCred=async(resp)=>{
+    const info=decodeJwt(resp.credential); if(!info || !info.email) return;
+    const r=await submitEmail(info.email);
+    if(r.ok){
+      if(!r.dup && window.plausible) plausible('waitlist_signup_google');
+      forms.forEach(f=>{ if(getComputedStyle(f).display!=='none') showThankYou(f, r.dup, info.email); });
+    }
+  };
+  const s=document.createElement('script'); s.src='https://accounts.google.com/gsi/client'; s.async=true; s.defer=true;
+  s.onload=()=>{
+    if(!window.google || !google.accounts) return;
+    google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: onCred, ux_mode:'popup' });
+    document.querySelectorAll('[data-g-btn]').forEach(el=>{
+      google.accounts.id.renderButton(el, { type:'standard', theme:'filled_black', size:'large', shape:'pill', text:'signup_with', width:320, locale:LANG });
+    });
+  };
+  document.head.appendChild(s);
+})();
 
 /* Sticky mobile CTA: appears once the page-top section scrolls away,
    hides while the #join section is on screen. Injected from JS (shared

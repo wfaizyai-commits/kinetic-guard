@@ -846,3 +846,10 @@ body.wm-theme .tc-ic .icon{color:#C891FF}
 .wm-reassure .chip{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--text-2);
   background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:9px 15px}
 .wm-reassure .chip .icon{width:16px;height:16px;color:#C891FF}
+
+/* ═══════════ "Sign up with Google" (GIS) ═══════════ */
+.gsignin{max-width:480px;margin:0 0 6px}
+@media(max-width:860px){.gsignin{margin-inline:auto}}
+.g-btn{display:flex;justify-content:center;color-scheme:light}
+.g-or{display:flex;align-items:center;gap:12px;color:var(--text-3);font-size:12px;font-weight:600;margin:14px 0 12px}
+.g-or::before,.g-or::after{content:'';flex:1;height:1px;background:var(--border)}
