@@ -62,5 +62,23 @@ Deno.serve(async (req) => {
     console.error('resend_error', res.status, detail);
     return json({ error: 'send_failed' }, 502);
   }
+
+  // Best-effort team notification (so you're alerted on each signup).
+  // Set:  supabase secrets set WELCOME_NOTIFY="you@fitguardapp.com"
+  const NOTIFY = Deno.env.get('WELCOME_NOTIFY');
+  if (NOTIFY) {
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${RESEND}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from: FROM, to: NOTIFY,
+          subject: `🎉 New FitGuard signup — ${email}`,
+          html: `<p>New waitlist signup:</p><ul><li><b>${email}</b></li><li>lang: ${lang}</li><li>${new Date().toISOString()}</li></ul>`,
+        }),
+      });
+    } catch (e) { console.error('notify_failed', e); }   // never block the user's signup
+  }
+
   return json({ ok: true });
 });
